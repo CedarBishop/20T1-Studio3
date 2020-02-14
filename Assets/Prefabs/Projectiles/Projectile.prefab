@@ -100,7 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a24907bc60684c4f900681f82b13f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  light: {fileID: 3768361320280184011}
+  damage: 10
   force: 400
   isMyProjectile: 0
   id: 0

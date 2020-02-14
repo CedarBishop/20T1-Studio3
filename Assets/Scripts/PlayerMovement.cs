@@ -7,8 +7,6 @@ public class PlayerMovement : MonoBehaviour
 {
     public float movementSpeed;
     private FixedJoystick joystick;
-    private PlayerCombat playerCombat;
-    private Platform platform;
 
 
     PhotonView photonView;
@@ -18,8 +16,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        playerCombat = GetComponent<PlayerCombat>();
-        platform = playerCombat.platform;
         photonView = GetComponent<PhotonView>();
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.gravityScale = 0;
@@ -41,20 +37,19 @@ public class PlayerMovement : MonoBehaviour
 
     void BasicMovement()
     {
-        switch (platform)
-        {
-            case Platform.PC:
-                movementDirection.x = Input.GetAxis("Horizontal");
-                movementDirection.y = Input.GetAxisRaw("Vertical");
-                break;
-            case Platform.Mobile:
-                movementDirection.x = joystick.Horizontal;
-                movementDirection.y = joystick.Vertical;
-                break;
-            default:
-                break;
-        }
-       
+
+#if UNITY_IPHONE || UNITY_ANDROID
+
+            movementDirection.x = joystick.Horizontal;
+            movementDirection.y = joystick.Vertical;
+
+#elif UNITY_EDITOR || UNITY_STANDALONE
+
+        movementDirection.x = Input.GetAxis("Horizontal");
+        movementDirection.y = Input.GetAxisRaw("Vertical");
+#endif
+
+
         Vector2 movementVelocity = movementDirection.normalized * Time.deltaTime * movementSpeed;
         rigidbody.velocity = movementVelocity;
     }

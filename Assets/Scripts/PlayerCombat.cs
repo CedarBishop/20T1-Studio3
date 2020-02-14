@@ -4,10 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public enum Platform { PC, Mobile};
+
 public class PlayerCombat : MonoBehaviour
 {
-    public Platform platform;
+
     public int health;
     PhotonView photonView;
     public Projectile bulletPrefab;
@@ -41,25 +41,10 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
 
-        switch (platform)
-        {
-            case Platform.PC:
-                Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 directionToTarget = target - new Vector2(transform.position.x, transform.position.y);
-                transform.right = directionToTarget;
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    if (canShoot)
-                    {
-                        canShoot = false;
-                        Shoot();
-                    }
-                }
-                break;
-            case Platform.Mobile:
-                joysticDirection = new Vector2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
+#if UNITY_ANDROID || UNITY_IPHONE
+
+        joysticDirection = new Vector2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
                 if (Mathf.Abs(joysticDirection.x) > 0.25f || Mathf.Abs(joysticDirection.y) > 0.25f)
                 {
                     transform.right = joysticDirection;
@@ -69,10 +54,23 @@ public class PlayerCombat : MonoBehaviour
                         Shoot();
                     }
                 }
-                break;
-            default:
-                break;
+
+#elif UNITY_EDITOR || UNITY_STANDALONE
+
+
+        Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 directionToTarget = target - new Vector2(transform.position.x, transform.position.y);
+        transform.right = directionToTarget;
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (canShoot)
+            {
+                canShoot = false;
+                Shoot();
+            }
         }
+
+#endif
     }
 
 
@@ -83,7 +81,7 @@ public class PlayerCombat : MonoBehaviour
 
             photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation, idCount);
             Projectile bullet = Instantiate(bulletPrefab, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation);
-            bullet.GetComponent<SpriteRenderer>().color = Color.cyan;
+            bullet.light.color = Color.cyan;
             bullet.isMyProjectile = true;
             bullet.id = idCount;
 

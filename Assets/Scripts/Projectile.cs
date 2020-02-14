@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
+    public Light2D light;
     PhotonView photonView;
     Rigidbody2D rigidbody;
     public int damage;
