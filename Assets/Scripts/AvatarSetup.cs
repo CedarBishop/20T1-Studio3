@@ -47,6 +47,8 @@ public class AvatarSetup : MonoBehaviour
             if (photonView.ViewID == id)
             {
                 Destroy(character);
+
+                StartCoroutine("DelayRespawn");
             }
         }
     }
@@ -59,5 +61,11 @@ public class AvatarSetup : MonoBehaviour
         {
             photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
         }
+    }
+
+    IEnumerator DelayRespawn ()
+    {
+        yield return new WaitForSeconds(5);
+        Respawn();
     }
 }

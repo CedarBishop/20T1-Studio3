@@ -47,19 +47,25 @@ public class UIManager : MonoBehaviour
     {
         uIGroups[playerNumber - 1].health = health;
         uIGroups[playerNumber - 1].healthText.text =  health.ToString() + "%";
-        int playerRemaining = 0;
-        int possibleWinningPlayerNumber = 0;
-        for (int i = 0; i < uIGroups.Count; i++)
+    }
+
+    public void DisplayWinText (int playerNumber)
+    {
+        string displayText = "";
+        if (playerNumber == 2)
         {
-            if (uIGroups[i].health > 0)
-            {
-                playerRemaining++;
-                possibleWinningPlayerNumber = i + 1;
-            }
+            displayText = "Player One Wins";
         }
-        if (playerRemaining == 1)
+        else
         {
-            winText.text = "Player " + possibleWinningPlayerNumber + " Wins!";
+            displayText = "Player Two Wins";
         }
+
+        winText.text = displayText;
+    }
+
+    public void ClearWinText()
+    {
+        winText.text = "";
     }
 }
