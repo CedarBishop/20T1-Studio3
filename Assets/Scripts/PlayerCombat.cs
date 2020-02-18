@@ -128,4 +128,10 @@ public class PlayerCombat : MonoBehaviour
         UIManager.instance.HealthUpdate(health, playerNumber);
     }
 
+    public void ResetHealth ()
+    {
+        health = 100;
+        photonView.RPC("RPC_UpdateHealth", RpcTarget.All, health, roomNumber);
+    }
+
 }

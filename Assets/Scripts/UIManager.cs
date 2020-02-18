@@ -47,6 +47,10 @@ public class UIManager : MonoBehaviour
     {
         uIGroups[playerNumber - 1].health = health;
         uIGroups[playerNumber - 1].healthText.text =  health.ToString() + "%";
+        if (health <= 0)
+        {
+            DisplayWinText(playerNumber);
+        }
     }
 
     public void DisplayWinText (int playerNumber)
