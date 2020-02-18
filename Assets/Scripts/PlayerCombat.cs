@@ -11,7 +11,6 @@ public class PlayerCombat : MonoBehaviour
     public int health;
     PhotonView photonView;
     public Projectile bulletPrefab;
-    static long idCount;
     [SerializeField]
     private float bulletSpawnOffset;
     public int roomNumber;
@@ -26,7 +25,6 @@ public class PlayerCombat : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        idCount = 0;
         if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
         {
             print("Room number parsed " + roomNumber);
@@ -79,14 +77,12 @@ public class PlayerCombat : MonoBehaviour
         if (photonView.IsMine)
         {
 
-            photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation, idCount);
+            photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation);
             Projectile bullet = Instantiate(bulletPrefab, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation);
             bullet.light.color = Color.cyan;
             bullet.isMyProjectile = true;
-            bullet.id = idCount;
 
             Destroy(bullet, 3);
-            idCount++;
 
         }
         StartCoroutine("DelayShoot");
@@ -100,11 +96,10 @@ public class PlayerCombat : MonoBehaviour
     }
 
     [PunRPC]
-    void RPC_SpawnAndInitProjectile(Vector2 origin, Quaternion quaternion, long id)
+    void RPC_SpawnAndInitProjectile(Vector2 origin, Quaternion quaternion)
     {
         Projectile bullet = Instantiate(bulletPrefab, origin, quaternion);
         bullet.isMyProjectile = false;
-        bullet.id = id;
     }
 
     public void TakeDamage(int damage)

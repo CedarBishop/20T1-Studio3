@@ -12,7 +12,6 @@ public class Projectile : MonoBehaviour
     public int damage;
     public float force;
     public bool isMyProjectile;
-    public long id; 
     Vector2 _direction;
 
     void Start()
@@ -29,13 +28,16 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(3);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponentInParent<PlayerCombat>())
         {
             if (isMyProjectile)
             {
-                return;
+                if (collision.gameObject.GetComponentInParent<PhotonView>().IsMine)
+                {
+                    return;
+                }
             }
 
             if (collision.gameObject.GetComponentInParent<PhotonView>())
@@ -52,21 +54,7 @@ public class Projectile : MonoBehaviour
 
 
         Destroy(gameObject);
-        photonView.RPC("RPC_ProjectileByID", RpcTarget.Others, id);
 
-    }
-
-    [PunRPC]
-    void RPC_ProjectileByID(long id)
-    {
-        foreach (var item in FindObjectsOfType<Projectile>())
-        {
-            if (item.id == id)
-            {
-                Destroy(item.gameObject);
-                return;
-            }
-        }
     }
 
 }
