@@ -9,6 +9,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     public static PhotonLobby photonLobby;
     public GameObject battleButton;
     public GameObject cancelButton;
+    public PhotonRoom room;
 
     private void Awake()
     {
@@ -20,13 +21,23 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
         }
+        Instantiate(room);
     }
 
     private void Start()
     {
-        battleButton.SetActive(false);
-        cancelButton.SetActive(false);
-        PhotonNetwork.ConnectUsingSettings();
+        if (PhotonNetwork.IsConnected)
+        {
+            battleButton.SetActive(true);
+            cancelButton.SetActive(false);
+        }
+        else
+        {
+            battleButton.SetActive(false);
+            cancelButton.SetActive(false);
+            PhotonNetwork.ConnectUsingSettings();
+        }
+       
     }
 
     public override void OnConnectedToMaster ()
@@ -74,4 +85,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         Application.Quit();
     }
+
+   
 }

@@ -100,5 +100,20 @@ public class UIManager : MonoBehaviour
         PhotonRoom.photonRoom.EndMatch();
     }
 
+    public void PlayerForfeited (int playerNumber)
+    {
+        string displayText = "";
+        if (playerNumber == 1)
+        {
+            displayText = "Player One Forfeited \nPlayer Two Wins";
+        }
+        else if (playerNumber == 2)
+        {
+            displayText = "Player Two Forfeited \nPlayer One Wins";            
+        }
+        StartCoroutine("CoEndMatch");
+        winText.text = displayText;
+    }
+
 
 }

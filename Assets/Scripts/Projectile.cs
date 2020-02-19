@@ -18,13 +18,14 @@ public class Projectile : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.AddForce(force * transform.forward);
-
+        StartCoroutine("DelayedDestroy");
     }
 
 
-    IEnumerator DelyedDestroy()
+    IEnumerator DelayedDestroy()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -54,6 +55,12 @@ public class Projectile : MonoBehaviour
 
         Destroy(gameObject);
 
+    }
+
+    public void SetEmissionColour (Color color)
+    {
+        Material material = GetComponent<MeshRenderer>().material;
+        material.SetColor("_EmissionColor", color);
     }
 
 }

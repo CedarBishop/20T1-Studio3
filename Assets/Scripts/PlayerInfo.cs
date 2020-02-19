@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : MonoBehaviourPunCallbacks
 {
     public static PlayerInfo playerInfo = null;
 
@@ -11,6 +13,8 @@ public class PlayerInfo : MonoBehaviour
     public GameObject[] allCharacters;
 
     [HideInInspector]public string selectedCharacterKey = "SelectedCharacter";
+
+    
 
     private void Awake()
     {
@@ -37,5 +41,10 @@ public class PlayerInfo : MonoBehaviour
             selectedCharacter = 0;
             PlayerPrefs.SetInt(selectedCharacterKey, selectedCharacter);
         }
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {        
+        //Instantiate(Resources.Load("PhotonPrefabs/Room Controller"));
     }
 }

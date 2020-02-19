@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour
     private FixedJoystick fixedJoystick;
     public Projectile projectilePrefab;
     public float fireRate = 0.1f;
-    Vector2 joysticDirection;
+    Vector3 joysticDirection;
     bool canShoot;
 
     void Start()
@@ -31,7 +31,7 @@ public class PlayerCombat : MonoBehaviour
         }
         fixedJoystick = GameObject.Find("Right Joystick").GetComponent<FixedJoystick>();
         joysticDirection = Vector3.forward;
-        transform.right = joysticDirection;
+        transform.forward = joysticDirection;
         canShoot = true;
 
     }
@@ -42,8 +42,8 @@ public class PlayerCombat : MonoBehaviour
 
 #if UNITY_ANDROID || UNITY_IPHONE
 
-        joysticDirection = new Vector2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
-                if (Mathf.Abs(joysticDirection.x) > 0.25f || Mathf.Abs(joysticDirection.y) > 0.25f)
+        joysticDirection = new Vector3(fixedJoystick.Horizontal, 0, fixedJoystick.Vertical);
+                if (Mathf.Abs(joysticDirection.x) > 0.25f || Mathf.Abs(joysticDirection.z) > 0.25f)
                 {
                     transform.forward = joysticDirection;
                     if (canShoot)
@@ -82,7 +82,7 @@ public class PlayerCombat : MonoBehaviour
 
             photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y,transform.position.z + (transform.forward.z * bulletSpawnOffset)), transform.rotation);
             Projectile bullet = Instantiate(bulletPrefab, new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)), transform.rotation);
-           // bullet.light.color = Color.cyan;
+            bullet.SetEmissionColour(Color.cyan);
             bullet.isMyProjectile = true;
 
             Destroy(bullet, 3);
