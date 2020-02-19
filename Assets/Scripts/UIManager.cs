@@ -42,7 +42,12 @@ public class UIManager : MonoBehaviour
            UIGroup uI = Instantiate(uIGroupPrefab,layoutGroup.transform);
             uIGroups.Add(uI);
             uI.SetPlayerNumber(i + 1);
+            if (i == 0)
+            {
+                uI.transform.SetAsFirstSibling();
+            }
         }
+        
     }
 
     public void HealthUpdate (int health, int playerNumber)

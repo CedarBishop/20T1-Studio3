@@ -1762,10 +1762,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedCharacter: 0
   allCharacters:
-  - {fileID: 3757955992005976066, guid: d3fd1100416d7934f9dd15262560a5fa, type: 3}
-  - {fileID: 1209691981647572177, guid: b23552fab4610c5478387fc89fda5dd9, type: 3}
-  - {fileID: 2240958533092748863, guid: b511edffdcaf8214a9a01f709f4ad6ac, type: 3}
-  - {fileID: 1423674386495443944, guid: 75a59bf3b7b63a640add2f4d9ba2e11e, type: 3}
+  - {fileID: 4483412907144705507, guid: fa9755a971ac35f49a8192dc9ee94395, type: 3}
+  - {fileID: 4483412907144705507, guid: fa9755a971ac35f49a8192dc9ee94395, type: 3}
+  - {fileID: 4483412907144705507, guid: fa9755a971ac35f49a8192dc9ee94395, type: 3}
+  - {fileID: 4483412907144705507, guid: fa9755a971ac35f49a8192dc9ee94395, type: 3}
   selectedCharacterKey: SelectedCharacter
 --- !u!4 &1917811611
 Transform:

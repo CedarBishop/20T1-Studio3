@@ -30,7 +30,7 @@ public class PlayerCombat : MonoBehaviour
             print("Room number parsed " + roomNumber);
         }
         fixedJoystick = GameObject.Find("Right Joystick").GetComponent<FixedJoystick>();
-        joysticDirection = Vector2.up;
+        joysticDirection = Vector3.forward;
         transform.right = joysticDirection;
         canShoot = true;
 
@@ -45,7 +45,7 @@ public class PlayerCombat : MonoBehaviour
         joysticDirection = new Vector2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
                 if (Mathf.Abs(joysticDirection.x) > 0.25f || Mathf.Abs(joysticDirection.y) > 0.25f)
                 {
-                    transform.right = joysticDirection;
+                    transform.forward = joysticDirection;
                     if (canShoot)
                     {
                         canShoot = false;
@@ -56,9 +56,12 @@ public class PlayerCombat : MonoBehaviour
 #elif UNITY_EDITOR || UNITY_STANDALONE
 
 
-        Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 directionToTarget = target - new Vector2(transform.position.x, transform.position.y);
-        transform.right = directionToTarget;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Physics.Raycast(ray,out hit,100.0f);
+        Vector3 target = new Vector3(hit.point.x,transform.position.y,hit.point.z);
+        Vector3 directionToTarget = target - transform.position;
+        transform.forward = directionToTarget;
         if (Input.GetButtonDown("Fire1"))
         {
             if (canShoot)
@@ -77,9 +80,9 @@ public class PlayerCombat : MonoBehaviour
         if (photonView.IsMine)
         {
 
-            photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation);
-            Projectile bullet = Instantiate(bulletPrefab, new Vector2(transform.position.x + (transform.right.x * bulletSpawnOffset), transform.position.y + (transform.right.y * bulletSpawnOffset)), transform.rotation);
-            bullet.light.color = Color.cyan;
+            photonView.RPC("RPC_SpawnAndInitProjectile", RpcTarget.Others, new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y,transform.position.z + (transform.forward.z * bulletSpawnOffset)), transform.rotation);
+            Projectile bullet = Instantiate(bulletPrefab, new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)), transform.rotation);
+           // bullet.light.color = Color.cyan;
             bullet.isMyProjectile = true;
 
             Destroy(bullet, 3);
@@ -96,7 +99,7 @@ public class PlayerCombat : MonoBehaviour
     }
 
     [PunRPC]
-    void RPC_SpawnAndInitProjectile(Vector2 origin, Quaternion quaternion)
+    void RPC_SpawnAndInitProjectile(Vector3 origin, Quaternion quaternion)
     {
         Projectile bullet = Instantiate(bulletPrefab, origin, quaternion);
         bullet.isMyProjectile = false;

@@ -6,19 +6,18 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
-    public Light2D light;
     PhotonView photonView;
-    Rigidbody2D rigidbody;
+    Rigidbody rigidbody;
     public int damage;
     public float force;
     public bool isMyProjectile;
-    Vector2 _direction;
+    Vector3 _direction;
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.AddForce(force * transform.right);
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.AddForce(force * transform.forward);
 
     }
 
@@ -28,7 +27,7 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(3);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.GetComponentInParent<PlayerCombat>())
         {

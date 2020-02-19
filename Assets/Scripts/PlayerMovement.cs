@@ -10,15 +10,15 @@ public class PlayerMovement : MonoBehaviour
 
 
     PhotonView photonView;
-    Rigidbody2D rigidbody;
+    Rigidbody rigidbody;
 
-    Vector2 movementDirection;
+    Vector3 movementDirection;
 
     void Start()
     {
         photonView = GetComponent<PhotonView>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        rigidbody.gravityScale = 0;
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.useGravity = false;
         joystick = GameObject.Find("Left Joystick").GetComponent<FixedJoystick>();
     }
 
@@ -41,16 +41,16 @@ public class PlayerMovement : MonoBehaviour
 #if UNITY_IPHONE || UNITY_ANDROID
 
             movementDirection.x = joystick.Horizontal;
-            movementDirection.y = joystick.Vertical;
+            movementDirection.z = joystick.Vertical;
 
 #elif UNITY_EDITOR || UNITY_STANDALONE
 
         movementDirection.x = Input.GetAxis("Horizontal");
-        movementDirection.y = Input.GetAxisRaw("Vertical");
+        movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
 
 
-        Vector2 movementVelocity = movementDirection.normalized * Time.deltaTime * movementSpeed;
+        Vector3 movementVelocity = movementDirection.normalized * Time.deltaTime * movementSpeed;
         rigidbody.velocity = movementVelocity;
     }
 

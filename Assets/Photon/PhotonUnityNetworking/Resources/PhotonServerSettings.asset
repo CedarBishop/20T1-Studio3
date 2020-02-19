@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: AU
     Server: 
     Port: 0
     Protocol: 0
@@ -36,10 +36,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - RPC_AddCharacter
   - RPC_Die
-  - RPC_ProjectileByID
+  - RPC_ResetStats
   - RPC_SpawnAndInitProjectile
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
-  - RPC_ResetStats
   DisableAutoOpenWizard: 1
   ShowSettings: 1
