@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     private Player[] players;
     private List<UIGroup> uIGroups = new List<UIGroup>();
     public Text winText;
+    int roundNumber = 1;
+    public Text roundNumberText;
 
 
     private void Awake()
@@ -32,21 +34,20 @@ public class UIManager : MonoBehaviour
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
         players = PhotonNetwork.PlayerList;
+        roundNumber = 1;
+        roundNumberText.text = "Round " + roundNumber.ToString();
         
         for (int i = 0; i < players.Length; i++)
         {
            UIGroup uI = Instantiate(uIGroupPrefab,layoutGroup.transform);
             uIGroups.Add(uI);
-            uI.playerNumberText.text = "P" + (i + 1).ToString();
-            uI.playerNumber = i + 1;
-            uI.playerNumberText.color = new Color(Random.Range(0,1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f),1.0f);
+            uI.SetPlayerNumber(i + 1);
         }
     }
 
     public void HealthUpdate (int health, int playerNumber)
     {
-        uIGroups[playerNumber - 1].health = health;
-        uIGroups[playerNumber - 1].healthText.text =  health.ToString() + "%";
+        uIGroups[playerNumber - 1].SetHealth(health);
         if (health <= 0)
         {
             DisplayWinText(playerNumber);
@@ -58,18 +59,25 @@ public class UIManager : MonoBehaviour
         string displayText = "";
         if (playerNumber == 2)
         {
-            displayText = "Player One Wins";
+            displayText = "Player One Wins Round " + roundNumber.ToString();
+            uIGroups[0].IncrementRoundWins();
+
         }
         else
         {
-            displayText = "Player Two Wins";
+            uIGroups[1].IncrementRoundWins();
+            
+            displayText = "Player Two Wins Round " + roundNumber.ToString();
         }
 
         winText.text = displayText;
+        
     }
 
     public void ClearWinText()
     {
+        roundNumber++;
+        roundNumberText.text = "Round " + roundNumber.ToString();
         winText.text = "";
     }
 }
