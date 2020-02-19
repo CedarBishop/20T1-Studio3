@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance = null;
 
     public Transform[] spawnPoints;
+    public int requiredRoundsToWinMatch = 5;
+
 
     private void Awake()
     {
@@ -19,5 +21,4 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
 }

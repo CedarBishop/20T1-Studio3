@@ -65,14 +65,22 @@ public class UIManager : MonoBehaviour
         if (playerNumber == 2)
         {
             displayText = "Player One Wins Round " + roundNumber.ToString();
-            uIGroups[0].IncrementRoundWins();
+            if (uIGroups[0].IncrementRoundWins())
+            {
+                displayText = "Player One Wins";
+                StartCoroutine("CoEndMatch");
+            }
 
         }
         else
         {
-            uIGroups[1].IncrementRoundWins();
             
             displayText = "Player Two Wins Round " + roundNumber.ToString();
+            if (uIGroups[1].IncrementRoundWins())
+            {
+                displayText = "Player Two Wins";
+                StartCoroutine("CoEndMatch");
+            }
         }
 
         winText.text = displayText;
@@ -85,4 +93,12 @@ public class UIManager : MonoBehaviour
         roundNumberText.text = "Round " + roundNumber.ToString();
         winText.text = "";
     }
+
+    IEnumerator CoEndMatch ()
+    {
+        yield return new WaitForSeconds(3);
+        PhotonRoom.photonRoom.EndMatch();
+    }
+
+
 }

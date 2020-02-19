@@ -133,7 +133,23 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         playersInRoom--;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameSetup.instance.DisconnectPlayer();
+        }
+    }
 
+    public void EndMatch ()
+    {
+        photonView.RPC("RPC_EndMatch",RpcTarget.All);
+    }
 
+    [PunRPC]
+    void RPC_EndMatch()
+    {
+        GameSetup.instance.DisconnectPlayer();
+    }
 
 }

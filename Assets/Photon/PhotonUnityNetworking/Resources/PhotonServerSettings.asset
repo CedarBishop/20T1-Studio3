@@ -40,5 +40,6 @@ MonoBehaviour:
   - RPC_SpawnAndInitProjectile
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
+  - RPC_EndMatch
   DisableAutoOpenWizard: 1
   ShowSettings: 1

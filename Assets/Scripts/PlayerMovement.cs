@@ -27,12 +27,7 @@ public class PlayerMovement : MonoBehaviour
         if (photonView.IsMine)
         {
             BasicMovement();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            GameSetup.instance.DisconnectPlayer();
-        }
+        }        
     }
 
     void BasicMovement()

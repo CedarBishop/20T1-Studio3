@@ -33,4 +33,6 @@ public class GameSetup : MonoBehaviour
         }
         SceneManager.LoadScene(0);
     }
+
+    
 }

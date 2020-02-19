@@ -26,9 +26,19 @@ public class UIGroup : MonoBehaviour
         playerNumberText.color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f), 1.0f);
     }
 
-    public void IncrementRoundWins()
+    public bool IncrementRoundWins()
     {
         roundWins++;
+        if (roundWins == LevelManager.instance.requiredRoundsToWinMatch)
+        {
+            // player won yay
+            return true;
+        }
+        
         roundWinText.text = roundWins.ToString();
+        return false;
+        
     }
+
+    
 }
