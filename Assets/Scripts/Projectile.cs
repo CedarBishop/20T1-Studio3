@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -12,6 +13,8 @@ public class Projectile : MonoBehaviour
     public float force;
     public bool isMyProjectile;
     Vector3 _direction;
+
+    ParticleSystem sparks;
 
     void Start()
     {
@@ -44,17 +47,20 @@ public class Projectile : MonoBehaviour
             {
                 if (collision.gameObject.GetComponentInParent<PhotonView>().IsMine)
                 {
-                    collision.gameObject.GetComponentInParent<PlayerCombat>().TakeDamage(damage);                    
+                    collision.gameObject.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
 
                     print("hit by enemy");
-                  
+
                 }
             }
         }
 
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            sparks.Play();
+        }
 
         Destroy(gameObject);
-
     }
 
     public void SetEmissionColour (Color color)
@@ -62,5 +68,4 @@ public class Projectile : MonoBehaviour
         Material material = GetComponent<MeshRenderer>().material;
         material.SetColor("_EmissionColor", color);
     }
-
 }

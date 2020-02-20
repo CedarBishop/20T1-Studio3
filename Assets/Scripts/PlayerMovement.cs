@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed;
     private FixedJoystick joystick;
 
-
     PhotonView photonView;
     Rigidbody rigidbody;
 
@@ -27,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
         if (photonView.IsMine)
         {
             BasicMovement();
-        }        
+        }
     }
 
     void BasicMovement()
@@ -35,15 +34,14 @@ public class PlayerMovement : MonoBehaviour
 
 #if UNITY_IPHONE || UNITY_ANDROID
 
-            movementDirection.x = joystick.Horizontal;
-            movementDirection.z = joystick.Vertical;
+        movementDirection.x = joystick.Horizontal;
+        movementDirection.z = joystick.Vertical;
 
 #elif UNITY_EDITOR || UNITY_STANDALONE
 
         movementDirection.x = Input.GetAxis("Horizontal");
         movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
-
 
         Vector3 movementVelocity = movementDirection.normalized * Time.deltaTime * movementSpeed;
         rigidbody.velocity = movementVelocity;
