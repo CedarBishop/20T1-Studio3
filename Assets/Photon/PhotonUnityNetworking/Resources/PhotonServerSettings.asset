@@ -34,5 +34,12 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - RPC_AddCharacter
+  - RPC_Die
+  - RPC_EndMatch
+  - RPC_ResetStats
+  - RPC_SpawnAndInitProjectile
+  - RPC_TellMasterToStartGame
+  - RPC_UpdateHealth
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
