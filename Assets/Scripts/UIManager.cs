@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public Text roundNumberText;
 
 
+    // Make Script Singleton
     private void Awake()
     {
         if (instance == null)
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     private IEnumerator Start()
     {
         winText.text = "";
@@ -37,6 +39,7 @@ public class UIManager : MonoBehaviour
         roundNumber = 1;
         roundNumberText.text = "Round " + roundNumber.ToString();
         
+        // Insatiate the UI Group for each player and initialize with room number
         for (int i = 0; i < players.Length; i++)
         {
            UIGroup uI = Instantiate(uIGroupPrefab,layoutGroup.transform);
@@ -50,6 +53,8 @@ public class UIManager : MonoBehaviour
         
     }
 
+
+    // Function that is called from player combat to 
     public void HealthUpdate (int health, int playerNumber)
     {
         uIGroups[playerNumber - 1].SetHealth(health);
