@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     public Text winText;
     int roundNumber = 1;
     public Text roundNumberText;
+    public FixedJoystick leftJoystick;
+    public FixedJoystick rightJoystick;
 
 
     // Make Script Singleton
@@ -28,11 +30,27 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+#if UNITY_IPHONE || UNITY_ANDROID
+
+        leftJoystick.gameObject.SetActive(true);
+        rightJoystick.gameObject.SetActive(true);
+
+#elif UNITY_EDITOR || UNITY_STANDALONE
+
+        leftJoystick.gameObject.SetActive(false);
+        rightJoystick.gameObject.SetActive(false);
+
+#endif
+
     }
 
 
     private IEnumerator Start()
     {
+
+        
+
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
         players = PhotonNetwork.PlayerList;

@@ -33,21 +33,21 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.GetComponentInParent<PlayerCombat>())
+        if (collision.GetComponentInParent<PlayerCombat>())
         {
             if (isMyProjectile)
             {
-                if (collision.gameObject.GetComponentInParent<PhotonView>().IsMine)
+                if (collision.GetComponentInParent<PhotonView>().IsMine)
                 {
                     return;
                 }
             }
 
-            if (collision.gameObject.GetComponentInParent<PhotonView>())
+            if (collision.GetComponentInParent<PhotonView>())
             {
-                if (collision.gameObject.GetComponentInParent<PhotonView>().IsMine)
+                if (collision.GetComponentInParent<PhotonView>().IsMine)
                 {
-                    collision.gameObject.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
+                    collision.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
 
                     print("hit by enemy");
 
@@ -57,7 +57,10 @@ public class Projectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            sparks.Play();
+            if (sparks != null)
+            {
+                sparks.Play();
+            }
         }
 
         Destroy(gameObject);

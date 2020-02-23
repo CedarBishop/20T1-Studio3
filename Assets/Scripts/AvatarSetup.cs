@@ -69,7 +69,7 @@ public class AvatarSetup : MonoBehaviour
         playerMovement.enabled = true;
         if (photonView.IsMine)
         {
-            photonView.RPC("RPC_ResetStats", RpcTarget.AllBuffered);
+            photonView.RPC("RPC_ResetStats", RpcTarget.All);
             print("Add Character");
             photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
         }
@@ -83,7 +83,24 @@ public class AvatarSetup : MonoBehaviour
 
     [PunRPC]
     void RPC_ResetStats()
+    { 
+        AvatarSetup[] avatarSetups =  FindObjectsOfType<AvatarSetup>();
+        if (avatarSetups != null)
+        {
+            for (int i = 0; i < avatarSetups.Length; i++)
+            {
+                if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+                {
+                    avatarSetups[i].ResetStats();
+                }
+            }
+        }
+    }
+
+    public void ResetStats ()
     {
+        print("Player " + roomNumber + " Reseting Stats");
+        print(LevelManager.instance.spawnPoints[roomNumber - 1].position);
         transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         playerCombat.ResetHealth();
     }
