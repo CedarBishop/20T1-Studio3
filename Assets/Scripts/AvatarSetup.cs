@@ -36,13 +36,16 @@ public class AvatarSetup : MonoBehaviour
     {
         UIManager.instance.ClearWinText();
         characterValue = characterNum;
-        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterValue],transform.position, transform.rotation, transform);
+        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterValue],new Vector3(transform.position.x,transform.position.y,transform.position.z), transform.rotation, transform);
     }
 
     public void Die ()
     {
         playerCombat.enabled = false;
         playerMovement.enabled = false;
+        Rigidbody r = GetComponent<Rigidbody>();
+        r.velocity = Vector3.zero;
+        r.angularVelocity = Vector3.zero;
         photonView.RPC("RPC_Die",RpcTarget.Others,photonView.ViewID);
         Destroy(character);
         StartCoroutine("DelayRespawn");
