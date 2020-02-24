@@ -52,14 +52,11 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene == lobbyScene)
+        if (currentScene == lobbyScene || currentScene == gameScene)
         {
             CreatePlayer();
         }
-        else if (currentScene == gameScene)
-        {
-            CreatePlayer();
-        }
+
     }
 
     [PunRPC]

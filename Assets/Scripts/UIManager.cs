@@ -15,8 +15,11 @@ public class UIManager : MonoBehaviour
     public Text winText;
     int roundNumber = 1;
     public Text roundNumberText;
+    public FixedJoystick leftJoystick;
+    public FixedJoystick rightJoystick;
 
 
+    // Make Script Singleton
     private void Awake()
     {
         if (instance == null)
@@ -27,16 +30,34 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+#if UNITY_IPHONE || UNITY_ANDROID
+
+        leftJoystick.gameObject.SetActive(true);
+        rightJoystick.gameObject.SetActive(true);
+
+#elif UNITY_EDITOR || UNITY_STANDALONE
+
+        leftJoystick.gameObject.SetActive(false);
+        rightJoystick.gameObject.SetActive(false);
+
+#endif
+
     }
+
 
     private IEnumerator Start()
     {
+
+        
+
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
         players = PhotonNetwork.PlayerList;
         roundNumber = 1;
         roundNumberText.text = "Round " + roundNumber.ToString();
         
+        // Insatiate the UI Group for each player and initialize with room number
         for (int i = 0; i < players.Length; i++)
         {
            UIGroup uI = Instantiate(uIGroupPrefab,layoutGroup.transform);
@@ -50,6 +71,8 @@ public class UIManager : MonoBehaviour
         
     }
 
+
+    // Function that is called from player combat to 
     public void HealthUpdate (int health, int playerNumber)
     {
         uIGroups[playerNumber - 1].SetHealth(health);

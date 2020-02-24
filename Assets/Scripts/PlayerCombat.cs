@@ -24,12 +24,16 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
+        #if UNITY_IPHONE || UNITY_ANDROID
+
+        fixedJoystick = GameObject.Find("Right Joystick").GetComponent<FixedJoystick>();
+
+#endif
         photonView = GetComponent<PhotonView>();
         if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
         {
             print("Room number parsed " + roomNumber);
         }
-        fixedJoystick = GameObject.Find("Right Joystick").GetComponent<FixedJoystick>();
         joysticDirection = Vector3.forward;
         transform.forward = joysticDirection;
         canShoot = true;
@@ -131,5 +135,4 @@ public class PlayerCombat : MonoBehaviour
         health = 100;
         photonView.RPC("RPC_UpdateHealth", RpcTarget.All, health, roomNumber);
     }
-
 }
