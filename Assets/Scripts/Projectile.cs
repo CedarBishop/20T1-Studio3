@@ -7,29 +7,30 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
-    PhotonView photonView;
-    Rigidbody rigidbody;
-    public int damage;
-    public float force;
-    public bool isMyProjectile;
-    Vector3 _direction;
+	PhotonView photonView;
+	Rigidbody rigidbody;
+	public int damage;
+	public float force;
+	public bool isMyProjectile;
+	Vector3 _direction;
 
-    ParticleSystem sparks;
+	[SerializeField]
+	private ParticleSystem sparks; // For when bouncing off walls
 
-    void Start()
-    {
-        photonView = GetComponent<PhotonView>();
-        rigidbody = GetComponent<Rigidbody>();
-        rigidbody.AddForce(force * transform.forward);
-        StartCoroutine("DelayedDestroy");
-    }
+	void Start()
+	{
+		photonView = GetComponent<PhotonView>();
+		rigidbody = GetComponent<Rigidbody>();
+		rigidbody.AddForce(force * transform.forward);
+		StartCoroutine("DelayedDestroy");
+	}
 
 
-    IEnumerator DelayedDestroy()
-    {
-        yield return new WaitForSeconds(5);
-        Destroy(gameObject);
-    }
+	IEnumerator DelayedDestroy()
+	{
+		yield return new WaitForSeconds(5);
+		Destroy(gameObject);
+	}
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -49,26 +50,27 @@ public class Projectile : MonoBehaviour
                 {
                     collision.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
 
-                    print("hit by enemy");
+					print("hit by enemy");
+				}
+			}
+		}
 
-                }
-            }
-        }
+		if (collision.gameObject.CompareTag("Wall"))
+		{
+			sparks.Play();
+		}
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            if (sparks != null)
-            {
-                sparks.Play();
+            if (sparks != null)
+            {
+                sparks.Play();
             }
         }
 
-        Destroy(gameObject);
-    }
-
-    public void SetEmissionColour (Color color)
-    {
-        Material material = GetComponent<MeshRenderer>().material;
-        material.SetColor("_EmissionColor", color);
-    }
+	public void SetEmissionColour(Color color)
+	{
+		Material material = GetComponent<MeshRenderer>().material;
+		material.SetColor("_EmissionColor", color);
+	}
 }

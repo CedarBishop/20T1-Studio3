@@ -386,6 +386,7 @@
           <e p="PlayerCombat.cs" t="Include" />
           <e p="PlayerInfo.cs" t="Include" />
           <e p="PlayerMovement.cs" t="Include" />
+          <e p="PlayerSkills.cs" t="Include" />
           <e p="Projectile.cs" t="Include" />
           <e p="UIGroup.cs" t="Include" />
           <e p="UIManager.cs" t="Include" />
