@@ -41,11 +41,7 @@ public class AvatarSetup : MonoBehaviour
 
     public void Die ()
     {
-        playerCombat.enabled = false;
-        playerMovement.enabled = false;
-        Rigidbody r = GetComponent<Rigidbody>();
-        r.velocity = Vector3.zero;
-        r.angularVelocity = Vector3.zero;
+        DisableControls();
         photonView.RPC("RPC_Die",RpcTarget.Others,photonView.ViewID);
         Destroy(character);
         StartCoroutine("DelayRespawn");
@@ -106,5 +102,14 @@ public class AvatarSetup : MonoBehaviour
         print(LevelManager.instance.spawnPoints[roomNumber - 1].position);
         transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         playerCombat.ResetHealth();
+    }
+
+    public void DisableControls ()
+    {
+        playerCombat.enabled = false;
+        playerMovement.enabled = false;
+        Rigidbody r = GetComponent<Rigidbody>();
+        r.velocity = Vector3.zero;
+        r.angularVelocity = Vector3.zero;
     }
 }

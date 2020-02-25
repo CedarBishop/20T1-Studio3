@@ -32,41 +32,46 @@ public class Projectile : MonoBehaviour
 		Destroy(gameObject);
 	}
 
-    private void OnTriggerEnter(Collider collision)
-    {
-        if (collision.GetComponentInParent<PlayerCombat>())
-        {
-            if (isMyProjectile)
-            {
-                if (collision.GetComponentInParent<PhotonView>().IsMine)
-                {
-                    return;
-                }
-            }
+	private void OnTriggerEnter(Collider collision)
+	{
+		if (collision.GetComponentInParent<PlayerCombat>())
+		{
+			if (isMyProjectile)
+			{
+				if (collision.GetComponentInParent<PhotonView>().IsMine)
+				{
+					return;
+				}
+			}
 
-            if (collision.GetComponentInParent<PhotonView>())
-            {
-                if (collision.GetComponentInParent<PhotonView>().IsMine)
-                {
-                    collision.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
+			if (collision.GetComponentInParent<PhotonView>())
+			{
+				if (collision.GetComponentInParent<PhotonView>().IsMine)
+				{
+					collision.GetComponentInParent<PlayerCombat>().TakeDamage(damage);
 
 					print("hit by enemy");
 				}
 			}
 		}
 
+
 		if (collision.gameObject.CompareTag("Wall"))
 		{
 			sparks.Play();
 		}
 
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            if (sparks != null)
-            {
-                sparks.Play();
-            }
-        }
+		if (collision.gameObject.CompareTag("Wall"))
+		{
+			if (sparks != null)
+
+			{
+
+				sparks.Play();
+
+			}
+		}
+	}
 
 	public void SetEmissionColour(Color color)
 	{

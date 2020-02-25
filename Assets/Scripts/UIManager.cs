@@ -8,6 +8,11 @@ using Photon.Realtime;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
+
+    public static System.Action roundDrawEvent;
+
+    PhotonView photonView;
+
     public UIGroup uIGroupPrefab;
     public LayoutGroup layoutGroup;
     private Player[] players;
@@ -17,7 +22,10 @@ public class UIManager : MonoBehaviour
     public Text roundNumberText;
     public FixedJoystick leftJoystick;
     public FixedJoystick rightJoystick;
-
+    public Text roundTimerText;
+    public float startingRoundTime;
+    float roundTimer;
+    bool roundIsUnderway;
 
     // Make Script Singleton
     private void Awake()
@@ -138,5 +146,55 @@ public class UIManager : MonoBehaviour
         winText.text = displayText;
     }
 
+    private void FixedUpdate()
+    {
+        if (roundIsUnderway)
+        {
+            if (roundTimer <= 0)
+            {                
+                photonView.RPC("RPC_RoundDraw", RpcTarget.All);
 
+            }
+            else
+            {
+                roundTimer -= Time.fixedDeltaTime;
+            }
+        }
+       
+    }
+
+    void StartRoundTimer ()
+    {
+        roundTimer = startingRoundTime;
+        roundTimerText.text = roundTimer.ToString("F1");
+        roundIsUnderway = true;
+    }
+
+    [PunRPC]
+    void RPC_RoundDraw ()
+    {
+        roundIsUnderway = false;
+        roundTimerText.text = "";
+
+        // Increment both players and check if have caused a tie break
+        if (uIGroups[0].IncrementRoundWins() && uIGroups[1].IncrementRoundWins())
+        {
+            // Play sudden death or tie breaker
+        }
+        else
+        {
+            // go to next round
+
+            AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+            for (int i = 0; i < avatarSetups.Length; i++)
+            {
+                if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+                {
+                    avatarSetups[i].DisableControls();
+                }
+            }
+            
+        }
+        
+    }
 }
