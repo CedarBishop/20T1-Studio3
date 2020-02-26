@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 #endif
         movementDirection = movementDirection.normalized;
 
-        print(movementDirection);
         Vector3 movementVelocity = movementDirection * Time.fixedDeltaTime * movementSpeed;
         rigidbody.velocity = movementVelocity;
     }

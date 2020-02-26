@@ -58,19 +58,15 @@ public class Projectile : MonoBehaviour
 
 		if (collision.gameObject.CompareTag("Wall"))
 		{
-			sparks.Play();
-		}
-
-		if (collision.gameObject.CompareTag("Wall"))
-		{
 			if (sparks != null)
-
 			{
-
 				sparks.Play();
 
 			}
 		}
+
+
+		Destroy(gameObject);
 	}
 
 	public void SetEmissionColour(Color color)

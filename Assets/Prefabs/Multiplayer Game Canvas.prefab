@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3352427702413237987}
   - component: {fileID: 5909855453394963827}
   m_Layer: 5
-  m_Name: Text
+  m_Name: RoundTimerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,8 +356,8 @@ MonoBehaviour:
   roundNumberText: {fileID: 1480033678936164783}
   leftJoystick: {fileID: 9149649599546811463}
   rightJoystick: {fileID: 9149649599454072659}
-  roundTimerText: {fileID: 0}
-  startingRoundTime: 0
+  roundTimerText: {fileID: 3352427702413237987}
+  startingRoundTime: 20
 --- !u!114 &7804132430919226554
 MonoBehaviour:
   m_ObjectHideFlags: 0
