@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ae7ca5c192f1d4fb2227dc9cf016be, type: 3}
-  m_Name: AimingForsight
+  m_Name: DropMine
   m_EditorClassIdentifier: 
-  abilityName: Aiming Forsight
-  description: Shows line of sight in facing/last known direction faced
+  description: Leaves invisible AOE blast style land mine triggered by opposing player
   icon: {fileID: 0}
-  passiveSkillId: 1
+  passiveSkillId: 0
   activeSkillId: 0
   amount: 0
   maximum: 0
