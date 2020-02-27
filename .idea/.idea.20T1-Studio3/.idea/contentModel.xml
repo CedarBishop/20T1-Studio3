@@ -376,8 +376,13 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="Abilities" t="Include">
+            <e p="Ability.cs" t="Include" />
+          </e>
+          <e p="AbilitiesManager.cs" t="Include" />
           <e p="AvatarSetup.cs" t="Include" />
           <e p="CameraController.cs" t="Include" />
+          <e p="EnumList.cs" t="Include" />
           <e p="GameSetup.cs" t="Include" />
           <e p="LevelManager.cs" t="Include" />
           <e p="MenuController.cs" t="Include" />

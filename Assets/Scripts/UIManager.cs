@@ -8,6 +8,11 @@ using Photon.Realtime;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
+
+    public static System.Action roundDrawEvent;
+
+    PhotonView photonView;
+
     public UIGroup uIGroupPrefab;
     public LayoutGroup layoutGroup;
     private Player[] players;
@@ -15,7 +20,13 @@ public class UIManager : MonoBehaviour
     public Text winText;
     int roundNumber = 1;
     public Text roundNumberText;
-
+    public FixedJoystick leftJoystick;
+    public FixedJoystick rightJoystick;
+    public Text roundTimerText;
+    public float startingRoundTime;
+    float roundTimer;
+    bool roundIsUnderway;
+    bool isRoundIntermission;
 
     // Make Script Singleton
     private void Awake()
@@ -28,11 +39,27 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+#if UNITY_IPHONE || UNITY_ANDROID
+
+        leftJoystick.gameObject.SetActive(true);
+        rightJoystick.gameObject.SetActive(true);
+
+#elif UNITY_EDITOR || UNITY_STANDALONE
+
+        leftJoystick.gameObject.SetActive(false);
+        rightJoystick.gameObject.SetActive(false);
+
+#endif
+
     }
 
 
     private IEnumerator Start()
     {
+
+        
+
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
         players = PhotonNetwork.PlayerList;
@@ -50,6 +77,9 @@ public class UIManager : MonoBehaviour
                 uI.transform.SetAsFirstSibling();
             }
         }
+
+        photonView = GetComponent<PhotonView>();
+        StartRoundTimer();
         
     }
 
@@ -75,6 +105,12 @@ public class UIManager : MonoBehaviour
                 displayText = "Player One Wins";
                 StartCoroutine("CoEndMatch");
             }
+            else
+            {
+                roundIsUnderway = false;
+                roundTimer = 10;
+                isRoundIntermission = true;
+            }
 
         }
         else
@@ -86,7 +122,15 @@ public class UIManager : MonoBehaviour
                 displayText = "Player Two Wins";
                 StartCoroutine("CoEndMatch");
             }
+            else
+            {
+                roundIsUnderway = false;
+                roundTimer = 10;
+                isRoundIntermission = true;
+            }
         }
+        roundIsUnderway = false;
+
 
         winText.text = displayText;
         
@@ -120,5 +164,99 @@ public class UIManager : MonoBehaviour
         winText.text = displayText;
     }
 
+    private void FixedUpdate()
+    {
+        if (roundIsUnderway)
+        {
+            if (roundTimer <= 0)
+            {                
+                photonView.RPC("RPC_RoundDraw", RpcTarget.All);
+                print("Stopped timer");
+            }
+            else
+            {
+                roundTimer -= Time.fixedDeltaTime;
+                roundTimerText.text = roundTimer.ToString("F1");
+            }
+        }
+        else if (isRoundIntermission)
+        {
+            if (roundTimer <= 0)
+            {
+                StartRoundTimer();
+                ClearWinText();
+                AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+                for (int i = 0; i < avatarSetups.Length; i++)
+                {
+                    if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+                    {
+                        avatarSetups[i].DisableControls();
+                    }
+                }
+            }
+            else
+            {
+                roundTimer -= Time.fixedDeltaTime;
+                roundTimerText.text = roundTimer.ToString("F1");
+            }
+        }
+       
+    }
 
+    public void StartRoundTimer ()
+    {
+        roundTimer = startingRoundTime;
+        roundTimerText.text = roundTimer.ToString("F1");
+        roundIsUnderway = true;
+        isRoundIntermission = false;
+    }
+
+    [PunRPC]
+    void RPC_RoundDraw ()
+    {
+        if (roundIsUnderway == false)
+        {
+            return;
+        }
+        print("RPC_RoundDraw");
+        isRoundIntermission = true;
+        roundTimer = 10;
+        roundIsUnderway = false;
+        roundTimerText.text = "";
+
+        // Increment both players and check if have caused a tie break
+        if (uIGroups[0].IncrementRoundWins() && uIGroups[1].IncrementRoundWins())
+        {
+            // Play sudden death or tie breaker
+        }
+        else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+        {
+            // Player 1 wins match
+            winText.text = "Player One Wins";
+            StartCoroutine("CoEndMatch");
+        }
+        else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+        {
+            // Player Two wins match
+            winText.text = "Player Two Wins";
+            StartCoroutine("CoEndMatch");
+        }
+        else
+        {
+            // go to next round
+
+            AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+            for (int i = 0; i < avatarSetups.Length; i++)
+            {
+                if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+                {
+                    avatarSetups[i].StartNewRound();
+                }
+            }
+            
+        }
+        
+    }
+
+    
 }

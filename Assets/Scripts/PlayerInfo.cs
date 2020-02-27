@@ -7,14 +7,10 @@ using Photon.Pun;
 public class PlayerInfo : MonoBehaviourPunCallbacks
 {
     public static PlayerInfo playerInfo = null;
-
     public int selectedCharacter;
-
     public GameObject[] allCharacters;
 
     [HideInInspector]public string selectedCharacterKey = "SelectedCharacter";
-
-    
 
     private void Awake()
     {
@@ -44,7 +40,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     }
 
     public override void OnDisconnected(DisconnectCause cause)
-    {        
+    {
         //Instantiate(Resources.Load("PhotonPrefabs/Room Controller"));
     }
 }
