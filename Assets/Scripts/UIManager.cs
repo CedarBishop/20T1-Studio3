@@ -29,7 +29,10 @@ public class UIManager : MonoBehaviour
     bool roundIsUnderway;
     bool isRoundIntermission;
 
-    bool isInLobby;
+    public bool isInLobby;
+
+    public GameObject skillSelectionParent;
+    public Button[] skillButtons;
 
     // Make Script Singleton
     private void Awake()
@@ -61,7 +64,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator Start()
     {
 
-        
+        skillSelectionParent.SetActive(false);
 
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
@@ -110,8 +113,15 @@ public class UIManager : MonoBehaviour
             }
             else
             {
+                if (int.TryParse(PhotonNetwork.NickName, out int num))
+                {
+                    if (num == 2)
+                    {
+                        skillSelectionParent.SetActive(true);
+                    }
+                }
                 Intermission();
-            }
+            }           
 
         }
         else
@@ -125,6 +135,13 @@ public class UIManager : MonoBehaviour
             }
             else
             {
+                if (int.TryParse(PhotonNetwork.NickName, out int num))
+                {
+                    if (num == 1)
+                    {
+                        skillSelectionParent.SetActive(true);
+                    }
+                }
                 Intermission();
             }
         }
@@ -164,12 +181,19 @@ public class UIManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isInLobby)
+        {
+            roundTimerText.text = "";
+            return;
+        }
         if (roundIsUnderway)
         {
             if (roundTimer <= 0)
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
+                    roundIsUnderway = false;
+                    isRoundIntermission = false;
                     photonView.RPC("RPC_RoundDraw", RpcTarget.All);
                     print("Stopped timer");
                 }
@@ -234,13 +258,15 @@ public class UIManager : MonoBehaviour
         if (uIGroups.Count >= 2)
         {
             // Increment both players and check if have caused a tie break
-            uIGroups[0].roundWins++;
-            uIGroups[1].roundWins++;
+            uIGroups[0].IncrementRoundWins();
+            uIGroups[1].IncrementRoundWins();
 
 
             if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch && uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
             {
                 // tie break, go to sudden death
+                roundTimerText.text = "";
+
             }
 
             else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
@@ -266,9 +292,7 @@ public class UIManager : MonoBehaviour
         else
         {
             Intermission();
-        }
-
-        
+        }      
         
     }
 
@@ -279,6 +303,7 @@ public class UIManager : MonoBehaviour
         isRoundIntermission = true;
         roundIsUnderway = false;
         roundTimerText.text = "";
+        roundTimerText.text = "Intermission";
 
 
         AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
@@ -299,8 +324,37 @@ public class UIManager : MonoBehaviour
                     avatarSetups[i].DisableControls();
                 }
             }
+        }        
+    }
+
+
+    public void SkillSelectButton (int skillNumber)
+    {
+        //assign skill to player
+
+
+        if (skillNumber <= 2)
+        {
+            for (int i = 0; i <=  2; i++)
+            {
+                skillButtons[i].interactable = false;
+            }
         }
-        
+        else
+        {
+            for (int i = 3; i < skillButtons.Length; i++)
+            {
+                skillButtons[i].interactable = false;
+            }
+        }
+        photonView.RPC("RPC_TakeSkill", RpcTarget.Others,skillNumber);
+        skillSelectionParent.SetActive(false);
+
+    }
+
+    void RPC_TakeSkill (int skillNumber)
+    {
+        skillButtons[skillNumber].interactable = false;
     }
     
 }
