@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
@@ -27,6 +28,8 @@ public class UIManager : MonoBehaviour
     float roundTimer;
     bool roundIsUnderway;
     bool isRoundIntermission;
+
+    bool isInLobby;
 
     // Make Script Singleton
     private void Awake()
@@ -107,9 +110,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                roundIsUnderway = false;
-                roundTimer = 10;
-                isRoundIntermission = true;
+                Intermission();
             }
 
         }
@@ -124,13 +125,10 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                roundIsUnderway = false;
-                roundTimer = 10;
-                isRoundIntermission = true;
+                Intermission();
             }
         }
-        roundIsUnderway = false;
-
+        print(displayText);
 
         winText.text = displayText;
         
@@ -169,9 +167,13 @@ public class UIManager : MonoBehaviour
         if (roundIsUnderway)
         {
             if (roundTimer <= 0)
-            {                
-                photonView.RPC("RPC_RoundDraw", RpcTarget.All);
-                print("Stopped timer");
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    photonView.RPC("RPC_RoundDraw", RpcTarget.All);
+                    print("Stopped timer");
+                }
+                
             }
             else
             {
@@ -183,16 +185,13 @@ public class UIManager : MonoBehaviour
         {
             if (roundTimer <= 0)
             {
-                StartRoundTimer();
-                ClearWinText();
-                AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
-                for (int i = 0; i < avatarSetups.Length; i++)
+                
+
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
-                    {
-                        avatarSetups[i].StartNewRound();
-                    }
-                }
+                    isRoundIntermission = false;
+                    photonView.RPC("RPC_StartNewRound", RpcTarget.All);
+                }                
             }
             else
             {
@@ -212,40 +211,87 @@ public class UIManager : MonoBehaviour
     }
 
     [PunRPC]
+    void RPC_StartNewRound ()
+    {
+        StartRoundTimer();
+        ClearWinText();
+
+        AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+        for (int i = 0; i < avatarSetups.Length; i++)
+        {
+            if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+            {
+                avatarSetups[i].StartNewRound();
+            }
+        }
+    }
+
+    [PunRPC]
     void RPC_RoundDraw ()
     {
-        if (roundIsUnderway == false)
-        {
-            return;
-        }
         print("RPC_RoundDraw");
+
+        if (uIGroups.Count >= 2)
+        {
+            // Increment both players and check if have caused a tie break
+            uIGroups[0].roundWins++;
+            uIGroups[1].roundWins++;
+
+
+            if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch && uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // tie break, go to sudden death
+            }
+
+            else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // Player 1 wins match
+                winText.text = "Player One Wins";
+                StartCoroutine("CoEndMatch");
+            }
+            else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // Player Two wins match
+                winText.text = "Player Two Wins";
+                StartCoroutine("CoEndMatch");
+            }
+            else
+            {
+                // go to next round
+
+                Intermission();
+
+            }
+        }
+        else
+        {
+            Intermission();
+        }
+
+        
+        
+    }
+
+
+    void Intermission ()
+    {
         roundTimer = 10;
         isRoundIntermission = true;
         roundIsUnderway = false;
         roundTimerText.text = "";
 
-        // Increment both players and check if have caused a tie break
-        if (uIGroups[0].IncrementRoundWins() && uIGroups[1].IncrementRoundWins())
+
+        AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+        if (avatarSetups == null)
         {
-            // Play sudden death or tie breaker
+            return;
         }
-        else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+        if (avatarSetups.Length == 1)
         {
-            // Player 1 wins match
-            winText.text = "Player One Wins";
-            StartCoroutine("CoEndMatch");
-        }
-        else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
-        {
-            // Player Two wins match
-            winText.text = "Player Two Wins";
-            StartCoroutine("CoEndMatch");
+            avatarSetups[0].DisableControls();
         }
         else
         {
-            // go to next round
-
-            AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
             for (int i = 0; i < avatarSetups.Length; i++)
             {
                 if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
@@ -253,10 +299,8 @@ public class UIManager : MonoBehaviour
                     avatarSetups[i].DisableControls();
                 }
             }
-            
         }
         
     }
-
     
 }

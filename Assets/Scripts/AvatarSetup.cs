@@ -112,6 +112,7 @@ public class AvatarSetup : MonoBehaviour
         Rigidbody r = GetComponent<Rigidbody>();
         r.velocity = Vector3.zero;
         r.angularVelocity = Vector3.zero;
+        print("Disable Controls");
     }
 
     public void StartNewRound()
