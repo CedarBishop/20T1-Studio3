@@ -190,7 +190,7 @@ public class UIManager : MonoBehaviour
                 {
                     if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
                     {
-                        avatarSetups[i].DisableControls();
+                        avatarSetups[i].StartNewRound();
                     }
                 }
             }
@@ -219,8 +219,8 @@ public class UIManager : MonoBehaviour
             return;
         }
         print("RPC_RoundDraw");
-        isRoundIntermission = true;
         roundTimer = 10;
+        isRoundIntermission = true;
         roundIsUnderway = false;
         roundTimerText.text = "";
 
@@ -250,7 +250,7 @@ public class UIManager : MonoBehaviour
             {
                 if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
                 {
-                    avatarSetups[i].StartNewRound();
+                    avatarSetups[i].DisableControls();
                 }
             }
             

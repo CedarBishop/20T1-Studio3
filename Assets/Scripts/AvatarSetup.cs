@@ -44,7 +44,7 @@ public class AvatarSetup : MonoBehaviour
         DisableControls();
         photonView.RPC("RPC_Die", RpcTarget.Others, photonView.ViewID);
         Destroy(character);
-        StartCoroutine("DelayRespawn");
+      //  StartCoroutine("DelayRespawn");
     }
 
     [PunRPC]
@@ -121,6 +121,10 @@ public class AvatarSetup : MonoBehaviour
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_ResetStats", RpcTarget.All);
+            if (character == null)
+            {
+                photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
+            }
         }
     }
 }
