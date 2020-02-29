@@ -40,10 +40,9 @@ public class PlayerMovement : MonoBehaviour
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
-
 		movementDirection = movementDirection.normalized;
 
-		Vector3 movementVelocity = movementDirection * Time.fixedDeltaTime * movementSpeed;
+		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
 		rigidbody.velocity = movementVelocity;
 	}
 }
