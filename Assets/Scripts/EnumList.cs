@@ -1,17 +1,19 @@
 ﻿public enum PassiveSkills
 {
 	None,
-	AimingForsight,
-	BulletBounce,
-	DamageMultiplier,
-	SpeedMultiplier
+	BouncyBullet,
+	HelperBullet,
+	SlowdownBullet,
+	SpeedUp,
+	TriShield
 }
 
 public enum ActiveSkills
 {
 	None,
-	AOEBlast,
-	EnemySlowdown,
-	QuickTransport,
-	Stealth
+	DropMine,
+	Rewind,
+	Shotgun,
+	Stealth,
+	TempShield
 }

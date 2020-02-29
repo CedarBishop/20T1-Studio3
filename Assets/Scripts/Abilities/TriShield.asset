@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ae7ca5c192f1d4fb2227dc9cf016be, type: 3}
-  m_Name: EnemySlowdown
+  m_Name: TriShield
   m_EditorClassIdentifier: 
-  abilityName: Enemy Slowdown
-  description: Slows down everyone except player whom activated this skill
-  icon: {fileID: 21300000, guid: dac33dd898e05594a84f9b264ceff161, type: 3}
+  description: XX shields rotate around player and each item gets destroyed when
+    hit, saving the player
+  icon: {fileID: 0}
   passiveSkillId: 0
-  activeSkillId: 2
+  activeSkillId: 0
   amount: 0
   maximum: 0
   duration: 0
-  cooldownTime: 20
+  cooldownTime: 0
   spawnSound: {fileID: 0}
   onHitSound: {fileID: 0}
   spawnFx: {fileID: 0}

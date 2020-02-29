@@ -59,17 +59,20 @@ public class AbilitiesManager : MonoBehaviour
 			{
 				case PassiveSkills.None:
 					break;
-				case PassiveSkills.AimingForsight:
-					AimingForsight();
+				case PassiveSkills.BouncyBullet:
+					BouncyBullet(maxBulletBounces);
 					break;
-				case PassiveSkills.BulletBounce:
-					BulletBounce(maxBulletBounces);
+				case PassiveSkills.HelperBullet:
+					HelperBullet();
 					break;
-				case PassiveSkills.DamageMultiplier:
-					DamageMultiplier(damageIncreasePercentage);
+				case PassiveSkills.SlowdownBullet:
+					SlowdownBullet();
 					break;
-				case PassiveSkills.SpeedMultiplier:
-					SpeedMultiplier(speedIncreasePercentage);
+				case PassiveSkills.SpeedUp:
+					SpeedUp();
+					break;
+				case PassiveSkills.TriShield:
+					TriShield();
 					break;
 				default:
 					break;
@@ -81,27 +84,17 @@ public class AbilitiesManager : MonoBehaviour
 		}
 	}
 
-	private void AimingForsight() {}
-
 	// Bullets that bounce off the environment XX amount of times but destroy on people
-	private void BulletBounce(int bulletBounces)
+	private void BouncyBullet(int bulletBounces)
 	{
 		bulletBounces++;
 		bulletBounces = Mathf.Clamp(bulletBounces, 0, maxBulletBounces);
 	}
 
-	private void DamageMultiplier(float multiplier) {}
-
-	// Turn up movement speed slightly
-	public void SpeedMultiplier(float multiplier)
-	{
-		Rigidbody playerRb = GetComponent<Rigidbody>();
-		float playerSpeed = playerRb.velocity.magnitude;
-
-		// TODO: Get client, adjust movement speed (probably don't need parameters or return type, just go direct)
-		playerSpeed += Mathf.Clamp(playerSpeed, 0, (playerSpeed / 100f) * multiplier);
-		Debug.Log(playerSpeed);
-	}
+	private void HelperBullet() {}
+	private void SlowdownBullet() {}
+	private void SpeedUp() {}
+	private void TriShield() {}
 
 	public void ActivateAbility()
 	{
@@ -112,14 +105,16 @@ public class AbilitiesManager : MonoBehaviour
 			{
 				case ActiveSkills.None:
 					break;
-				case ActiveSkills.AOEBlast:
+				case ActiveSkills.DropMine:
 					break;
-				case ActiveSkills.EnemySlowdown:
+				case ActiveSkills.Rewind:
 					break;
-				case ActiveSkills.QuickTransport:
+				case ActiveSkills.Shotgun:
 					break;
 				case ActiveSkills.Stealth:
 					Stealth();
+					break;
+				case ActiveSkills.TempShield:
 					break;
 				default:
 					break;
@@ -137,11 +132,11 @@ public class AbilitiesManager : MonoBehaviour
 		cooldownComplete = true;
 	}
 
-	public void AoeBlast() {}
-	public void EnemySlowdown() {}
-	public void QuickTransport() {}
+	private void DropMine() {}
+	private void Rewind() {}
+	private void Shotgun() {}
 
-	public void Stealth()
+	private void Stealth()
 	{
 		// TODO: Clean up + assign things accordingly to actual project setup
 		if (originalMaterial != stealthMaterial)
@@ -153,4 +148,6 @@ public class AbilitiesManager : MonoBehaviour
 			currentMaterial = originalMaterial.GetComponent<Material>();
 		}
 	}
+
+	private void TempShield() {}
 }
