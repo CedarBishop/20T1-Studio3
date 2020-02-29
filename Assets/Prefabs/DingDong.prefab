@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 8950005917262390359}
   - component: {fileID: 3202251957646179138}
   - component: {fileID: 3202251957646179139}
+  - component: {fileID: 49708473}
   m_Layer: 0
   m_Name: DingDong
   m_TagString: Untagged
@@ -369,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4843817032a8d45879b29258acda38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 0
+  movementSpeed: 50
 --- !u!114 &3202251957646179139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,23 +384,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveAbilities:
-  - {fileID: 11400000, guid: 0213c370e6db8b24983dccaabda750f2, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 813cb504835c80f4caa1334ebc79614c, type: 2}
-  - {fileID: 11400000, guid: ea026d27a8396314d94e0d69b28fdbef, type: 2}
-  - {fileID: 11400000, guid: 04d62070bb71a7f40a1e0d77cbf15466, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   activeAbilities:
-  - {fileID: 11400000, guid: b12a7664caf25ac41816c30e23e24ab2, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 3dfa4384aa611cd4892162d52aab926b, type: 2}
-  - {fileID: 11400000, guid: 48500d10d8ebd284b8f4d341d29616a8, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 8a72c748af633864cae9d7e31fe76e5a, type: 2}
   cooldownComplete: 1
   currentActive: {fileID: 11400000, guid: 8a72c748af633864cae9d7e31fe76e5a, type: 2}
-  movementSpeed: 0
+  movementSpeed: 50
   originalMaterial: {fileID: 3203698986885431159}
-  damageIncreasePercentage: 0
+  damageIncreasePercentage: 5
   speedIncreasePercentage: 10
   maxBulletBounces: 2
   stealthMaterial: {fileID: 2100000, guid: 0cc5ea183c712534c8a5d0aa7c768fb7, type: 2}
+--- !u!114 &49708473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203544977886494613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3203552189070902935
 GameObject:
   m_ObjectHideFlags: 0

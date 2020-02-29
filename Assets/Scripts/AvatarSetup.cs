@@ -11,8 +11,6 @@ public class AvatarSetup : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     public int roomNumber;
-    //  public CameraController cameraPrefab;
-
 
     void Start()
     {
@@ -28,7 +26,6 @@ public class AvatarSetup : MonoBehaviour
         }
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
-        //Instantiate(cameraPrefab,transform);
     }
 
     [PunRPC]
@@ -44,7 +41,6 @@ public class AvatarSetup : MonoBehaviour
         DisableControls();
         photonView.RPC("RPC_Die", RpcTarget.Others, photonView.ViewID);
         Destroy(character);
-        StartCoroutine("DelayRespawn");
     }
 
     [PunRPC]
@@ -61,24 +57,6 @@ public class AvatarSetup : MonoBehaviour
         }
     }
 
-    public void Respawn()
-    {
-        print("Respawn");
-        playerCombat.enabled = true;
-        playerMovement.enabled = true;
-        if (photonView.IsMine)
-        {
-            photonView.RPC("RPC_ResetStats", RpcTarget.All);
-            print("Add Character");
-            photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
-        }
-    }
-
-    IEnumerator DelayRespawn()
-    {
-        yield return new WaitForSeconds(5);
-        Respawn();
-    }
 
     [PunRPC]
     void RPC_ResetStats()
@@ -102,7 +80,6 @@ public class AvatarSetup : MonoBehaviour
         print(LevelManager.instance.spawnPoints[roomNumber - 1].position);
         transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         playerCombat.ResetHealth();
-        UIManager.instance.StartRoundTimer();
     }
 
     public void DisableControls()
@@ -112,6 +89,7 @@ public class AvatarSetup : MonoBehaviour
         Rigidbody r = GetComponent<Rigidbody>();
         r.velocity = Vector3.zero;
         r.angularVelocity = Vector3.zero;
+        print("Disable Controls");
     }
 
     public void StartNewRound()
@@ -121,6 +99,10 @@ public class AvatarSetup : MonoBehaviour
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_ResetStats", RpcTarget.All);
+            if (character == null)
+            {
+                photonView.RPC("RPC_AddCharacter", RpcTarget.All, PlayerInfo.playerInfo.selectedCharacter);
+            }
         }
     }
 }

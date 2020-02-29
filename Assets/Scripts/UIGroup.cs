@@ -29,11 +29,13 @@ public class UIGroup : MonoBehaviour
     public bool IncrementRoundWins()
     {
         roundWins++;
-        if (roundWins == LevelManager.instance.requiredRoundsToWinMatch)
+        if (roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
         {
             // player won yay
+            roundWinText.text = LevelManager.instance.requiredRoundsToWinMatch.ToString();
             return true;
         }
+
         
         roundWinText.text = roundWins.ToString();
         return false;

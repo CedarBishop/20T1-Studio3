@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ae7ca5c192f1d4fb2227dc9cf016be, type: 3}
   m_Name: Stealth
   m_EditorClassIdentifier: 
+  description: Player goes invincible for XX seconds
   icon: {fileID: 0}
   passiveSkillId: 0
   activeSkillId: 4

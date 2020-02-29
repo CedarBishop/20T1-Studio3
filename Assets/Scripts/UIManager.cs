@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
@@ -27,6 +28,11 @@ public class UIManager : MonoBehaviour
     float roundTimer;
     bool roundIsUnderway;
     bool isRoundIntermission;
+
+    public bool isInLobby;
+
+    public GameObject skillSelectionParent;
+    public Button[] skillButtons;
 
     // Make Script Singleton
     private void Awake()
@@ -58,7 +64,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator Start()
     {
 
-        
+        skillSelectionParent.SetActive(false);
 
         winText.text = "";
         yield return new WaitForSeconds(0.24f);
@@ -107,10 +113,15 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                roundIsUnderway = false;
-                roundTimer = 10;
-                isRoundIntermission = true;
-            }
+                if (int.TryParse(PhotonNetwork.NickName, out int num))
+                {
+                    if (num == 2)
+                    {
+                        skillSelectionParent.SetActive(true);
+                    }
+                }
+                Intermission();
+            }           
 
         }
         else
@@ -124,13 +135,17 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                roundIsUnderway = false;
-                roundTimer = 10;
-                isRoundIntermission = true;
+                if (int.TryParse(PhotonNetwork.NickName, out int num))
+                {
+                    if (num == 1)
+                    {
+                        skillSelectionParent.SetActive(true);
+                    }
+                }
+                Intermission();
             }
         }
-        roundIsUnderway = false;
-
+        print(displayText);
 
         winText.text = displayText;
         
@@ -166,12 +181,23 @@ public class UIManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isInLobby)
+        {
+            roundTimerText.text = "";
+            return;
+        }
         if (roundIsUnderway)
         {
             if (roundTimer <= 0)
-            {                
-                photonView.RPC("RPC_RoundDraw", RpcTarget.All);
-                print("Stopped timer");
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    roundIsUnderway = false;
+                    isRoundIntermission = false;
+                    photonView.RPC("RPC_RoundDraw", RpcTarget.All);
+                    print("Stopped timer");
+                }
+                
             }
             else
             {
@@ -183,16 +209,13 @@ public class UIManager : MonoBehaviour
         {
             if (roundTimer <= 0)
             {
-                StartRoundTimer();
-                ClearWinText();
-                AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
-                for (int i = 0; i < avatarSetups.Length; i++)
+                
+
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
-                    {
-                        avatarSetups[i].DisableControls();
-                    }
-                }
+                    isRoundIntermission = false;
+                    photonView.RPC("RPC_StartNewRound", RpcTarget.All);
+                }                
             }
             else
             {
@@ -212,51 +235,126 @@ public class UIManager : MonoBehaviour
     }
 
     [PunRPC]
+    void RPC_StartNewRound ()
+    {
+        StartRoundTimer();
+        ClearWinText();
+
+        AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+        for (int i = 0; i < avatarSetups.Length; i++)
+        {
+            if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
+            {
+                avatarSetups[i].StartNewRound();
+            }
+        }
+    }
+
+    [PunRPC]
     void RPC_RoundDraw ()
     {
-        if (roundIsUnderway == false)
-        {
-            return;
-        }
         print("RPC_RoundDraw");
-        isRoundIntermission = true;
-        roundTimer = 10;
-        roundIsUnderway = false;
-        roundTimerText.text = "";
 
-        // Increment both players and check if have caused a tie break
-        if (uIGroups[0].IncrementRoundWins() && uIGroups[1].IncrementRoundWins())
+        if (uIGroups.Count >= 2)
         {
-            // Play sudden death or tie breaker
-        }
-        else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
-        {
-            // Player 1 wins match
-            winText.text = "Player One Wins";
-            StartCoroutine("CoEndMatch");
-        }
-        else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
-        {
-            // Player Two wins match
-            winText.text = "Player Two Wins";
-            StartCoroutine("CoEndMatch");
+            // Increment both players and check if have caused a tie break
+            uIGroups[0].IncrementRoundWins();
+            uIGroups[1].IncrementRoundWins();
+
+
+            if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch && uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // tie break, go to sudden death
+                roundTimerText.text = "";
+
+            }
+
+            else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // Player 1 wins match
+                winText.text = "Player One Wins";
+                StartCoroutine("CoEndMatch");
+            }
+            else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+            {
+                // Player Two wins match
+                winText.text = "Player Two Wins";
+                StartCoroutine("CoEndMatch");
+            }
+            else
+            {
+                // go to next round
+
+                Intermission();
+
+            }
         }
         else
         {
-            // go to next round
+            Intermission();
+        }      
+        
+    }
 
-            AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+
+    void Intermission ()
+    {
+        roundTimer = 10;
+        isRoundIntermission = true;
+        roundIsUnderway = false;
+        roundTimerText.text = "";
+        roundTimerText.text = "Intermission";
+
+
+        AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
+        if (avatarSetups == null)
+        {
+            return;
+        }
+        if (avatarSetups.Length == 1)
+        {
+            avatarSetups[0].DisableControls();
+        }
+        else
+        {
             for (int i = 0; i < avatarSetups.Length; i++)
             {
                 if (avatarSetups[i].GetComponent<PhotonView>().IsMine)
                 {
-                    avatarSetups[i].StartNewRound();
+                    avatarSetups[i].DisableControls();
                 }
             }
-            
-        }
-        
+        }        
     }
 
+
+    public void SkillSelectButton (int skillNumber)
+    {
+        //assign skill to player
+
+
+        if (skillNumber <= 2)
+        {
+            for (int i = 0; i <=  2; i++)
+            {
+                skillButtons[i].interactable = false;
+            }
+        }
+        else
+        {
+            for (int i = 3; i < skillButtons.Length; i++)
+            {
+                skillButtons[i].interactable = false;
+            }
+        }
+        photonView.RPC("RPC_TakeSkill", RpcTarget.Others,skillNumber);
+        skillSelectionParent.SetActive(false);
+
+    }
+
+    void RPC_TakeSkill (int skillNumber)
+    {
+        skillButtons[skillNumber].interactable = false;
+    }
     
 }
