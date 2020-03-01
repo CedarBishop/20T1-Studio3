@@ -17,23 +17,25 @@ public class AbilitiesManager : MonoBehaviour
 
 	[Header("Action Button Tracking")]
 	public bool cooldownComplete = true; 						// Waiting for skill cooldown? (True by default - implies skill is ready)
-	public Ability currentActive; 								// Whatever current ACTIVE skill is tied to character this round
 	private Ability currentPassive; 							// Whatever current PASSIVE skill is tied to character this round
+	private Ability currentActive; 								// Whatever current ACTIVE skill is tied to character this round
 
-	[Header("Current Stats Section")] [SerializeField]
-	private float movementSpeed; 								// SPEED CHANGE - Current velocity/movement speed to increase/decrease
-	[SerializeField] private GameObject originalMaterial; 		// STEALTH - Current GameObject material we want to change
-	private Material currentMaterial; 							// STEALTH - Where to store current material we want to change
+	[Header("Current Stats Section")]
+	[SerializeField] private GameObject originalMaterial;		// STEALTH - Current GameObject material we want to change
+	public float movementSpeed; 								// SPEED CHANGE - Current velocity/movement speed to increase/decrease
 
 	[Header("Adjustments Section")] [SerializeField]
 	private float damageIncreasePercentage; 					// DAMAGE CHANGE - Increases damage by a percentage
 	[SerializeField] private float speedIncreasePercentage; 	// SPEED CHANGE - Increases damage by a percentage
 	[SerializeField] private int maxBulletBounces; 				// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
+	private Material currentMaterial; 							// STEALTH - Where to store current material we want to change
+	private Material revertMaterial; 							// STEALTH - Where to store original material to go back to
 	[SerializeField] private Material stealthMaterial; 			// STEALTH - Assign invisibility shader for Stealth ability
 
 	private void Awake()
 	{
-		currentMaterial = originalMaterial.GetComponent<Material>();
+		// revertMaterial = originalMaterial.GetComponent<Material>();
+		revertMaterial = originalMaterial.GetComponent<SkinnedMeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
 
 		// Carry on with passive ability choice IF list is populated
 		if (passiveAbilities.Length > 0)
@@ -45,6 +47,7 @@ public class AbilitiesManager : MonoBehaviour
 		}
 
 		// TODO: Hard coded temporarily (STEALTH)
+		activeSkills = ActiveSkills.Stealth;
 		currentActive = activeAbilities[3];
 	}
 
@@ -138,15 +141,25 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void Stealth()
 	{
-		// TODO: Clean up + assign things accordingly to actual project setup
-		if (originalMaterial != stealthMaterial)
+		if (currentMaterial != stealthMaterial)
 		{
 			currentMaterial = stealthMaterial;
 		}
 		else
 		{
-			currentMaterial = originalMaterial.GetComponent<Material>();
+			currentMaterial = revertMaterial;
 		}
+
+		originalMaterial.GetComponent<SkinnedMeshRenderer>().material = currentMaterial; // TODO: Adjust! This is to suit dummy ghost prefab
+
+		// Calls itself to change material back to original after set time
+		StartCoroutine(StealthSwap());
+	}
+
+	IEnumerator StealthSwap()
+	{
+		yield return new WaitForSeconds(currentActive.cooldownTime);
+		Stealth();
 	}
 
 	private void TempShield() {}
