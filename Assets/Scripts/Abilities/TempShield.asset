@@ -18,8 +18,8 @@ MonoBehaviour:
   activeSkillId: 5
   amount: 0
   maximum: 0
-  duration: 0
-  cooldownTime: 0
+  duration: 5
+  cooldownTime: 15
   spawnSound: {fileID: 0}
   onHitSound: {fileID: 0}
   spawnFx: {fileID: 0}
