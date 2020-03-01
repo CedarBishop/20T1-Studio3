@@ -708,6 +708,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DingDong
       objectReference: {fileID: 0}
+    - target: {fileID: 8950005917262390359, guid: 9e89e6cfef0d6cf4595eab52c3965e98,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e89e6cfef0d6cf4595eab52c3965e98, type: 3}
 --- !u!114 &928067615 stripped
