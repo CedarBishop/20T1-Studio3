@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(PlayerMovement)), DisallowMultipleComponent]
 public class AbilitiesManager : MonoBehaviour
 {
+	public Button abilityButton;
+
 	[Header("Abilities Lists")]
 	// Enums to work with
 	private PassiveSkills passiveSkills; 					// Our access to PASSIVE skills enum
@@ -14,6 +17,9 @@ public class AbilitiesManager : MonoBehaviour
 	[Space]
 	public Ability[] passiveAbilities;	 					// Where ALL PASSIVE abilities objects live
 	public Ability[] activeAbilities; 						// Where ALL ACTIVE abilities objects live
+
+	private delegate void AbilityDelegate();
+	private AbilityDelegate methodToCall = null;
 
 	[Header("Action Button Tracking")]
 	public bool cooldownComplete = true; 					// Waiting for skill cooldown? (True by default - implies skill is ready)
@@ -24,14 +30,17 @@ public class AbilitiesManager : MonoBehaviour
 	[SerializeField] private GameObject originalMaterial;	// STEALTH - Current GameObject material we want to change
 	private float movementSpeed; 							// SPEED UP - Current velocity/movement speed to increase/decrease
 
-	[Header("Adjustments Section")] [SerializeField]
-	private float damageIncreasePercentage;					// DAMAGE CHANGE - Increases damage by a percentage
+	[Header("Adjustments Section")]
 	[SerializeField] [Range(0f, 5f)] private float speedIncreasePercentage; // SPEED UP - Increases damage by a percentage
 	[SerializeField] private float maxMovementSpeed;		// SPEED UP - Increases damage by a percentage
 	[SerializeField] private int maxBulletBounces; 			// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
+	[Space]
 	private Material currentMaterial; 						// STEALTH - Where to store current material we want to change
 	private Material revertMaterial; 						// STEALTH - Where to store original material to go back to
 	[SerializeField] private Material stealthMaterial; 		// STEALTH - Assign invisibility shader for Stealth ability
+
+	private bool shieldActive;
+	[SerializeField] private GameObject shieldEffect;
 
 	private void Awake()
 	{
@@ -39,6 +48,8 @@ public class AbilitiesManager : MonoBehaviour
 
 		// revertMaterial = originalMaterial.GetComponent<Material>();
 		revertMaterial = originalMaterial.GetComponent<SkinnedMeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
+
+		shieldEffect.SetActive(false);
 
 		// Carry on with passive ability choice IF list is populated
 		if (passiveAbilities.Length > 0)
@@ -51,8 +62,8 @@ public class AbilitiesManager : MonoBehaviour
 		}
 
 		// TODO: Hard coded temporarily (STEALTH)
-		activeSkills = ActiveSkills.Stealth;
-		currentActive = activeAbilities[3];
+		activeSkills = ActiveSkills.TempShield;
+		currentActive = activeAbilities[4];
 	}
 
 	private void PassiveAbilityProcess(Ability chosenPassive)
@@ -97,7 +108,9 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void SpeedUp()
 	{
-		GetComponent<PlayerMovement>().movementSpeed *= speedIncreasePercentage;
+		float moveSpeed = GetComponent<PlayerMovement>().movementSpeed;
+		moveSpeed *= speedIncreasePercentage;
+		moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxMovementSpeed);
 	}
 
 	public void ActivateAbility()
@@ -105,6 +118,7 @@ public class AbilitiesManager : MonoBehaviour
 		// If pressed and active ability assigned ...
 		if (cooldownComplete && currentActive != null)
 		{
+			// Disable active abilities until specific cooldown is complete
 			switch (activeSkills)
 			{
 				case ActiveSkills.None:
@@ -116,46 +130,63 @@ public class AbilitiesManager : MonoBehaviour
 				case ActiveSkills.Shotgun:
 					break;
 				case ActiveSkills.Stealth:
-					Stealth();
+					methodToCall = Stealth;
+					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				case ActiveSkills.TempShield:
+					methodToCall = TempShield;
+					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				default:
 					break;
 			}
 
-			// Disable active abilities until specific cooldown is complete
-			StartCoroutine(AbilityCooldown(currentActive));
+			methodToCall = null;
 		}
 	}
 
-	IEnumerator AbilityCooldown(Ability currentActive)
+	IEnumerator AbilityDuration(Ability currentActive, AbilityDelegate methodToCall)
 	{
-		cooldownComplete = false;
+		methodToCall(); // Activate skill
+		yield return new WaitForSeconds(currentActive.duration);
+		methodToCall(); // Deactivate skill
+	}
+
+	IEnumerator AbilityCooldown(Ability currentActive, AbilityDelegate methodToCall)
+	{
+		cooldownComplete = false; // Deactivate button
 		yield return new WaitForSeconds(currentActive.cooldownTime);
-		cooldownComplete = true;
+		cooldownComplete = true; // Reactivate button
 	}
 
 	private void Stealth()
 	{
 		if (currentMaterial != stealthMaterial)
-		{
 			currentMaterial = stealthMaterial;
+		else
+			currentMaterial = revertMaterial;
+
+		originalMaterial.GetComponent<SkinnedMeshRenderer>().material = currentMaterial; // TODO: Adjust! This is to suit dummy ghost prefab
+	}
+
+	private void TempShield()
+	{
+		shieldActive = !shieldActive;
+		// Vector3 shieldFullSize = new Vector3(1, 1, 1); // TODO: For use with interpolating between sizes
+
+		if (shieldActive)
+		{
+			// Instantiate & apply effect (growing for active)
+			shieldEffect.SetActive(true);
+			Debug.Log("Shield is active");
 		}
 		else
 		{
-			currentMaterial = revertMaterial;
+			// Apply effect & destroy (shrinking then deactivate)
+			shieldEffect.SetActive(false);
+			Debug.Log("Shield NOT active");
 		}
-
-		originalMaterial.GetComponent<SkinnedMeshRenderer>().material = currentMaterial; // TODO: Adjust! This is to suit dummy ghost prefab
-
-		// Calls itself to change material back to original after set time
-		StartCoroutine(StealthSwap());
-	}
-
-	IEnumerator StealthSwap()
-	{
-		yield return new WaitForSeconds(currentActive.cooldownTime);
-		Stealth();
 	}
 }

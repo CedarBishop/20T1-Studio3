@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Character
   - Wall
+  - Shield
   layers:
   - Default
   - TransparentFX
