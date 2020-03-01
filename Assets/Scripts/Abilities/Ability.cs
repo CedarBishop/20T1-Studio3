@@ -7,6 +7,7 @@ using UnityEngine;
 public class Ability : ScriptableObject
 {
 	[Header("Details")]
+	public string description;
 	public Sprite icon;
 	public PassiveSkills passiveSkillId;
 	public ActiveSkills activeSkillId;
