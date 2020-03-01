@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
 		{
 			BasicMovement();
 		}
+
+		BasicMovement();
 	}
 
 	void BasicMovement()
@@ -40,6 +42,11 @@ public class PlayerMovement : MonoBehaviour
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
+
+		movementDirection.x = Input.GetAxis("Horizontal");
+		movementDirection.y = 0;
+		movementDirection.z = Input.GetAxisRaw("Vertical");
+
 		movementDirection = movementDirection.normalized;
 
 		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
