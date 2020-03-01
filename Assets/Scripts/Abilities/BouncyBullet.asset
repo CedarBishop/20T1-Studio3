@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Bullets bounce off walls XX amount of times
   icon: {fileID: 0}
-  passiveSkillId: 2
+  passiveSkillId: 1
   activeSkillId: 0
   amount: 1
   maximum: 0

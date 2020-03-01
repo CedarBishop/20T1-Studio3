@@ -15,7 +15,7 @@ MonoBehaviour:
   description: XX shields rotate around player and each item gets destroyed when
     hit, saving the player
   icon: {fileID: 0}
-  passiveSkillId: 0
+  passiveSkillId: 5
   activeSkillId: 0
   amount: 0
   maximum: 0

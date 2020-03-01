@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Bullets will slowdown enemy for XX amount of seconds
   icon: {fileID: 21300000, guid: dac33dd898e05594a84f9b264ceff161, type: 3}
-  passiveSkillId: 0
-  activeSkillId: 2
+  passiveSkillId: 3
+  activeSkillId: 0
   amount: 0
   maximum: 0
   duration: 0
