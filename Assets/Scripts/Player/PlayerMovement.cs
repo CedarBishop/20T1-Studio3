@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(PlayerMovement)), DisallowMultipleComponent]
 public class PlayerMovement : MonoBehaviour
 {
 	public float movementSpeed;
@@ -10,9 +11,11 @@ public class PlayerMovement : MonoBehaviour
 	private PhotonView photonView;
 	private Rigidbody rigidbody;
 	private Vector3 movementDirection;
+	private AbilitiesManager abManager;
 
 	void Start()
 	{
+		abManager = GetComponent<AbilitiesManager>();
 		photonView = GetComponent<PhotonView>();
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.useGravity = false;
@@ -27,6 +30,14 @@ public class PlayerMovement : MonoBehaviour
 		{
 			BasicMovement();
 		}
+
+		BasicMovement();
+
+		// TODO: PC debugging only, remove for gold release
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			abManager.ActivateAbility();
+		}
 	}
 
 	void BasicMovement()
@@ -40,7 +51,12 @@ public class PlayerMovement : MonoBehaviour
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
-		movementDirection = movementDirection.normalized;
+
+		movementDirection.x = Input.GetAxis("Horizontal");
+		movementDirection.y = 0;
+		movementDirection.z = Input.GetAxisRaw("Vertical");
+
+		// movementDirection = movementDirection.normalized;
 
 		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
 		rigidbody.velocity = movementVelocity;

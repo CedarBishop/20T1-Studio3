@@ -15,7 +15,7 @@ MonoBehaviour:
   description: Bullets spread in XX amount of directions
   icon: {fileID: 0}
   passiveSkillId: 0
-  activeSkillId: 0
+  activeSkillId: 3
   amount: 0
   maximum: 0
   duration: 0
