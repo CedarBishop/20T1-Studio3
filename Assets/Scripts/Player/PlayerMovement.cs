@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 
-		movementDirection = movementDirection.normalized;
+		// movementDirection = movementDirection.normalized;
 
 		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
 		rigidbody.velocity = movementVelocity;

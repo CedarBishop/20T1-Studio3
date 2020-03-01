@@ -9,31 +9,34 @@ public class AbilitiesManager : MonoBehaviour
 {
 	[Header("Abilities Lists")]
 	// Enums to work with
-	private PassiveSkills passiveSkills; 						// Our access to PASSIVE skills enum
-	private ActiveSkills activeSkills; 							// Our access to ACTIVE skills enum
+	private PassiveSkills passiveSkills; 					// Our access to PASSIVE skills enum
+	private ActiveSkills activeSkills; 						// Our access to ACTIVE skills enum
 	[Space]
-	public Ability[] passiveAbilities;	 						// Where ALL PASSIVE abilities objects live
-	public Ability[] activeAbilities; 							// Where ALL ACTIVE abilities objects live
+	public Ability[] passiveAbilities;	 					// Where ALL PASSIVE abilities objects live
+	public Ability[] activeAbilities; 						// Where ALL ACTIVE abilities objects live
 
 	[Header("Action Button Tracking")]
-	public bool cooldownComplete = true; 						// Waiting for skill cooldown? (True by default - implies skill is ready)
-	private Ability currentPassive; 							// Whatever current PASSIVE skill is tied to character this round
-	private Ability currentActive; 								// Whatever current ACTIVE skill is tied to character this round
+	public bool cooldownComplete = true; 					// Waiting for skill cooldown? (True by default - implies skill is ready)
+	private Ability currentPassive; 						// Whatever current PASSIVE skill is tied to character this round
+	private Ability currentActive; 							// Whatever current ACTIVE skill is tied to character this round
 
 	[Header("Current Stats Section")]
-	[SerializeField] private GameObject originalMaterial;		// STEALTH - Current GameObject material we want to change
-	public float movementSpeed; 								// SPEED CHANGE - Current velocity/movement speed to increase/decrease
+	[SerializeField] private GameObject originalMaterial;	// STEALTH - Current GameObject material we want to change
+	private float movementSpeed; 							// SPEED UP - Current velocity/movement speed to increase/decrease
 
 	[Header("Adjustments Section")] [SerializeField]
-	private float damageIncreasePercentage; 					// DAMAGE CHANGE - Increases damage by a percentage
-	[SerializeField] private float speedIncreasePercentage; 	// SPEED CHANGE - Increases damage by a percentage
-	[SerializeField] private int maxBulletBounces; 				// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
-	private Material currentMaterial; 							// STEALTH - Where to store current material we want to change
-	private Material revertMaterial; 							// STEALTH - Where to store original material to go back to
-	[SerializeField] private Material stealthMaterial; 			// STEALTH - Assign invisibility shader for Stealth ability
+	private float damageIncreasePercentage;					// DAMAGE CHANGE - Increases damage by a percentage
+	[SerializeField] [Range(0f, 5f)] private float speedIncreasePercentage; // SPEED UP - Increases damage by a percentage
+	[SerializeField] private float maxMovementSpeed;		// SPEED UP - Increases damage by a percentage
+	[SerializeField] private int maxBulletBounces; 			// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
+	private Material currentMaterial; 						// STEALTH - Where to store current material we want to change
+	private Material revertMaterial; 						// STEALTH - Where to store original material to go back to
+	[SerializeField] private Material stealthMaterial; 		// STEALTH - Assign invisibility shader for Stealth ability
 
 	private void Awake()
 	{
+		movementSpeed = GetComponent<PlayerMovement>().movementSpeed;
+
 		// revertMaterial = originalMaterial.GetComponent<Material>();
 		revertMaterial = originalMaterial.GetComponent<SkinnedMeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
 
@@ -41,7 +44,8 @@ public class AbilitiesManager : MonoBehaviour
 		if (passiveAbilities.Length > 0)
 		{
 			// Go through list and pick random ability
-			currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
+			// currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)]; // TODO: End product needs this - allows random passive ability assignment
+			currentPassive = passiveAbilities[3];
 
 			PassiveAbilityProcess(currentPassive);
 		}
@@ -53,7 +57,7 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void PassiveAbilityProcess(Ability chosenPassive)
 	{
-		if (currentPassive != null)
+		if (chosenPassive != null)
 		{
 			// Assign enum by current random enum value
 			passiveSkills = chosenPassive.passiveSkillId;
@@ -66,16 +70,13 @@ public class AbilitiesManager : MonoBehaviour
 					BouncyBullet(maxBulletBounces);
 					break;
 				case PassiveSkills.HelperBullet:
-					HelperBullet();
 					break;
 				case PassiveSkills.SlowdownBullet:
-					SlowdownBullet();
 					break;
 				case PassiveSkills.SpeedUp:
 					SpeedUp();
 					break;
 				case PassiveSkills.TriShield:
-					TriShield();
 					break;
 				default:
 					break;
@@ -94,10 +95,10 @@ public class AbilitiesManager : MonoBehaviour
 		bulletBounces = Mathf.Clamp(bulletBounces, 0, maxBulletBounces);
 	}
 
-	private void HelperBullet() {}
-	private void SlowdownBullet() {}
-	private void SpeedUp() {}
-	private void TriShield() {}
+	private void SpeedUp()
+	{
+		GetComponent<PlayerMovement>().movementSpeed *= speedIncreasePercentage;
+	}
 
 	public void ActivateAbility()
 	{
@@ -135,10 +136,6 @@ public class AbilitiesManager : MonoBehaviour
 		cooldownComplete = true;
 	}
 
-	private void DropMine() {}
-	private void Rewind() {}
-	private void Shotgun() {}
-
 	private void Stealth()
 	{
 		if (currentMaterial != stealthMaterial)
@@ -161,6 +158,4 @@ public class AbilitiesManager : MonoBehaviour
 		yield return new WaitForSeconds(currentActive.cooldownTime);
 		Stealth();
 	}
-
-	private void TempShield() {}
 }

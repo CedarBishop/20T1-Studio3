@@ -15,7 +15,7 @@ MonoBehaviour:
   description: Leaves invisible AOE blast style land mine triggered by opposing player
   icon: {fileID: 0}
   passiveSkillId: 0
-  activeSkillId: 0
+  activeSkillId: 1
   amount: 0
   maximum: 0
   duration: 0

@@ -708,6 +708,11 @@ PrefabInstance:
       propertyPath: currentMaterial
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3202251957646179139, guid: 9e89e6cfef0d6cf4595eab52c3965e98,
+        type: 3}
+      propertyPath: speedIncreasePercentage
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3203544977886494613, guid: 9e89e6cfef0d6cf4595eab52c3965e98,
         type: 3}
       propertyPath: m_Name

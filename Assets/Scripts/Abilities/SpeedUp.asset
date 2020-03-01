@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Increases player movement speed
   icon: {fileID: 0}
-  passiveSkillId: 0
+  passiveSkillId: 4
   activeSkillId: 0
   amount: 0
   maximum: 0

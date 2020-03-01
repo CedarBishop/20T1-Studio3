@@ -15,7 +15,7 @@ MonoBehaviour:
   description: Takes player back to their position XX seconds previously
   icon: {fileID: 0}
   passiveSkillId: 0
-  activeSkillId: 0
+  activeSkillId: 2
   amount: 0
   maximum: 0
   duration: 0
