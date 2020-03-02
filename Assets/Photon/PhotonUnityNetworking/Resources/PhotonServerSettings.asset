@@ -43,5 +43,7 @@ MonoBehaviour:
   - RPC_StartNewRound
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
+  - RPC_RemoveActiveSkills
+  - RPC_RemovePassiveSkills
   DisableAutoOpenWizard: 1
   ShowSettings: 1

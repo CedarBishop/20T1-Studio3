@@ -350,7 +350,11 @@ public class UIManager : MonoBehaviour
             hasSelectedAction = true;
         }
 
-
+        GameObject [] skillSelectors = skillSelectionParent.GetComponentsInChildren<GameObject>();
+        for (int i = 0; i < skillSelectors.Length; i++)
+        {
+            Destroy(skillSelectors[i]);
+        }
         skillSelectionParent.SetActive(false);
 
     }
@@ -359,11 +363,12 @@ public class UIManager : MonoBehaviour
     void SpawnSkillSelectionButtons ()
     {
         skillSelectionParent.SetActive(true);
+        print("Reached skill selection button");
 
-        PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
-
-        if (hasSelectedPassive)
+        if (hasSelectedPassive == false)
         {
+            print("Reached spawn passive");
+            PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
             for (int i = 0; i < passiveSkills.Length; i++)
             {
                 Button button = Instantiate(skillButtonPrefab, passiveSkillLayout.transform).GetComponent<Button>();
@@ -374,7 +379,7 @@ public class UIManager : MonoBehaviour
 
         
 
-        if (hasSelectedAction)
+        if (hasSelectedAction == false)
         {
             ActiveSkills[] activeSkills = SkillSelectionHolder.instance.GetActiveSkills();
 

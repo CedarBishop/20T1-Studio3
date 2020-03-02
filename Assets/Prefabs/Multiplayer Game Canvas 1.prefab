@@ -485,7 +485,7 @@ MonoBehaviour:
   skillSelectionParent: {fileID: 7941717872379553906}
   passiveSkillLayout: {fileID: 6093878332693596661}
   activeSkillLayout: {fileID: 168715781285854845}
-  buttonPrefab: {fileID: 7908574969164537541, guid: 773b3586075c24f4183214c456de1fa7,
+  skillButtonPrefab: {fileID: 5555787759589460773, guid: 773b3586075c24f4183214c456de1fa7,
     type: 3}
 --- !u!114 &7804132430919226554
 MonoBehaviour:

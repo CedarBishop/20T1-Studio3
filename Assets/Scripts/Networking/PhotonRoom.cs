@@ -16,7 +16,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public bool isGameLoaded;
     public int currentScene;
     public int lobbyScene = 1;
-    public int gameScene = 2;
+    public int gameScene;
 
     Player[] photonPlayers;
     public int playersInRoom;
@@ -40,7 +40,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
-        //gameScene = Random.Range(2,2);
+
     }
 
     public override void OnEnable()
@@ -63,6 +63,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
+        gameScene = Random.Range(2, 3);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
@@ -70,7 +71,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void CreatePlayer()
     {
         PhotonNetwork.Instantiate(("PhotonPrefabs/PhotonNetworkPlayer") ,transform.position,Quaternion.identity, 0);
-        PhotonNetwork.Instantiate(("PhotonPrefabs/Skill Selection Holder"),transform.position, Quaternion.identity,0);
     }
 
     public override void OnDisable()
