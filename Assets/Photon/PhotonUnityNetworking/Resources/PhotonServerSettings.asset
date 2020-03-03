@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 16f400b3-daad-4098-9e7e-ee85b097795e
+    AppIdRealtime: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: AU
+    FixedRegion: 
     Server: 
     Port: 0
     Protocol: 0
@@ -37,13 +37,13 @@ MonoBehaviour:
   - RPC_AddCharacter
   - RPC_Die
   - RPC_EndMatch
+  - RPC_RemoveActiveSkills
+  - RPC_RemovePassiveSkills
   - RPC_ResetStats
   - RPC_RoundDraw
   - RPC_SpawnAndInitProjectile
   - RPC_StartNewRound
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
-  - RPC_RemoveActiveSkills
-  - RPC_RemovePassiveSkills
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
