@@ -39,6 +39,8 @@ public class UIManager : MonoBehaviour
     bool hasSelectedPassive;
     bool hasSelectedAction;
 
+    public static System.Action DestroySkillButtons;
+
     // Make Script Singleton
     private void Awake()
     {
@@ -341,6 +343,8 @@ public class UIManager : MonoBehaviour
 
             SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);
             hasSelectedPassive = true;
+            activeSkillLayout.SetActive(true);
+
         }
         else
         {
@@ -348,13 +352,14 @@ public class UIManager : MonoBehaviour
 
             SkillSelectionHolder.instance.RemoveActiveSkill(skillNumber);
             hasSelectedAction = true;
+            activeSkillLayout.SetActive(false);
         }
 
-        GameObject [] skillSelectors = skillSelectionParent.GetComponentsInChildren<GameObject>();
-        for (int i = 0; i < skillSelectors.Length; i++)
+        if (DestroySkillButtons != null)
         {
-            Destroy(skillSelectors[i]);
+            DestroySkillButtons();
         }
+       
         skillSelectionParent.SetActive(false);
 
     }
@@ -372,8 +377,8 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < passiveSkills.Length; i++)
             {
                 Button button = Instantiate(skillButtonPrefab, passiveSkillLayout.transform).GetComponent<Button>();
-                button.onClick.AddListener(() => SkillSelectButton(true, i));
-                GetComponentInChildren<Text>().text = passiveSkills[i].ToString();
+               // button.onClick.AddListener(() => SkillSelectButton(true, i));
+                //button.GetComponent<SkillButton>().SetText(passiveSkills[i].ToString());
             }
         }
 
@@ -386,8 +391,8 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < activeSkills.Length; i++)
             {
                 Button button = Instantiate(skillButtonPrefab, activeSkillLayout.transform).GetComponent<Button>();
-                button.onClick.AddListener(() => SkillSelectButton(false, i));
-                GetComponentInChildren<Text>().text = activeSkills[i].ToString();
+                //button.onClick.AddListener(() => SkillSelectButton(false, i));
+                //button.GetComponent<SkillButton>().SetText(activeSkills[i].ToString());
             }
         }
         

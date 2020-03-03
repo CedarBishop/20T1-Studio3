@@ -49,40 +49,44 @@ public class SkillSelectionHolder : MonoBehaviour
             }
             PrintRemainingSkills();
 
-            photonView.RPC("RPC_InitRandomSkills", RpcTarget.OthersBuffered, thisMatchPassiveSkills,thisMatchActiveSkills);
+            //photonView.RPC("RPC_InitRandomSkills", RpcTarget.OthersBuffered, thisMatchPassiveSkills,thisMatchActiveSkills);
         }
        
     }
 
-    void RPC_InitRandomSkills(List<PassiveSkills> passiveSkills, List<ActiveSkills> activeSkills)
-    {
-        thisMatchPassiveSkills = passiveSkills;
-        thisMatchActiveSkills = activeSkills;
-    }
+    //void RPC_InitRandomSkills(List<PassiveSkills> passiveSkills, List<ActiveSkills> activeSkills)
+    //{
+    //    thisMatchPassiveSkills = passiveSkills;
+    //    thisMatchActiveSkills = activeSkills;
+    //}
 
     public void RemovePassiveSkill (int index)
     {
-        photonView.RPC("RPC_RemovePassiveSkills",RpcTarget.All, index);
-    }
-
-    [PunRPC]
-    void RPC_RemovePassiveSkills(int index)
-    {
         thisMatchPassiveSkills.RemoveAt(index);
         PrintRemainingSkills();
+       // photonView.RPC("RPC_RemovePassiveSkills",RpcTarget.All, index);
     }
+
+    //[PunRPC]
+    //void RPC_RemovePassiveSkills(int index)
+    //{
+    //    thisMatchPassiveSkills.RemoveAt(index);
+    //    PrintRemainingSkills();
+    //}
 
     public void RemoveActiveSkill (int index)
     {
-        photonView.RPC("RPC_RemoveActiveSkills", RpcTarget.All, index);
-    }
-
-    [PunRPC]
-    void RPC_RemoveActiveSkills(int index)
-    {
         thisMatchActiveSkills.RemoveAt(index);
         PrintRemainingSkills();
+        //photonView.RPC("RPC_RemoveActiveSkills", RpcTarget.All, index);
     }
+
+    //[PunRPC]
+    //void RPC_RemoveActiveSkills(int index)
+    //{
+    //    thisMatchActiveSkills.RemoveAt(index);
+    //    PrintRemainingSkills();
+    //}
 
     public PassiveSkills[] GetPassiveSkills()
     {
