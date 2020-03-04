@@ -15,7 +15,7 @@ public class PlayerCombat : MonoBehaviour
 	private FixedJoystick fixedJoystick;
 	public Projectile projectilePrefab;
 	public float fireRate = 0.1f;
-	Vector3 joysticDirection;
+	Vector3 joystickDirection;
 	bool canShoot;
 
 	void Start()
@@ -31,19 +31,19 @@ public class PlayerCombat : MonoBehaviour
 			print("Room number parsed " + roomNumber);
 		}
 
-		joysticDirection = Vector3.forward;
-		transform.forward = joysticDirection;
+		joystickDirection = Vector3.forward;
+		transform.forward = joystickDirection;
 		canShoot = true;
 	}
 
 	void Update()
 	{
 #if UNITY_ANDROID || UNITY_IPHONE
-        joysticDirection = new Vector3(fixedJoystick.Horizontal, 0, fixedJoystick.Vertical);
+        joystickDirection = new Vector3(fixedJoystick.Horizontal, 0, fixedJoystick.Vertical);
 
-		if (Mathf.Abs(joysticDirection.x) > 0.25f || Mathf.Abs(joysticDirection.z) > 0.25f)
+		if (Mathf.Abs(joystickDirection.x) > 0.25f || Mathf.Abs(joystickDirection.z) > 0.25f)
 		{
-			transform.forward = joysticDirection;
+			transform.forward = joystickDirection;
             if (canShoot)
             {
 				canShoot = false;
@@ -52,11 +52,15 @@ public class PlayerCombat : MonoBehaviour
 			}
 		}
 #elif UNITY_EDITOR || UNITY_STANDALONE
+
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
+
 		Physics.Raycast(ray, out hit, 100.0f);
+
 		Vector3 target = new Vector3(hit.point.x, transform.position.y, hit.point.z);
 		Vector3 directionToTarget = target - transform.position;
+
 		transform.forward = directionToTarget;
 
 		if (Input.GetButtonDown("Fire1"))

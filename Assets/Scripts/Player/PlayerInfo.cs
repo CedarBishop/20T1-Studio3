@@ -6,41 +6,42 @@ using Photon.Pun;
 
 public class PlayerInfo : MonoBehaviourPunCallbacks
 {
-    public static PlayerInfo playerInfo = null;
-    public int selectedCharacter;
-    public GameObject[] allCharacters;
+	public static PlayerInfo playerInfo = null;
+	public int selectedCharacter;
+	public GameObject[] allCharacters;
 
-    [HideInInspector]public string selectedCharacterKey = "SelectedCharacter";
+	[HideInInspector] public string selectedCharacterKey = "SelectedCharacter";
 
-    private void Awake()
-    {
-        if (playerInfo == null)
-        {
-            playerInfo = this;
-        }
-        else if (playerInfo != this)
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
+	private void Awake()
+	{
+		if (playerInfo == null)
+		{
+			playerInfo = this;
+		}
+		else if (playerInfo != this)
+		{
+			Destroy(gameObject);
+		}
+
+		DontDestroyOnLoad(gameObject);
+	}
 
 
-    void Start()
-    {
-        if (PlayerPrefs.HasKey(selectedCharacterKey))
-        {
-            selectedCharacter = PlayerPrefs.GetInt(selectedCharacterKey);
-        }
-        else
-        {
-            selectedCharacter = 0;
-            PlayerPrefs.SetInt(selectedCharacterKey, selectedCharacter);
-        }
-    }
+	void Start()
+	{
+		if (PlayerPrefs.HasKey(selectedCharacterKey))
+		{
+			selectedCharacter = PlayerPrefs.GetInt(selectedCharacterKey);
+		}
+		else
+		{
+			selectedCharacter = 0;
+			PlayerPrefs.SetInt(selectedCharacterKey, selectedCharacter);
+		}
+	}
 
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        //Instantiate(Resources.Load("PhotonPrefabs/Room Controller"));
-    }
+	public override void OnDisconnected(DisconnectCause cause)
+	{
+		// Instantiate(Resources.Load("PhotonPrefabs/Room Controller"));
+	}
 }
