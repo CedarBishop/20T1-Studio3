@@ -13,8 +13,8 @@ public class AbilitiesManager : MonoBehaviour
 
 	[Header("Abilities Lists")]
 	// Enums to work with
-	private PassiveSkills passiveSkills; 						// Our access to PASSIVE skills enum
-	private ActiveSkills activeSkills; 							// Our access to ACTIVE skills enum
+	[SerializeField] private PassiveSkills passiveSkills; 		// Our access to PASSIVE skills enum
+	[SerializeField] private ActiveSkills activeSkills; 		// Our access to ACTIVE skills enum
 	[Space]
 	public Ability[] passiveAbilities;	 						// Where ALL PASSIVE abilities objects live
 	public Ability[] activeAbilities; 							// Where ALL ACTIVE abilities objects live
@@ -46,7 +46,7 @@ public class AbilitiesManager : MonoBehaviour
 	private bool shieldActive;
 	[SerializeField] private GameObject shieldEffect;
 
-	private void Awake()
+	private void OnEnable()
 	{
 		PV = GetComponent<PhotonView>();
 		movementSpeed = GetComponent<PlayerMovement>().movementSpeed;
@@ -58,7 +58,7 @@ public class AbilitiesManager : MonoBehaviour
 		}
 
 		// revertMaterial = originalMaterial.GetComponent<Material>();
-		revertMaterial = originalMaterial.GetComponent<SkinnedMeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
+		revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
 
 		shieldEffect.SetActive(false);
 
@@ -66,15 +66,14 @@ public class AbilitiesManager : MonoBehaviour
 		if (passiveAbilities.Length > 0)
 		{
 			// Go through list and pick random ability
-			// currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)]; // TODO: End product needs this - allows random passive ability assignment
-			currentPassive = passiveAbilities[3];
+			currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
+			// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
 
 			PassiveAbilityProcess(currentPassive);
 		}
 
-		// TODO: Hard coded temporarily (STEALTH)
-		activeSkills = ActiveSkills.Stealth;
-		currentActive = activeAbilities[3];
+		// TODO: Hard coded temporarily (TEMPSHIELD)
+		currentActive = activeAbilities[4];
 	}
 
 	private void PassiveAbilityProcess(Ability chosenPassive)
@@ -127,7 +126,7 @@ public class AbilitiesManager : MonoBehaviour
 	public void ActivateAbility()
 	{
 		// If pressed and active ability assigned ...
-		if (cooldownComplete && currentActive != null)
+		if (cooldownComplete)
 		{
 			// Disable active abilities until specific cooldown is complete
 			switch (activeSkills)
@@ -135,17 +134,22 @@ public class AbilitiesManager : MonoBehaviour
 				case ActiveSkills.None:
 					break;
 				case ActiveSkills.DropMine:
+					currentActive = activeAbilities[0];
 					break;
 				case ActiveSkills.Rewind:
+					currentActive = activeAbilities[1];
 					break;
 				case ActiveSkills.Shotgun:
+					currentActive = activeAbilities[2];
 					break;
 				case ActiveSkills.Stealth:
+					currentActive = activeAbilities[3];
 					methodToCall = Stealth;
 					StartCoroutine(AbilityDuration(currentActive, methodToCall));
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				case ActiveSkills.TempShield:
+					currentActive = activeAbilities[4];
 					methodToCall = TempShield;
 					StartCoroutine(AbilityDuration(currentActive, methodToCall));
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
@@ -203,18 +207,18 @@ public class AbilitiesManager : MonoBehaviour
 	private void TempShield()
 	{
 		shieldActive = !shieldActive;
-		// Vector3 shieldFullSize = new Vector3(1, 1, 1); // TODO: For use with interpolating between sizes
+		Vector3 shieldFullSize = new Vector3(3, 3, 3); // TODO: For use with interpolating between sizes
 
 		if (shieldActive) // Instantiate & apply effect (growing for active)
 		{
 			shieldEffect.SetActive(true);
-			shieldEffect.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, 100 * Time.deltaTime);
+			shieldEffect.transform.localScale = Vector3.Lerp(Vector3.zero, shieldFullSize, 100 * Time.deltaTime);
 			Debug.Log("Shield is active");
 		}
 		else
 		{
 			// Apply effect & destroy (shrinking then deactivate)
-			shieldEffect.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, 100 * Time.deltaTime);
+			shieldEffect.transform.localScale = Vector3.Lerp(shieldFullSize, Vector3.zero, 100 * Time.deltaTime);
 			shieldEffect.SetActive(false);
 			Debug.Log("Shield NOT active");
 		}

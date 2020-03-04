@@ -29,12 +29,11 @@ public class PlayerMovement : MonoBehaviour
 		if (photonView.IsMine)
 		{
 			BasicMovement();
-
-			if (Input.GetKeyDown(KeyCode.E))
-				abManager.ActivateAbility();
 		}
 
 		BasicMovement(); // TODO: PC debugging only, remove for gold release
+		if (Input.GetKeyDown(KeyCode.E))
+			abManager.ActivateAbility();
 	}
 
 	void BasicMovement()
