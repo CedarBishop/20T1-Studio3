@@ -50,7 +50,21 @@ public class Shop : MonoBehaviour
             }
         }
     }
-   
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            for (int i = 0; i < shopItems.Length; i++)
+            {
+                if (PlayerPrefs.HasKey(shopItems[i].itemKey))
+                {
+                    PlayerPrefs.SetInt(shopItems[i].itemKey, 0);
+                }
+            }
+        }
+    }
+
 }
 
 [System.Serializable]

@@ -74,5 +74,10 @@ public class MainMenu : MonoBehaviour
             currency.EarnGold(1);
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+
+        }
+
     }
 }

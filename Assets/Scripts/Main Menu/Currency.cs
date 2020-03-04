@@ -94,4 +94,16 @@ public class Currency : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            gold = 0;
+            passion = 0;
+            PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
+            PlayerPrefs.SetInt(goldKey, gold); // save new passion value locally
+            mainMenu.UpdateCurrencyUI();
+        }
+    }
+
 }
