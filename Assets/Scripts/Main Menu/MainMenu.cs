@@ -14,6 +14,9 @@ public class MainMenu : MonoBehaviour
 
     private Currency currency;
 
+    public Slider musicSlider;
+    public Slider sfxSlider;
+
     void Start()
     {
         SetMenuType(1);
@@ -54,6 +57,16 @@ public class MainMenu : MonoBehaviour
     {
         passionCountText.text = currency.GetPassion().ToString();
         goldCountText.text = currency.GetGold().ToString();
+    }
+
+    public void SetMusicVolume()
+    {
+        SoundManager.instance.SetMusicVolume(musicSlider.value);
+    }
+
+    public void SetSFXVolume()
+    {
+        SoundManager.instance.SetSFXVolume(sfxSlider.value);
     }
 
     private void Update()
