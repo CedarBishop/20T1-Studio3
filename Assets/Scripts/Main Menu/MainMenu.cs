@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -8,9 +9,16 @@ public class MainMenu : MonoBehaviour
     public GameObject settingsParent;
     public GameObject shopParent;
 
+    public Text passionCountText;
+    public Text goldCountText;
+
+    private Currency currency;
+
     void Start()
     {
         SetMenuType(1);
+        currency = GetComponent<Currency>();
+        UpdateCurrencyUI();
     }
 
     public void Quit  ()
@@ -40,5 +48,31 @@ public class MainMenu : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void UpdateCurrencyUI ()
+    {
+        passionCountText.text = currency.GetPassion().ToString();
+        goldCountText.text = currency.GetGold().ToString();
+    }
+
+    private void Update()
+    {
+        TestCurrency();
+    }
+
+    public void TestCurrency()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            currency.EarnPassion(1);
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            currency.EarnGold(1);
+        }
+
     }
 }
