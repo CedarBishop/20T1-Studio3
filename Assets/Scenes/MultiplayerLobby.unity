@@ -428,6 +428,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3041700465231944984, guid: 8b73235117f5a3649abe6a63af366820,
+        type: 3}
+      propertyPath: offsetFromPlayer.z
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 2446011747868950007, guid: 8b73235117f5a3649abe6a63af366820,
         type: 3}
       propertyPath: m_LocalPosition.x

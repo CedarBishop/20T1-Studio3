@@ -43,5 +43,7 @@ MonoBehaviour:
   - RPC_StartNewRound
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
+  - Stealth
+  - RPC_Stealth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
