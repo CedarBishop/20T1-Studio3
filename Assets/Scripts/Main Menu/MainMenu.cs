@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
     {
         SetMenuType(1);
         currency = GetComponent<Currency>();
-        UpdateCurrencyUI();
+        InitText();
     }
 
     public void Quit  ()
@@ -92,5 +92,18 @@ public class MainMenu : MonoBehaviour
 
         }
 
+    }
+
+    void InitText()
+    {
+        if (PlayerPrefs.HasKey("Passion"))
+        {
+            passionCountText.text = PlayerPrefs.GetInt("Passion", 0).ToString();
+
+        }
+        if (PlayerPrefs.HasKey("Gold"))
+        {
+            goldCountText.text = PlayerPrefs.GetInt("Gold",0).ToString();
+        }
     }
 }

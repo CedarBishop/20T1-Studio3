@@ -90,7 +90,7 @@ public class PlayerCombat : MonoBehaviour
 				new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				transform.rotation
 			);
-			bullet.SetEmissionColour(Color.cyan);
+			bullet.ChangeToAllyMaterial();
 			bullet.isMyProjectile = true;
 
 			Destroy(bullet, 3);

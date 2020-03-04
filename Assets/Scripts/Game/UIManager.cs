@@ -107,6 +107,17 @@ public class UIManager : MonoBehaviour
 			if (uIGroups[0].IncrementRoundWins())
 			{
 				displayText = "Player One Wins";
+				if (int.TryParse(PhotonNetwork.NickName, out int num))
+				{
+					if (num == 1)
+					{
+						EarnPassion(true);
+					}
+					else if (num == 2)
+					{
+						EarnPassion(false);
+					}
+				}
 				StartCoroutine("CoEndMatch");
 			}
 			else
@@ -127,6 +138,17 @@ public class UIManager : MonoBehaviour
 			displayText = "Player Two Wins Round " + roundNumber.ToString();
 			if (uIGroups[1].IncrementRoundWins())
 			{
+				if (int.TryParse(PhotonNetwork.NickName, out int num))
+				{
+					if (num == 1)
+					{
+						EarnPassion(false);
+					}
+					else if (num == 2)
+					{
+						EarnPassion(true);
+					}
+				}
 				displayText = "Player Two Wins";
 				StartCoroutine("CoEndMatch");
 			}
@@ -173,7 +195,7 @@ public class UIManager : MonoBehaviour
 		{
 			displayText = "Player Two Forfeited \nPlayer One Wins";
 		}
-
+		EarnPassion(true);
 		StartCoroutine("CoEndMatch");
 		winText.text = displayText;
 	}
@@ -210,7 +232,8 @@ public class UIManager : MonoBehaviour
 				if (PhotonNetwork.IsMasterClient)
 				{
 					isRoundIntermission = false;
-					photonView.RPC("RPC_StartNewRound", RpcTarget.All);
+					RPC_StartNewRound();
+					photonView.RPC("RPC_StartNewRound", RpcTarget.Others);
 				}
 			}
 			else
@@ -256,7 +279,7 @@ public class UIManager : MonoBehaviour
 			uIGroups[1].IncrementRoundWins();
 
 			if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch &&
-			    uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
+			    uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
 			{
 				// tie break, go to sudden death
 				roundTimerText.text = "";
@@ -265,12 +288,34 @@ public class UIManager : MonoBehaviour
 			else if (uIGroups[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
 			{
 				// Player 1 wins match
+				if (int.TryParse(PhotonNetwork.NickName, out int num))
+				{
+					if (num == 1)
+					{
+						EarnPassion(true);
+					}
+					else if (num == 2)
+					{
+						EarnPassion(false);
+					}
+				}
 				winText.text = "Player One Wins";
 				StartCoroutine("CoEndMatch");
 			}
 			else if (uIGroups[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
 			{
 				// Player Two wins match
+				if (int.TryParse(PhotonNetwork.NickName, out int num))
+				{
+					if (num == 1)
+					{
+						EarnPassion(false);
+					}
+					else if (num == 2)
+					{
+						EarnPassion(true);
+					}
+				}
 				winText.text = "Player Two Wins";
 				StartCoroutine("CoEndMatch");
 			}
@@ -289,6 +334,7 @@ public class UIManager : MonoBehaviour
 
 	void Intermission()
 	{
+		//GameSetup.instance.RoundEnd();
 		roundTimer = 10;
 		isRoundIntermission = true;
 		roundIsUnderway = false;
@@ -368,6 +414,19 @@ public class UIManager : MonoBehaviour
 				//button.onClick.AddListener(() => SkillSelectButton(false, i));
 				//button.GetComponent<SkillButton>().SetText(activeSkills[i].ToString());
 			}
+		}
+	}
+
+	void EarnPassion (bool wonMatch)
+	{
+		if (wonMatch)
+		{
+			PlayerInfo.playerInfo.passionEarnedThisMatch = 10;
+		}
+		else
+		{
+			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
+
 		}
 	}
 }

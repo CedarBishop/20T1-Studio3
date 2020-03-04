@@ -58,7 +58,7 @@ public class AbilitiesManager : MonoBehaviour
 		}
 
 		// revertMaterial = originalMaterial.GetComponent<Material>();
-		revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
+		//revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
 
 		shieldEffect.SetActive(false);
 

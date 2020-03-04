@@ -18,7 +18,7 @@ public class Currency : MonoBehaviour
     private void Start()
     {
         mainMenu = GetComponent<MainMenu>();
-        mainMenu.UpdateCurrencyUI();
+        
         // initialising runtime variables with values that were previously saved if any
         if (PlayerPrefs.HasKey(passionKey))
         {
@@ -27,6 +27,13 @@ public class Currency : MonoBehaviour
         if (PlayerPrefs.HasKey(goldKey))
         {
             gold = PlayerPrefs.GetInt(goldKey, 0);
+        }
+
+        if (PlayerInfo.playerInfo.passionEarnedThisMatch > 0)
+        {
+            EarnPassion(PlayerInfo.playerInfo.passionEarnedThisMatch);
+            PlayerInfo.playerInfo.passionEarnedThisMatch = 0;
+            mainMenu.UpdateCurrencyUI();
         }
     }
 
