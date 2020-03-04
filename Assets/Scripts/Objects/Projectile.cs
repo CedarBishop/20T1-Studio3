@@ -25,7 +25,6 @@ public class Projectile : MonoBehaviour
 		StartCoroutine("DelayedDestroy");
 	}
 
-
 	IEnumerator DelayedDestroy()
 	{
 		yield return new WaitForSeconds(5);
@@ -55,7 +54,6 @@ public class Projectile : MonoBehaviour
 			}
 		}
 
-
 		if (collision.gameObject.CompareTag("Wall"))
 		{
 			if (sparks != null)
@@ -64,7 +62,6 @@ public class Projectile : MonoBehaviour
 
 			}
 		}
-
 
 		Destroy(gameObject);
 	}
