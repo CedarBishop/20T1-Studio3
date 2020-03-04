@@ -13,8 +13,12 @@ public class Currency : MonoBehaviour
     private string passionKey = "Passion";
     private string goldKey = "Gold";
 
+    private MainMenu mainMenu;
+
     private void Start()
     {
+        mainMenu = GetComponent<MainMenu>();
+        mainMenu.UpdateCurrencyUI();
         // initialising runtime variables with values that were previously saved if any
         if (PlayerPrefs.HasKey(passionKey))
         {
@@ -34,6 +38,7 @@ public class Currency : MonoBehaviour
         // add to runtime passion and save it locally 
         passion += value;
         PlayerPrefs.SetInt(passionKey,passion);
+        mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
     public int GetPassion()
@@ -48,6 +53,7 @@ public class Currency : MonoBehaviour
         {
             passion -= value; // spend passion
             PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
+            mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }
         else // cant afford item
@@ -63,6 +69,7 @@ public class Currency : MonoBehaviour
         // add to runtime gold and save it locally 
         gold += value;
         PlayerPrefs.SetInt(goldKey, gold);
+        mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
     public int GetGold()
@@ -77,6 +84,7 @@ public class Currency : MonoBehaviour
         {
             gold -= value; // spend gold
             PlayerPrefs.SetInt(goldKey, gold); // save new gold value locally
+            mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }
         else // cant afford item
@@ -85,5 +93,17 @@ public class Currency : MonoBehaviour
         }
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            gold = 0;
+            passion = 0;
+            PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
+            PlayerPrefs.SetInt(goldKey, gold); // save new passion value locally
+            mainMenu.UpdateCurrencyUI();
+        }
+    }
 
 }
