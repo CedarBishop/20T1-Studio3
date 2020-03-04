@@ -168,7 +168,7 @@ public class AbilitiesManager : MonoBehaviour
 		else
 			currentMaterial = revertMaterial;
 
-		originalMaterial.GetComponent<SkinnedMeshRenderer>().material = currentMaterial; // TODO: Adjust! This is to suit dummy ghost prefab
+		originalMaterial.GetComponent<SkinnedMeshRenderer>().material = currentMaterial; // TODO: Adjust accordingly! This is to suit dummy ghost prefab
 	}
 
 	private void TempShield()
@@ -176,15 +176,16 @@ public class AbilitiesManager : MonoBehaviour
 		shieldActive = !shieldActive;
 		// Vector3 shieldFullSize = new Vector3(1, 1, 1); // TODO: For use with interpolating between sizes
 
-		if (shieldActive)
+		if (shieldActive) // Instantiate & apply effect (growing for active)
 		{
-			// Instantiate & apply effect (growing for active)
 			shieldEffect.SetActive(true);
+			shieldEffect.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, 100 * Time.deltaTime);
 			Debug.Log("Shield is active");
 		}
 		else
 		{
 			// Apply effect & destroy (shrinking then deactivate)
+			shieldEffect.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, 100 * Time.deltaTime);
 			shieldEffect.SetActive(false);
 			Debug.Log("Shield NOT active");
 		}
