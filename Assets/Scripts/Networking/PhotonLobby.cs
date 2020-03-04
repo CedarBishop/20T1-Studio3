@@ -79,12 +79,5 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         cancelButton.SetActive(false);
         battleButton.SetActive(true);
         PhotonNetwork.LeaveRoom();
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
-    }
-
-   
+    }   
 }
