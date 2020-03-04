@@ -32,7 +32,14 @@ public class UIManager : MonoBehaviour
     public bool isInLobby;
 
     public GameObject skillSelectionParent;
-    public Button[] skillButtons;
+    public GameObject passiveSkillLayout;
+    public GameObject activeSkillLayout;
+    public GameObject skillButtonPrefab;
+
+    bool hasSelectedPassive;
+    bool hasSelectedAction;
+
+    public static System.Action DestroySkillButtons;
 
     // Make Script Singleton
     private void Awake()
@@ -117,7 +124,7 @@ public class UIManager : MonoBehaviour
                 {
                     if (num == 2)
                     {
-                        skillSelectionParent.SetActive(true);
+                        SpawnSkillSelectionButtons();
                     }
                 }
                 Intermission();
@@ -139,7 +146,7 @@ public class UIManager : MonoBehaviour
                 {
                     if (num == 1)
                     {
-                        skillSelectionParent.SetActive(true);
+                        SpawnSkillSelectionButtons();
                     }
                 }
                 Intermission();
@@ -328,33 +335,68 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SkillSelectButton (int skillNumber)
+    public void SkillSelectButton (bool isPassive,int skillNumber)
     {
         //assign skill to player
-
-
-        if (skillNumber <= 2)
+        if (isPassive)
         {
-            for (int i = 0; i <=  2; i++)
-            {
-                skillButtons[i].interactable = false;
-            }
+
+            SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);
+            hasSelectedPassive = true;
+            activeSkillLayout.SetActive(true);
+
         }
         else
         {
-            for (int i = 3; i < skillButtons.Length; i++)
-            {
-                skillButtons[i].interactable = false;
-            }
+
+
+            SkillSelectionHolder.instance.RemoveActiveSkill(skillNumber);
+            hasSelectedAction = true;
+            activeSkillLayout.SetActive(false);
         }
-        photonView.RPC("RPC_TakeSkill", RpcTarget.Others,skillNumber);
+
+        if (DestroySkillButtons != null)
+        {
+            DestroySkillButtons();
+        }
+       
         skillSelectionParent.SetActive(false);
 
     }
 
-    void RPC_TakeSkill (int skillNumber)
+
+    void SpawnSkillSelectionButtons ()
     {
-        skillButtons[skillNumber].interactable = false;
+        skillSelectionParent.SetActive(true);
+        print("Reached skill selection button");
+
+        if (hasSelectedPassive == false)
+        {
+            print("Reached spawn passive");
+            PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
+            for (int i = 0; i < passiveSkills.Length; i++)
+            {
+                Button button = Instantiate(skillButtonPrefab, passiveSkillLayout.transform).GetComponent<Button>();
+               // button.onClick.AddListener(() => SkillSelectButton(true, i));
+                //button.GetComponent<SkillButton>().SetText(passiveSkills[i].ToString());
+            }
+        }
+
+        
+
+        if (hasSelectedAction == false)
+        {
+            ActiveSkills[] activeSkills = SkillSelectionHolder.instance.GetActiveSkills();
+
+            for (int i = 0; i < activeSkills.Length; i++)
+            {
+                Button button = Instantiate(skillButtonPrefab, activeSkillLayout.transform).GetComponent<Button>();
+                //button.onClick.AddListener(() => SkillSelectButton(false, i));
+                //button.GetComponent<SkillButton>().SetText(activeSkills[i].ToString());
+            }
+        }
+        
+
     }
     
 }

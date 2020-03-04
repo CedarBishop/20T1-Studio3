@@ -37,6 +37,8 @@ MonoBehaviour:
   - RPC_AddCharacter
   - RPC_Die
   - RPC_EndMatch
+  - RPC_RemoveActiveSkills
+  - RPC_RemovePassiveSkills
   - RPC_ResetStats
   - RPC_RoundDraw
   - RPC_SpawnAndInitProjectile
