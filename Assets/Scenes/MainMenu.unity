@@ -443,6 +443,7 @@ MonoBehaviour:
   - {fileID: 1508125086591506764, guid: 96deaaa68ef85de4c8c6ed4c0271fef6, type: 3}
   - {fileID: 2366572046262246264, guid: 1aa274bd5e6ecf046a28c3897e72fabf, type: 3}
   - {fileID: 8182362680375984517, guid: 4684ff1117b689f4194dddae7589fbc4, type: 3}
+  passionEarnedThisMatch: 0
   selectedCharacterKey: SelectedCharacter
 --- !u!4 &1917811611
 Transform:

@@ -20,7 +20,6 @@ public class UIManager : MonoBehaviour
 	private List<UIGroup> uIGroups = new List<UIGroup>();
 	public Text winText;
 	int roundNumber = 1;
-	public Text roundNumberText;
 	public FixedJoystick leftJoystick;
 	public FixedJoystick rightJoystick;
 	public Text roundTimerText;
@@ -69,7 +68,6 @@ public class UIManager : MonoBehaviour
 		yield return new WaitForSeconds(0.24f);
 		players = PhotonNetwork.PlayerList;
 		roundNumber = 1;
-		roundNumberText.text = "Round " + roundNumber.ToString();
 
 		// Insatiate the UI Group for each player and initialize with room number
 		for (int i = 0; i < players.Length; i++)
@@ -103,7 +101,7 @@ public class UIManager : MonoBehaviour
 		string displayText = "";
 		if (playerNumber == 2)
 		{
-			displayText = "Player One Wins Round " + roundNumber.ToString();
+			displayText = "Player One Wins The Round ";
 			if (uIGroups[0].IncrementRoundWins())
 			{
 				displayText = "Player One Wins";
@@ -135,7 +133,7 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			displayText = "Player Two Wins Round " + roundNumber.ToString();
+			displayText = "Player Two Wins The Round ";
 			if (uIGroups[1].IncrementRoundWins())
 			{
 				if (int.TryParse(PhotonNetwork.NickName, out int num))
@@ -174,7 +172,6 @@ public class UIManager : MonoBehaviour
 	public void ClearWinText()
 	{
 		roundNumber++;
-		roundNumberText.text = "Round " + roundNumber.ToString();
 		winText.text = "";
 	}
 

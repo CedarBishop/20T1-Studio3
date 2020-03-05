@@ -7,7 +7,7 @@ public class UIGroup : MonoBehaviour
 {
     public Text healthText;
     public Text playerNumberText;
-    public Text roundWinText;
+    public Image roundWinImage;
     public int health;
     public int playerNumber;
     public int roundWins;
@@ -24,6 +24,8 @@ public class UIGroup : MonoBehaviour
         playerNumber = num;
         playerNumberText.text = "P" + playerNumber.ToString();
         playerNumberText.color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f), 1.0f);
+        roundWinImage.fillAmount += 0.0f;
+
     }
 
     public bool IncrementRoundWins()
@@ -32,12 +34,12 @@ public class UIGroup : MonoBehaviour
         if (roundWins >= LevelManager.instance.requiredRoundsToWinMatch)
         {
             // player won yay
-            roundWinText.text = LevelManager.instance.requiredRoundsToWinMatch.ToString();
+            roundWinImage.fillAmount = 1;
             return true;
         }
 
-        
-        roundWinText.text = roundWins.ToString();
+
+        roundWinImage.fillAmount += 0.34f;
         return false;
         
     }
