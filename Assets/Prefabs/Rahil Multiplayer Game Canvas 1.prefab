@@ -355,7 +355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 280, y: 486}
+  m_AnchoredPosition: {x: 437, y: 470}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1894335925677729330
@@ -589,7 +589,6 @@ MonoBehaviour:
     type: 3}
   layoutGroup: {fileID: 6223093683232866063}
   winText: {fileID: 6223093683460623581}
-  roundNumberText: {fileID: 1480033678936164783}
   leftJoystick: {fileID: 9149649599546811463}
   rightJoystick: {fileID: 9149649599454072659}
   roundTimerText: {fileID: 3352427702413237987}
