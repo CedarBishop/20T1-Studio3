@@ -31,13 +31,9 @@ public class PlayerMovement : MonoBehaviour
 			BasicMovement();
 		}
 
-		BasicMovement();
-
-		// TODO: PC debugging only, remove for gold release
+		BasicMovement(); // TODO: PC debugging only, remove for gold release
 		if (Input.GetKeyDown(KeyCode.E))
-		{
 			abManager.ActivateAbility();
-		}
 	}
 
 	void BasicMovement()
@@ -56,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 
-		// movementDirection = movementDirection.normalized;
+		movementDirection = movementDirection.normalized;
 
 		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
 		rigidbody.velocity = movementVelocity;

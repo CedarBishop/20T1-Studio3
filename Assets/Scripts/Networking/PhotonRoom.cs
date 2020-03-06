@@ -115,7 +115,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
 
         PhotonNetwork.LoadLevel(lobbyScene);
-        
+
 
     }
 

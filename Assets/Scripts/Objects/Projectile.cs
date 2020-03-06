@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
 	public float force;
 	public bool isMyProjectile;
 	Vector3 _direction;
+	public Material allyMaterial;
 
 	[SerializeField]
 	private ParticleSystem sparks; // For when bouncing off walls
@@ -23,8 +24,9 @@ public class Projectile : MonoBehaviour
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.AddForce(force * transform.forward);
 		StartCoroutine("DelayedDestroy");
-	}
+		//GameSetup.EndOfRound += EndOfRoundDestroy;
 
+	}
 
 	IEnumerator DelayedDestroy()
 	{
@@ -55,7 +57,6 @@ public class Projectile : MonoBehaviour
 			}
 		}
 
-
 		if (collision.gameObject.CompareTag("Wall"))
 		{
 			if (sparks != null)
@@ -65,13 +66,21 @@ public class Projectile : MonoBehaviour
 			}
 		}
 
-
 		Destroy(gameObject);
 	}
 
-	public void SetEmissionColour(Color color)
+
+	//void EndOfRoundDestroy ()
+	//{
+	//	StopAllCoroutines();
+	//	GameSetup.EndOfRound -= EndOfRoundDestroy;
+	//	Destroy(gameObject);
+	//}
+
+
+	public void ChangeToAllyMaterial()
 	{
-		Material material = GetComponent<MeshRenderer>().material;
-		material.SetColor("_EmissionColor", color);
+		GetComponent<MeshRenderer>().material = allyMaterial;
+		
 	}
 }

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameSetup : MonoBehaviour
 {
     public static GameSetup instance = null;
+    //public static System.Action EndOfRound;
     private void Awake()
     {
         if (instance == null)
@@ -34,5 +35,12 @@ public class GameSetup : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    
+    //public void RoundEnd ()
+    //{
+    //    if (EndOfRound != null)
+    //    {
+    //        EndOfRound();
+    //    }
+    //}
+
 }
