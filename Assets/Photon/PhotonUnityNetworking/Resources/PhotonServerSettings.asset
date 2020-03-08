@@ -41,5 +41,6 @@ MonoBehaviour:
   - RPC_Stealth
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
+  - RPC_TempShield
   DisableAutoOpenWizard: 1
   ShowSettings: 0

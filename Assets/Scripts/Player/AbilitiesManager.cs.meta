@@ -3,7 +3,11 @@ guid: 0ca094d539b67ef45884008a10176fe5
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - stealthMaterial: {fileID: 2100000, guid: 0cc5ea183c712534c8a5d0aa7c768fb7, type: 2}
+  - stealthActiveMaterial: {instanceID: 0}
+  - shieldEffect: {fileID: 19169142445779263, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

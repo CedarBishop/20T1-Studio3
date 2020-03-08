@@ -515,7 +515,6 @@ MonoBehaviour:
     type: 3}
   layoutGroup: {fileID: 6223093683232866063}
   winText: {fileID: 6223093683460623581}
-  roundNumberText: {fileID: 0}
   leftJoystick: {fileID: 9149649599546811463}
   rightJoystick: {fileID: 9149649599454072659}
   roundTimerText: {fileID: 3352427702413237987}

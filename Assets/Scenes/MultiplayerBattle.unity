@@ -32302,6 +32302,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 522529310311509076, guid: e520dd842037b1a4488c97ce13434c28,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -124.29968
+      objectReference: {fileID: 0}
     - target: {fileID: 5220136099668618641, guid: e520dd842037b1a4488c97ce13434c28,
         type: 3}
       propertyPath: m_AnchorMin.y

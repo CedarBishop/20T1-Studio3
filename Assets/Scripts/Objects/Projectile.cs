@@ -7,16 +7,16 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
-	PhotonView photonView;
-	Rigidbody rigidbody;
 	public int damage;
 	public float force;
 	public bool isMyProjectile;
-	Vector3 _direction;
 	public Material allyMaterial;
 
-	[SerializeField]
-	private ParticleSystem sparks; // For when bouncing off walls
+	private PhotonView photonView;
+	private Rigidbody rigidbody;
+	private Vector3 _direction;
+
+	[SerializeField] private ParticleSystem sparks; // For when bouncing off walls
 
 	void Start()
 	{
@@ -24,8 +24,7 @@ public class Projectile : MonoBehaviour
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.AddForce(force * transform.forward);
 		StartCoroutine("DelayedDestroy");
-		//GameSetup.EndOfRound += EndOfRoundDestroy;
-
+		// GameSetup.EndOfRound += EndOfRoundDestroy;
 	}
 
 	IEnumerator DelayedDestroy()
@@ -62,25 +61,21 @@ public class Projectile : MonoBehaviour
 			if (sparks != null)
 			{
 				sparks.Play();
-
 			}
 		}
 
 		Destroy(gameObject);
 	}
 
-
-	//void EndOfRoundDestroy ()
-	//{
-	//	StopAllCoroutines();
-	//	GameSetup.EndOfRound -= EndOfRoundDestroy;
-	//	Destroy(gameObject);
-	//}
-
+	// void EndOfRoundDestroy()
+	// {
+	// 	StopAllCoroutines();
+	// 	GameSetup.EndOfRound -= EndOfRoundDestroy;
+	// 	Destroy(gameObject);
+	// }
 
 	public void ChangeToAllyMaterial()
 	{
 		GetComponent<MeshRenderer>().material = allyMaterial;
-		
 	}
 }
