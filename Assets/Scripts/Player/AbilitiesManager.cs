@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -13,11 +13,11 @@ public class AbilitiesManager : MonoBehaviour
 
 	[Header("Abilities Lists")]
 	// Enums to work with
-	[SerializeField] private PassiveSkills passiveSkills; 		// Our access to PASSIVE skills enum
-	[SerializeField] private ActiveSkills activeSkills; 		// Our access to ACTIVE skills enum
+	[SerializeField] private PassiveSkills passiveSkills;	// Our access to PASSIVE skills enum
+	[SerializeField] private ActiveSkills activeSkills; 	// Our access to ACTIVE skills enum
 	[Space]
-	public Ability[] passiveAbilities;	 						// Where ALL PASSIVE abilities objects live
-	public Ability[] activeAbilities; 							// Where ALL ACTIVE abilities objects live
+	public Ability[] passiveAbilities;	 					// Where ALL PASSIVE abilities objects live
+	public Ability[] activeAbilities; 						// Where ALL ACTIVE abilities objects live
 
 	private PhotonView PV;
 
@@ -25,87 +25,93 @@ public class AbilitiesManager : MonoBehaviour
 	private AbilityDelegate methodToCall = null;
 
 	[Header("Action Button Tracking")]
-	public bool cooldownComplete = true; 						// Waiting for skill cooldown? (True by default - implies skill is ready)
-	private Ability currentPassive; 							// Whatever current PASSIVE skill is tied to character this round
-	private Ability currentActive; 								// Whatever current ACTIVE skill is tied to character this round
+	public bool cooldownComplete = true; 					// Waiting for skill cooldown? (True by default - implies skill is ready)
+	private Ability currentPassive; 						// Whatever current PASSIVE skill is tied to character this round
+	private Ability currentActive; 							// Whatever current ACTIVE skill is tied to character this round
 
 	[Header("Current Stats Section")]
-	[SerializeField] private GameObject originalMaterial;		// STEALTH - Current GameObject material we want to change
-	private float movementSpeed; 								// SPEED UP - Current velocity/movement speed to increase/decrease
+	private Material currentMaterial;						// STEALTH - Current GameObject material we want to change
+	private float movementSpeed; 							// SPEED UP - Current velocity/movement speed to increase/decrease
 
 	[Header("Adjustments Section")]
-	[SerializeField] [Range(0f, 5f)] private float speedIncreasePercentage; // SPEED UP - Increases damage by a percentage
-	[SerializeField] private float maxMovementSpeed;			// SPEED UP - Increases damage by a percentage
-	[SerializeField] private int maxBulletBounces; 				// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
+	[Range(0f, 5f)] private float speedIncreasePercentage;	// SPEED UP - Increases damage by a percentage
+	private float maxMovementSpeed;							// SPEED UP - Increases damage by a percentage
+	private int maxBulletBounces;							// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
 	[Space]
-	private Material currentMaterial; 							// STEALTH - Where to store current material we want to change
-	private Material revertMaterial; 							// STEALTH - Where to store original material to go back to
-	[SerializeField] private Material stealthMaterial; 			// STEALTH - Assign invisibility shader for Stealth ability
-	[SerializeField] private Material stealthActiveMaterial;	// STEALTH - Assign invisibility shader for Stealth ability
+	private Material revertMaterial;						// STEALTH - Where to store original material to go back to
+	[SerializeField] private Material stealthMaterial;		// STEALTH - Assign invisibility shader for Stealth ability
+	[SerializeField] private Material stealthActiveMaterial; // STEALTH - Assign invisibility shader for Stealth ability
 
+	public GameObject shieldEffect;
 	private bool shieldActive;
-	[SerializeField] private GameObject shieldEffect;
 
 	private void OnEnable()
 	{
-		PV = GetComponent<PhotonView>();
-		movementSpeed = GetComponent<PlayerMovement>().movementSpeed;
+		/**
+		 * Networking Section
+		**/
+		PV = gameObject.GetComponent<PhotonView>();
 
-		abilityButton = GameObject.Find("ActivateAbility");
-		if (abilityButton)
-		{
-			abilityButton.SetActive(true);
-		}
-
-		// revertMaterial = originalMaterial.GetComponent<Material>();
-		//revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
-
-		shieldEffect.SetActive(false);
+		/**
+		 * Abilities Assigning Section
+		**/
 
 		// Carry on with passive ability choice IF list is populated
 		if (passiveAbilities.Length > 0)
 		{
 			// Go through list and pick random ability
-			currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
+			passiveSkills = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)].passiveSkillId;
 			// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
 
-			PassiveAbilityProcess(currentPassive);
-		}
-
-		// TODO: Hard coded temporarily (TEMPSHIELD)
-		currentActive = activeAbilities[4];
-	}
-
-	private void PassiveAbilityProcess(Ability chosenPassive)
-	{
-		if (chosenPassive != null)
-		{
-			// Assign enum by current random enum value
-			passiveSkills = chosenPassive.passiveSkillId;
-
-			switch (passiveSkills)
-			{
-				case PassiveSkills.None:
-					break;
-				case PassiveSkills.BouncyBullet:
-					BouncyBullet(maxBulletBounces);
-					break;
-				case PassiveSkills.HelperBullet:
-					break;
-				case PassiveSkills.SlowdownBullet:
-					break;
-				case PassiveSkills.SpeedUp:
-					SpeedUp();
-					break;
-				case PassiveSkills.TriShield:
-					break;
-				default:
-					break;
-			}
+			PassiveAbilityProcess();
 		}
 		else
 		{
 			throw new NotImplementedException();
+		}
+
+		// TODO: Hard coded temporarily (STEALTH)
+		// currentActive = activeAbilities[3];
+
+		// TODO: Hard coded temporarily (TEMPSHIELD)
+		currentActive = activeAbilities[4];
+
+		/**
+		 * Specific Ability Section
+		**/
+		movementSpeed = gameObject.GetComponent<PlayerMovement>().movementSpeed;
+
+		revertMaterial = gameObject.GetComponentInChildren<MeshRenderer>().materials[0];
+		currentMaterial = revertMaterial;
+
+		abilityButton = GameObject.Find("ActivateAbility");
+		if (abilityButton)
+			abilityButton.SetActive(true);
+
+		if (shieldEffect)
+			shieldEffect.SetActive(false);
+	}
+
+	private void PassiveAbilityProcess()
+	{
+		switch (passiveSkills)
+		{
+			case PassiveSkills.None:
+				break;
+			case PassiveSkills.BouncyBullet:
+				BouncyBullet(maxBulletBounces);
+				break;
+			case PassiveSkills.HelperBullet:
+				break;
+			case PassiveSkills.SlowdownBullet:
+				break;
+			case PassiveSkills.SpeedUp:
+				SpeedUp();
+				break;
+			case PassiveSkills.TriShield:
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -118,9 +124,8 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void SpeedUp()
 	{
-		float moveSpeed = GetComponent<PlayerMovement>().movementSpeed;
-		moveSpeed *= speedIncreasePercentage;
-		moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxMovementSpeed);
+		movementSpeed *= speedIncreasePercentage;
+		movementSpeed = Mathf.Clamp(movementSpeed, 0f, maxMovementSpeed);
 	}
 
 	public void ActivateAbility()
@@ -190,8 +195,6 @@ public class AbilitiesManager : MonoBehaviour
 				currentMaterial = stealthActiveMaterial;
 			else
 				currentMaterial = revertMaterial;
-
-			originalMaterial.GetComponentInChildren<MeshRenderer>().materials[0] = currentMaterial;
 		}
 		else
 		{
@@ -199,15 +202,19 @@ public class AbilitiesManager : MonoBehaviour
 				currentMaterial = stealthMaterial;
 			else
 				currentMaterial = revertMaterial;
-
-			originalMaterial.GetComponentInChildren<MeshRenderer>().materials[0] = currentMaterial;
 		}
 	}
 
 	private void TempShield()
 	{
+		PV.RPC("RPC_TempShield", RpcTarget.AllBuffered);
+	}
+
+	[PunRPC]
+	private void RPC_TempShield()
+	{
 		shieldActive = !shieldActive;
-		Vector3 shieldFullSize = new Vector3(3, 3, 3); // TODO: For use with interpolating between sizes
+		Vector3 shieldFullSize = Vector3.one * 3; // TODO: For use with interpolating between sizes
 
 		if (shieldActive) // Instantiate & apply effect (growing for active)
 		{
