@@ -10,7 +10,7 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 
-# Asset meta data should only be ignored when the corresponding asset is also ignored
+# Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
@@ -21,9 +21,7 @@
 
 # Visual Studio cache directory
 .vs/
-
-# Jetbrains cache directory
-.idea/
+.idea/**
 
 # Gradle cache directory
 .gradle/

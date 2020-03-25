@@ -23,6 +23,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public int myNumberInRoom;
     int maxPlayersInRoom = 2;
     public int playersInGame;
+    public string roomNumberString;
 
     private void Awake()
     {
@@ -53,9 +54,14 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene == lobbyScene || currentScene == gameScene)
+        if (currentScene != 0)
         {
             CreatePlayer();
+            SoundManager.instance.PlayMusic(false);
+        }
+        else
+        {
+            SoundManager.instance.PlayMusic(true);
         }
 
     }
@@ -63,7 +69,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
-        gameScene = Random.Range(2, 3);
+        gameScene = Random.Range(2, 4);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
@@ -71,7 +77,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void CreatePlayer()
     {
         PhotonNetwork.Instantiate(("PhotonPrefabs/PhotonNetworkPlayer") ,transform.position,Quaternion.identity, 0);
-        PhotonNetwork.Instantiate(("PhotonPrefabs/Skill Selection Holder"), transform.position, Quaternion.identity, 0);
+       // PhotonNetwork.Instantiate(("PhotonPrefabs/Skill Selection Holder"), transform.position, Quaternion.identity, 0);
 
     }
 
@@ -119,18 +125,28 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     }
 
-    void CreateRoom()
+    public void CreateRoom()
     {
         print("Trying to create a new room");
-        int randomRoomName = UnityEngine.Random.Range(0, 10000);
+        string randomRoomName;
+        if (string.IsNullOrEmpty(roomNumberString))
+        {
+            int randomNum = UnityEngine.Random.Range(0, 10000);
+            randomRoomName = randomNum.ToString();
+        }
+        else
+        {
+            randomRoomName = roomNumberString;
+        }
+
         RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 2};
-        PhotonNetwork.CreateRoom("Room " + randomRoomName, roomOptions);
+        PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
-        UIManager.instance.PlayerForfeited(int.Parse(PhotonNetwork.NickName));
+        GameManager.instance.PlayerForfeited(int.Parse(PhotonNetwork.NickName));
         print(otherPlayer.NickName + " has left the game");
         playersInRoom--;
     }
