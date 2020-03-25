@@ -5,21 +5,51 @@ using UnityEngine.UI;
 
 public class SkillButton : MonoBehaviour
 {
-	public Sprite sprite;
-	public Text text;
 
-	void Start()
-	{
-		UIManager.DestroySkillButtons += () => Destroy(gameObject);
-	}
+    Image image;
+    int skillNumber;
+    bool isPassive;
 
-	private void OnDestroy()
-	{
-		UIManager.DestroySkillButtons -= () => Destroy(gameObject);
-	}
+   
+    public void InitialiseButton (bool IsPassive, int SkillNumber)
+    {
+        isPassive = IsPassive;
+        skillNumber = SkillNumber;
+        if (isPassive)
+        {
+            PassiveSkills[] passive = SkillSelectionHolder.instance.GetPassiveSkills();
+            int num = SkillSelectionHolder.instance.GetChosenPassiveSkillSprite(passive[skillNumber]);
+            image = GetComponent<Image>();
+            image.sprite = SkillSelectionHolder.instance.passiveSprites[num];
 
-	public void SetText(string str)
-	{
-		text.text = str;
-	}
+        }
+        else
+        {
+            ActiveSkills[] active = SkillSelectionHolder.instance.GetActiveSkills();
+            int num = SkillSelectionHolder.instance.GetChosenActiveSkillSprite(active[skillNumber]);
+            image = GetComponent<Image>();
+            image.sprite = SkillSelectionHolder.instance.activeSprites[num];
+        }
+    }
+
+    void Start()
+    {
+        GameManager.DestroySkillButtons += DestroySelf;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.DestroySkillButtons -= DestroySelf;
+
+    }
+
+    public void ChooseSkill ()
+    {
+        GameManager.instance.SkillSelectButton(isPassive,skillNumber);
+    }
+
+    void DestroySelf()
+    {
+        Destroy(gameObject);
+    }    
 }

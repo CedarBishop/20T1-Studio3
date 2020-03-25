@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 
+    AppIdRealtime: 16f400b3-daad-4098-9e7e-ee85b097795e
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -41,6 +41,17 @@ MonoBehaviour:
   - RPC_Stealth
   - RPC_TellMasterToStartGame
   - RPC_UpdateHealth
-  - RPC_TempShield
+  - RPC_SpawnHealthPickup
+  - RPC_OnHealthPickup
+  - RPC_PlayerDeath
+  - RPC_AssignRandomSkillIcon
+  - RPC_RemoveActiveSkills
+  - RPC_RemovePassiveSkills
+  - RPC_InitRandomSkills
+  - RPC_AssignSkillIcon
+  - RPC_PlaceLandMine
+  - RPC_Activate
+  - RPC_ActivateAll
+  - RPC_ActivateOne
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1

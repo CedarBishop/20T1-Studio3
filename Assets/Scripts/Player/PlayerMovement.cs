@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-[RequireComponent(typeof(PlayerMovement)), DisallowMultipleComponent]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerMovement : MonoBehaviour
 {
 	public float movementSpeed;
+	public float slowedMovementSpeed;
+	public float timeSlowedFor = 3;
 	private FixedJoystick joystick;
 	private PhotonView photonView;
 	private Rigidbody rigidbody;
 	private Vector3 movementDirection;
-	private AbilitiesManager abManager;
+	//private AbilitiesManager abManager;
+	bool isSlowed;
+	float timer;
 
 	void Start()
 	{
-		abManager = GetComponent<AbilitiesManager>();
+		//TryGetComponent<AbilitiesManager>(out abManager);
 		photonView = GetComponent<PhotonView>();
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.useGravity = false;
@@ -31,30 +35,47 @@ public class PlayerMovement : MonoBehaviour
 			BasicMovement();
 		}
 
-		BasicMovement(); // TODO: PC debugging only, remove for gold release
-		if (Input.GetKeyDown(KeyCode.E))
-			abManager.ActivateAbility();
+		// TODO: PC debugging only, remove for gold release
+		//if (Input.GetKeyDown(KeyCode.E))
+			//abManager.ActivateAbility();
 	}
 
 	void BasicMovement()
 	{
-#if UNITY_IPHONE || UNITY_ANDROID
-        movementDirection.x = joystick.Horizontal;
-        movementDirection.y = 0;
-        movementDirection.z = joystick.Vertical;
+#if UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBGL
+		movementDirection.x = joystick.Horizontal;
+		movementDirection.y = 0;
+		movementDirection.z = joystick.Vertical;
 #elif UNITY_EDITOR || UNITY_STANDALONE
 		movementDirection.x = Input.GetAxis("Horizontal");
 		movementDirection.y = 0;
 		movementDirection.z = Input.GetAxisRaw("Vertical");
 #endif
 
-		movementDirection.x = Input.GetAxis("Horizontal");
-		movementDirection.y = 0;
-		movementDirection.z = Input.GetAxisRaw("Vertical");
-
 		movementDirection = movementDirection.normalized;
 
-		Vector3 movementVelocity = movementDirection * movementSpeed * Time.fixedDeltaTime;
+		Vector3 movementVelocity = movementDirection * Time.fixedDeltaTime * ((isSlowed)? slowedMovementSpeed : movementSpeed);
 		rigidbody.velocity = movementVelocity;
+	}
+
+	void SlowdownTimer ()
+	{
+		if (isSlowed)
+		{
+			if (timer <= 0.0f)
+			{
+				isSlowed = false;
+			}
+			else
+			{
+				timer -= Time.fixedDeltaTime;
+			}
+		}
+	}
+
+	public void Slowed ()
+	{
+		timer = timeSlowedFor;
+		isSlowed = true;
 	}
 }
