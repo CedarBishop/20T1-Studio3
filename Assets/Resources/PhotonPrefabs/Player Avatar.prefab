@@ -522,9 +522,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bb041288c6e2e24d9fbb714b9247c4b, type: 2}
   cooldownComplete: 1
   originalMaterial: {fileID: 0}
-  speedIncreasePercentage: 0
-  maxMovementSpeed: 0
-  maxBulletBounces: 0
+  speedIncreasePercentage: 2
+  maxMovementSpeed: 800
+  maxBulletBounces: 2
   stealthMaterial: {fileID: 2100000, guid: ba06da8ab9ee3c84e9bac6faa492cdaf, type: 2}
   stealthActiveMaterial: {fileID: 0}
   shieldEffect: {fileID: 1651260806888081699}

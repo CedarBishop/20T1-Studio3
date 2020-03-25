@@ -13,11 +13,24 @@ public class TriShield : MonoBehaviour
     private AbilitiesManager abilitiesManager;
     bool hasTriShieldAbiliity;
 
-    private void OnEnable()
-    {
-        abilitiesManager = GetComponentInParent<AbilitiesManager>();
 
-        hasTriShieldAbiliity = (abilitiesManager.passiveSkills == PassiveSkills.TriShield) ? true : false;
+    private void Start()
+    {
+        if (hasTriShieldAbiliity == false)
+        {
+            if (miniShields != null)
+            {
+                for (int i = 0; i < miniShields.Length; i++)
+                {
+                    miniShields[i].gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public void Initialise()
+    {
+        hasTriShieldAbiliity = true;
         if (miniShields != null)
         {
             for (int i = 0; i < miniShields.Length; i++)

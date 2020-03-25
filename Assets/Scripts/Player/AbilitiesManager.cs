@@ -49,15 +49,19 @@ public class AbilitiesManager : MonoBehaviour
 	private bool shieldActive;
 	[SerializeField] private GameObject shieldEffect;
 
+	private PlayerMovement playerMovement;
 	private PlayerCombat playerCombat;
 	private PlayerRewind playerRewind;
+	private TriShield triShield;
 
 	private void OnEnable()
 	{
 		PV = GetComponent<PhotonView>();
-		movementSpeed = GetComponent<PlayerMovement>().movementSpeed;
+		 playerMovement = GetComponent<PlayerMovement>();
+		movementSpeed = playerMovement.movementSpeed;
 		playerCombat = GetComponent<PlayerCombat>();
 		playerRewind = GetComponent<PlayerRewind>();
+		triShield = GetComponentInChildren<TriShield>();
 
 		// Add method as delegate to ability UI button
 		AbilityInitiate.OnAbilityClick += ActivateAbility;
@@ -68,50 +72,69 @@ public class AbilitiesManager : MonoBehaviour
 		shieldEffect.SetActive(false);
 
 		// Carry on with passive ability choice IF list is populated
-		if (passiveAbilities.Length > 0)
-		{
-			// Go through list and pick random ability
-			//currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
-			// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
+		//if (passiveAbilities.Length > 0)
+		//{
+		//	// Go through list and pick random ability
+		//	//currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
+		//	// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
 
-			PassiveAbilityProcess(currentPassive);
-		}
+			
+		//}
 
 		// TODO: Hard coded temporarily (TEMPSHIELD)
 		//currentActive = activeAbilities[4];
 	}
 
-	private void PassiveAbilityProcess(Ability chosenPassive)
+	public void AssignPassiveSkill (PassiveSkills passive)
 	{
-		if (chosenPassive != null)
+		passiveSkills = passive;
+		PassiveAbilityProcess(passiveSkills);
+	}
+
+	public void AssignActiveSkill (ActiveSkills active)
+	{
+		activeSkills = active;
+	}
+
+	private void Update()
+	{
+		// For testing on PC
+		if (Input.GetKeyDown(KeyCode.E))
 		{
+			ActivateAbility();
+		}
+	}
+
+	private void PassiveAbilityProcess(PassiveSkills passive)
+	{
+		
+		
 			// Assign enum by current random enum value
-			passiveSkills = chosenPassive.passiveSkillId;
+			currentPassive = passiveAbilities[(int)passive];
 
 			switch (passiveSkills)
 			{
 				case PassiveSkills.None:
 					break;
 				case PassiveSkills.BouncyBullet:
-					BouncyBullet(maxBulletBounces);
+					playerCombat.AssignedBulletBounce(maxBulletBounces);	
+					//BouncyBullet(maxBulletBounces);
 					break;
 				case PassiveSkills.HelperBullet:
+					playerCombat.AssignedHelperBullet();
 					break;
 				case PassiveSkills.SlowdownBullet:
+					playerCombat.AssignedSlowdownBullet();
 					break;
 				case PassiveSkills.SpeedUp:
 					SpeedUp();
 					break;
 				case PassiveSkills.TriShield:
+					triShield.Initialise();	
 					break;
 				default:
 					break;
 			}
-		}
-		else
-		{
-			throw new NotImplementedException();
-		}
 	}
 
 	// Bullets that bounce off the environment XX amount of times but destroy on people
@@ -122,8 +145,7 @@ public class AbilitiesManager : MonoBehaviour
 	}
 
 	private void SpeedUp()
-	{
-		PlayerMovement playerMovement = GetComponent<PlayerMovement>();
+	{		
 		float moveSpeed = playerMovement.movementSpeed;
 		moveSpeed *= speedIncreasePercentage;
 		moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxMovementSpeed);

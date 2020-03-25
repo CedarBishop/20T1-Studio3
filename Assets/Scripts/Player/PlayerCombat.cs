@@ -24,6 +24,8 @@ public class PlayerCombat : MonoBehaviour
 	private bool canShoot;
 	private uint bulletCount;
 	private bool hasHelperBullet;
+	private bool hasSlowdownBullet;
+	private int bulletBounces;
 	
 
 	void Start()
@@ -293,5 +295,21 @@ public class PlayerCombat : MonoBehaviour
 	{
 		health = 100;
 		photonView.RPC("RPC_UpdateHealth", RpcTarget.All, health, roomNumber);
+	}
+
+
+	public void AssignedHelperBullet ()
+	{
+		hasHelperBullet = true;
+	}
+
+	public void AssignedSlowdownBullet ()
+	{
+		hasSlowdownBullet = true;
+	}
+
+	public void AssignedBulletBounce (int bounces)
+	{
+		bulletBounces = bounces;
 	}
 }
