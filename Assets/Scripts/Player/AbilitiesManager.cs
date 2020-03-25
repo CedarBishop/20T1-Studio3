@@ -165,20 +165,20 @@ public class AbilitiesManager : MonoBehaviour
 				case ActiveSkills.DropMine:
 					currentActive = activeAbilities[0];
 					methodToCall = playerCombat.PlaceDropMine;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				case ActiveSkills.Rewind:
 					currentActive = activeAbilities[1];
 					methodToCall = playerRewind.Rewind;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 
 					break;
 				case ActiveSkills.Shotgun:
 					currentActive = activeAbilities[2];
 					methodToCall = playerCombat.ShotgunShoot;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				case ActiveSkills.Stealth:

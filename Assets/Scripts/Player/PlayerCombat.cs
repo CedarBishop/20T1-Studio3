@@ -18,7 +18,6 @@ public class PlayerCombat : MonoBehaviour
 
 	private PhotonView photonView;
 	private FixedJoystick fixedJoystick;
-	private AbilitiesManager abilitiesManager;
 	private PlayerMovement playerMovement;
 	private Vector3 joystickDirection;
 	private bool canShoot;
@@ -48,12 +47,6 @@ public class PlayerCombat : MonoBehaviour
 		canShoot = true;
 
 		healthBar.fillAmount = 1.0f;
-	}
-
-	private void OnEnable()
-	{
-		abilitiesManager = GetComponent<AbilitiesManager>();
-		hasHelperBullet = (abilitiesManager.passiveSkills == PassiveSkills.HelperBullet);
 	}
 
 
@@ -98,13 +91,6 @@ public class PlayerCombat : MonoBehaviour
 				Shoot();
 			}
 		}
-
-		// TODO: Debuging shot gun ability delete after confirming this works
-		if (Input.GetButtonDown("Fire2"))
-		{
-
-			PlaceDropMine();
-		}
 	}
 #endif
 
@@ -122,15 +108,14 @@ public class PlayerCombat : MonoBehaviour
 					helperBullet = true;
 				}
 			}
-			int bulletBounces = (abilitiesManager.passiveSkills == PassiveSkills.BouncyBullet) ? 2 : 0;
-			bool slowDownBullet = (abilitiesManager.passiveSkills == PassiveSkills.SlowdownBullet) ? true : false;
+
 			photonView.RPC(
 				"RPC_SpawnAndInitProjectile",
 				RpcTarget.Others,
 				new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				transform.rotation,
 				bulletBounces,
-				slowDownBullet,
+				hasSlowdownBullet,
 				helperBullet
 			);
 
@@ -142,7 +127,7 @@ public class PlayerCombat : MonoBehaviour
 			bullet.ChangeToAllyMaterial();
 			bullet.isMyProjectile = true;
 			bullet.bounces = bulletBounces;
-			bullet.isSlowDownBullet = slowDownBullet;
+			bullet.isSlowDownBullet = hasSlowdownBullet;
 
 			Destroy(bullet, 3);
 		}
@@ -176,8 +161,6 @@ public class PlayerCombat : MonoBehaviour
 					}
 				}
 
-				int bulletBounces = (abilitiesManager.passiveSkills == PassiveSkills.BouncyBullet) ? 2 : 0;
-				bool slowDownBullet = (abilitiesManager.passiveSkills == PassiveSkills.SlowdownBullet) ? true : false;
 
 				photonView.RPC(
 				"RPC_SpawnAndInitProjectile",
@@ -185,8 +168,8 @@ public class PlayerCombat : MonoBehaviour
 				new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				shotGunRotations[i],
 				bulletBounces,
-				slowDownBullet,
-				helperBullet
+				hasSlowdownBullet,
+				hasHelperBullet
 				);
 
 				Projectile bullet = Instantiate(
@@ -197,7 +180,7 @@ public class PlayerCombat : MonoBehaviour
 				bullet.ChangeToAllyMaterial();
 				bullet.isMyProjectile = true;
 				bullet.bounces = bulletBounces;
-				bullet.isSlowDownBullet = slowDownBullet;
+				bullet.isSlowDownBullet = hasSlowdownBullet;
 
 				Destroy(bullet, 3);
 			}
