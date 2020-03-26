@@ -10,22 +10,20 @@
 
 		/* Dissolve effect Properties */
 		_DissolveTex ("Dissolve Texture", 2D) = "white" {}
-		_DissolveBorderColour1 ("Edge colour 1", Color) = (1,1,1,1)
-		_DissolveBorderColour2 ("Edge colour 2", Color) = (1,1,1,1)
-		_DissolveAmount ("Dissolution level", Range (0, 1)) = 0
-		_DissolveTexWidth ("Edge width", Range (0.0, 1.0)) = 0.025
+		_DissolveBorderColour1 ("Dissolve Colour 1", Color) = (1,1,1,1)
+		_DissolveBorderColour2 ("Dissolve Colour 2", Color) = (1,1,1,1)
+		_DissolveAmount ("Dissolve Amount", Range (0, 1)) = 0
+		_DissolveTexWidth ("Dissolve Width", Range (0.0, 1.0)) = 0.025
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Transparent" }
 		LOD 100
 
 		Pass
 		{
 			Cull Off // Make double sided
         	Lighting Off
-        	ZWrite Off
-        	Fog { Mode Off }
 
 			CGPROGRAM
 			#pragma vertex vert
