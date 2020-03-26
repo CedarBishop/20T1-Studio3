@@ -4,9 +4,9 @@
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_Intensity("_Intensity", Float) = 10
-		_EdgeColor("_EdgeColor", Color) = (1,0,0.7064714,0)
+		_EdgeColor("_EdgeColor", Color) = (1,0,0.7064714,1)
 		_FresnelPower("_FresnelPower", Float) = 5
-		_FresnelColor("_FresnelColor", Color) = (1,1,1,0)
+		_FresnelColor("_FresnelColor", Color) = (1,1,1,1)
 
 		/* Dissolve effect Properties */
 		_DissolveTex ("Dissolve Texture", 2D) = "white" {}
