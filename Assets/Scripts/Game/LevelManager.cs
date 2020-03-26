@@ -5,95 +5,88 @@ using Photon.Pun;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager instance = null;
-    PhotonView photonView;
+	public static LevelManager instance = null;
+	PhotonView photonView;
 
-    [Header ("Round Logic")]
+	[Header("Round Logic")] public Transform[] spawnPoints;
+	public int requiredRoundsToWinMatch = 3;
+	public float roundTime = 60.0f;
+	public float intermissionTime = 15.0f;
+	public bool isInLobby;
 
-    public Transform[] spawnPoints;
-    public int requiredRoundsToWinMatch = 3;
-    public float roundTime = 60.0f;
-    public float intermissionTime = 15.0f;
-    public bool isInLobby;
-    
+	[Header("Small Health Pickups")] public HealthPickup[] smallHealthPickups;
+	public float smallHealthPickupRespawnTime;
 
-    [Header ("Small Health Pickups")]
+	[Header("Large Health Pickups")] public HealthPickup[] largeHealthPickups;
+	public float timeBeforeLargePickupsSpawn;
 
-    public HealthPickup[] smallHealthPickups;
-    public float smallHealthPickupRespawnTime;
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else if (instance != null)
+		{
+			Destroy(gameObject);
+		}
+	}
 
-    [Header("Large Health Pickups")]
+	private void Start()
+	{
+		photonView = GetComponent<PhotonView>();
 
-    public HealthPickup[] largeHealthPickups;
-    public float timeBeforeLargePickupsSpawn;
+		// Activate all small health pickups and set their index number so they can be respawned
+		if (smallHealthPickups != null)
+		{
+			for (int i = 0; i < smallHealthPickups.Length; i++)
+			{
+				smallHealthPickups[i].gameObject.SetActive(true);
+				smallHealthPickups[i].pickupIndex = i;
+			}
+		}
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-    }
+		// Deactivate all large pickups on start and start timer for when they should be activated
+		if (largeHealthPickups != null)
+		{
+			for (int i = 0; i < largeHealthPickups.Length; i++)
+			{
+				largeHealthPickups[i].gameObject.SetActive(true);
+			}
 
-    private void Start()
-    {
-        photonView = GetComponent<PhotonView>();
+			StartCoroutine("SpawnLargeHealthPickups");
+		}
+	}
 
-        // Activate all small health pickups and set their index number so they can be respawned
-        if (smallHealthPickups != null)
-        {
-            for (int i = 0; i < smallHealthPickups.Length; i++)
-            {
-                smallHealthPickups[i].gameObject.SetActive(true);
-                smallHealthPickups[i].pickupIndex = i;
-            }
-        }
+	// public function to call rpc function to tell all clients that the health pickup should be deactivated on pickup
+	public void OnHealthPickup(int pickupIndex)
+	{
+		photonView.RPC("RPC_OnHealthPickup", RpcTarget.All, pickupIndex);
+	}
 
-        // Deactivate all large pickups on start and start timer for when they should be activated
-        if (largeHealthPickups != null)
-        {
-            for (int i = 0; i < largeHealthPickups.Length; i++)
-            {
-                largeHealthPickups[i].gameObject.SetActive(true);
-            }
-            StartCoroutine("SpawnLargeHealthPickups");
-        }
-    }
+	[PunRPC]
+	private void RPC_OnHealthPickup(int pickupIndex)
+	{
+		smallHealthPickups[pickupIndex].gameObject.SetActive(false);
+		StartCoroutine("DelaySpawnHealthPickup", pickupIndex);
+	}
 
-    // public function to call rpc function to tell all clients that the health pickup should be deactivated on pickup
-    public void OnHealthPickup (int pickupIndex)
-    {
-        photonView.RPC("RPC_OnHealthPickup", RpcTarget.All,pickupIndex);
-    }
+	private IEnumerator DelaySpawnHealthPickup(int pickupIndex)
+	{
+		yield return new WaitForSeconds(smallHealthPickupRespawnTime);
+		smallHealthPickups[pickupIndex].gameObject.SetActive(true);
+	}
 
-    [PunRPC]
-    void RPC_OnHealthPickup(int pickupIndex)
-    {
-        smallHealthPickups[pickupIndex].gameObject.SetActive(false);
-        StartCoroutine("DelaySpawnHealthPickup", pickupIndex);
-    }
+	private IEnumerator SpawnLargeHealthPickups()
+	{
+		yield return new WaitForSeconds(timeBeforeLargePickupsSpawn);
 
-    IEnumerator DelaySpawnHealthPickup(int pickupIndex)
-    {
-        yield return new WaitForSeconds(smallHealthPickupRespawnTime);
-        smallHealthPickups[pickupIndex].gameObject.SetActive(true);
-    }
-
-    IEnumerator SpawnLargeHealthPickups ()
-    {
-
-        yield return new WaitForSeconds(timeBeforeLargePickupsSpawn);
-
-        if (largeHealthPickups != null)
-        {
-            for (int i = 0; i < largeHealthPickups.Length; i++)
-            {
-                largeHealthPickups[i].gameObject.SetActive(true);
-            }
-        }
-    }
+		if (largeHealthPickups != null)
+		{
+			for (int i = 0; i < largeHealthPickups.Length; i++)
+			{
+				largeHealthPickups[i].gameObject.SetActive(true);
+			}
+		}
+	}
 }
