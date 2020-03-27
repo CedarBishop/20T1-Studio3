@@ -398,7 +398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 400
-  slowedMovementSpeed: 0
+  slowedMovementSpeedMultiplier: 0.75
+  speedUpMovementSpeedMultiplier: 1.5
   timeSlowedFor: 3
 --- !u!114 &4357997688448584929
 MonoBehaviour:
@@ -809,7 +810,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 39d34eb2752764640ad344a4aa47696b, type: 2}
     - target: {fileID: 19169142445779251, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
         type: 3}
       propertyPath: m_LocalPosition.x

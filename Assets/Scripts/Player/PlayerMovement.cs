@@ -7,7 +7,8 @@ using Photon.Pun;
 public class PlayerMovement : MonoBehaviour
 {
 	public float movementSpeed;
-	public float slowedMovementSpeed;
+	public float slowedMovementSpeedMultiplier;
+	public float speedUpMovementSpeedMultiplier;
 	public float timeSlowedFor = 3;
 	private FixedJoystick joystick;
 	private PhotonView photonView;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 	//private AbilitiesManager abManager;
 	bool isSlowed;
 	float timer;
+	bool hasSpeedUpPassive;
 
 	void Start()
 	{
@@ -33,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 		if (photonView.IsMine)
 		{
 			BasicMovement();
+			SlowdownTimer();
 		}
 
 		// TODO: PC debugging only, remove for gold release
@@ -54,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
 		movementDirection = movementDirection.normalized;
 
-		Vector3 movementVelocity = movementDirection * Time.fixedDeltaTime * ((isSlowed)? slowedMovementSpeed : movementSpeed);
+		Vector3 movementVelocity = movementDirection * movementSpeed * ((hasSpeedUpPassive)? speedUpMovementSpeedMultiplier: 1.0f ) * Time.fixedDeltaTime * ((isSlowed)? slowedMovementSpeedMultiplier : 1.0f);
 		rigidbody.velocity = movementVelocity;
 	}
 
@@ -77,5 +80,10 @@ public class PlayerMovement : MonoBehaviour
 	{
 		timer = timeSlowedFor;
 		isSlowed = true;
+	}
+
+	public void AssignSpeedUp ()
+	{
+		hasSpeedUpPassive = true;
 	}
 }

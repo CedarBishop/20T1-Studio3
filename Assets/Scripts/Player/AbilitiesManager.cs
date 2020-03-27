@@ -127,7 +127,7 @@ public class AbilitiesManager : MonoBehaviour
 					playerCombat.AssignedSlowdownBullet();
 					break;
 				case PassiveSkills.SpeedUp:
-					SpeedUp();
+					playerMovement.AssignSpeedUp();
 					break;
 				case PassiveSkills.TriShield:
 					triShield.Initialise();	
@@ -228,6 +228,7 @@ public class AbilitiesManager : MonoBehaviour
 			if (currentMaterial != stealthActiveMaterial)
 			{
 				currentMaterial = stealthActiveMaterial;
+				
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
 			}
 			else
@@ -253,7 +254,13 @@ public class AbilitiesManager : MonoBehaviour
 		}
 	}
 
-	private void TempShield()
+	void TempShield ()
+	{
+		PV.RPC("RPC_TempShield", RpcTarget.All);
+	}
+
+	[PunRPC]
+	private void RPC_TempShield()
 	{
 		shieldActive = !shieldActive;
 		Vector3 shieldFullSize = new Vector3(3, 3, 3); // TODO: For use with interpolating between sizes
