@@ -12,7 +12,7 @@ public class PlayerCombat : MonoBehaviour
 	public Projectile helperBulletPrefab;
 	public DropMine landMinePrefab;
 	public Image healthBar;
-	
+
 	[SerializeField] private float bulletSpawnOffset;
 	[HideInInspector] public int roomNumber;
 
@@ -25,7 +25,6 @@ public class PlayerCombat : MonoBehaviour
 	private bool hasHelperBullet;
 	private bool hasSlowdownBullet;
 	private int bulletBounces;
-	
 
 	void Start()
 	{
@@ -34,7 +33,6 @@ public class PlayerCombat : MonoBehaviour
 #endif
 
 		photonView = GetComponent<PhotonView>();
-		
 		playerMovement = GetComponent<PlayerMovement>();
 
 		if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
@@ -49,11 +47,9 @@ public class PlayerCombat : MonoBehaviour
 		healthBar.fillAmount = 1.0f;
 	}
 
-
 #if UNITY_ANDROID || UNITY_IPHONE || UNITY_WEBGL
 	void Update()
 	{
-
 		joystickDirection = new Vector3(fixedJoystick.Horizontal, 0, fixedJoystick.Vertical);
 
 		if (Mathf.Abs(joystickDirection.x) > 0.25f || Mathf.Abs(joystickDirection.z) > 0.25f)
@@ -66,9 +62,6 @@ public class PlayerCombat : MonoBehaviour
 			}
 		}
 	}
-
-
-
 
 #elif UNITY_EDITOR || UNITY_STANDALONE
 	void Update()
@@ -93,7 +86,6 @@ public class PlayerCombat : MonoBehaviour
 		}
 	}
 #endif
-
 
 	void Shoot()
 	{
@@ -205,7 +197,7 @@ public class PlayerCombat : MonoBehaviour
 		{
 			bullet = Instantiate(bulletPrefab, origin, quaternion);
 		}
-		
+
 		bullet.isMyProjectile = false;
 		bullet.bounces = bounces;
 		bullet.isSlowDownBullet = isSlowDownBullet;
@@ -222,7 +214,7 @@ public class PlayerCombat : MonoBehaviour
 				);
 		DropMine mine = g.GetComponent<DropMine>();
 		mine.roomNumber = roomNumber;
-	}	
+	}
 
 
 

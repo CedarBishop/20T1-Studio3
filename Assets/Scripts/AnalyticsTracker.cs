@@ -24,7 +24,6 @@ public class AnalyticsTracker : MonoBehaviour
 
 	public void Init ()
 	{
-
 		roundDelayTime = GameManager.instance.roundStartDelay;
 
 		// Assign action delegates
