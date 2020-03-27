@@ -25,11 +25,11 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+        musicAudioSource = GetComponent<AudioSource>();
     }
 
     void Start()
     {
-        musicAudioSource = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("MusicVolume"))
         {
             musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1.0f);
@@ -47,6 +47,7 @@ public class SoundManager : MonoBehaviour
             SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
         }
         
+        PlayMusic(true);
     }
 
     public void PlaySFX(string soundName)

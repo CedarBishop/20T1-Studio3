@@ -48,18 +48,24 @@ public class Projectile : MonoBehaviour
 				}
 			}
 
-			if (collision.gameObject.GetComponent<MiniShield>())
+
+			if (collision.gameObject.CompareTag("Shield"))
 			{
-				if (collision.gameObject.GetComponent<MiniShield>().BlockedProjectile())
+				if (collision.gameObject.GetComponent<MiniShield>())
 				{
-					Destroy(gameObject);
+					if (collision.gameObject.GetComponent<MiniShield>().BlockedProjectile())
+					{
+
+					}
+					else
+					{
+						return;
+					}
+					
 				}
-				else
-				{
-					return;
-				}			
-				
+				Destroy(gameObject);
 			}
+		
 
 			if (collision.gameObject.GetComponentInParent<PhotonView>())
 			{

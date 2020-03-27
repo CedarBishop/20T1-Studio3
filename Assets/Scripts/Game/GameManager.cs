@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 #if UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBGL
 		leftJoystick.gameObject.SetActive(true);
 		rightJoystick.gameObject.SetActive(true);
-		abilityButton.gameObject.SetActive(false);
+		abilityButton.gameObject.SetActive(true);
 #elif UNITY_EDITOR || UNITY_STANDALONE
 		leftJoystick.gameObject.SetActive(false);
 		rightJoystick.gameObject.SetActive(false);
@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
 	private IEnumerator Start()
 	{
+		AnalyticsTracker.instance.Init();
 		playerOnePassiveSkillImage.gameObject.SetActive(false);
 		playerOneActionSkillImage.gameObject.SetActive(false);
 		playerTwoPassiveSkillImage.gameObject.SetActive(false);
@@ -462,7 +463,7 @@ public class GameManager : MonoBehaviour
 					{
 						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
-							abilitiesManager[i].passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber];
+							abilitiesManager[i].AssignPassiveSkill( SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber]);
 							AnalyticsTracker.instance.currentPassive = abilitiesManager[i].passiveSkills;
 						}
 					}
@@ -483,7 +484,7 @@ public class GameManager : MonoBehaviour
 					{
 						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
-							abilitiesManager[i].activeSkills = SkillSelectionHolder.instance.GetActiveSkills()[skillNumber];
+							abilitiesManager[i].AssignActiveSkill(SkillSelectionHolder.instance.GetActiveSkills()[skillNumber]);
 							AnalyticsTracker.instance.currentActive = abilitiesManager[i].activeSkills;
 						}
 					}

@@ -14,12 +14,16 @@ public class AnalyticsTracker : MonoBehaviour
 
 	private float roundDelayTime;
 
-	private void Start()
+	private void Awake()
 	{
 		if (instance == null)
 			instance = this;
 		else if (instance != null)
 			Destroy(gameObject);
+	}
+
+	public void Init ()
+	{
 
 		roundDelayTime = GameManager.instance.roundStartDelay;
 

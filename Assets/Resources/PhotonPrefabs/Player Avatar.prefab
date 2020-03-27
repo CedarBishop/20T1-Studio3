@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 448661770474963411}
   - component: {fileID: 7702464432090095466}
   - component: {fileID: 2518882403159718731}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,9 +233,9 @@ GameObject:
   - component: {fileID: 7061676979869129744}
   - component: {fileID: 2929451371017709985}
   - component: {fileID: 6141661945684456048}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield (2)
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -630,9 +630,9 @@ GameObject:
   - component: {fileID: 3386014239513148413}
   - component: {fileID: 7923075367421875282}
   - component: {fileID: 7660504493003033021}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield (1)
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -889,6 +889,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19169142445779263, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 19169142445779263, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+        type: 3}
+      propertyPath: m_TagString
+      value: Shield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d6e1c4fc59a40645a52cf5a86bbd215, type: 3}
