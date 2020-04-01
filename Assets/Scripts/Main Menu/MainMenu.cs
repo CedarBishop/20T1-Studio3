@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
     public Slider sfxSlider;
 
     public InputField roomNumberInputField;
+    public InputField nicknameInputField;
 
     private int characterNumber;
 
@@ -197,8 +198,23 @@ public class MainMenu : MonoBehaviour
 
     public void OnRoomCodeChange ()
     {
-        PhotonRoom.photonRoom.roomNumberString = roomNumberInputField.text;
+        PhotonRoom.instance.roomNumberString = roomNumberInputField.text;
         PhotonLobby.photonLobby.roomNumberString = roomNumberInputField.text;
+    }
+
+    public void SetNickname()
+    {
+        string str = nicknameInputField.text;
+        if (!string.IsNullOrEmpty(str))
+        {
+            PlayerPrefs.SetString("PlayerNickname", str);
+            PhotonRoom.instance.nickName = str;
+        }
+        else
+        {
+            PlayerPrefs.SetString("PlayerNickname", "");
+            PhotonRoom.instance.nickName = "???";
+        }
     }
 
 }

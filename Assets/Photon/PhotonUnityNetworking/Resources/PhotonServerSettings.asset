@@ -54,5 +54,7 @@ MonoBehaviour:
   - RPC_ActivateAll
   - RPC_ActivateOne
   - RPC_TempShield
+  - RPC_SetOtherPlayerName
+  - RPC_SetPlayerName
   DisableAutoOpenWizard: 1
   ShowSettings: 1

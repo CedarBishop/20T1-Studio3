@@ -19,7 +19,7 @@ public class AvatarSetup : MonoBehaviour
         {
             print("Room number parsed " + roomNumber);
         }
-        transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
+
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);

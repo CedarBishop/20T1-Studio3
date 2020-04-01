@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
-    public static PhotonRoom photonRoom;
+    public static PhotonRoom instance;
     PhotonView photonView;
 
     public bool isGameLoaded;
@@ -24,14 +24,15 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     int maxPlayersInRoom = 2;
     public int playersInGame;
     public string roomNumberString;
+    public string nickName;
 
     private void Awake()
     {
-        if (photonRoom == null)
+        if (instance == null)
         {
-            photonRoom = this;
+            instance = this;
         }
-        else if (photonRoom != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -41,7 +42,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
-
+        InitNickname();
     }
 
     public override void OnEnable()
@@ -168,6 +169,19 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     void RPC_EndMatch()
     {
         GameSetup.instance.DisconnectPlayer();
+    }
+
+    void InitNickname()
+    {
+        string str = PlayerPrefs.GetString("PlayerNickname","");
+        if (!string.IsNullOrEmpty(str))
+        {
+            nickName = str;
+        }
+        else
+        {
+            nickName = "???";
+        }
     }
 
 }

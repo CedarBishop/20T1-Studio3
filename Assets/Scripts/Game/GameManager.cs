@@ -105,7 +105,27 @@ public class GameManager : MonoBehaviour
 		}
 
 		photonView = GetComponent<PhotonView>();
+		SetPlayerName();
 		StartRoundTimer();
+	}
+
+	void SetPlayerName ()
+	{
+		if (int.TryParse(PhotonNetwork.NickName, out int num))
+		{
+			string str = PhotonRoom.instance.nickName;
+			
+			photonView.RPC("RPC_SetPlayerName",RpcTarget.All , num, str);
+		}
+
+	}
+
+	[PunRPC]
+	void RPC_SetPlayerName (int playerNum, string name)
+	{
+		print(playerNum + name);
+		playerStats[playerNum - 1].SetPlayerName(name);
+
 	}
 
 	// Called when a player dies
@@ -193,7 +213,7 @@ public class GameManager : MonoBehaviour
 	private IEnumerator CoEndMatch()
 	{
 		yield return new WaitForSeconds(3);
-		PhotonRoom.photonRoom.EndMatch();
+		PhotonRoom.instance.EndMatch();
 	}
 
 	public void PlayerForfeited(int playerNumber)

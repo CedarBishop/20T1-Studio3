@@ -14,14 +14,14 @@ public class PlayerMovement : MonoBehaviour
 	private PhotonView photonView;
 	private Rigidbody rigidbody;
 	private Vector3 movementDirection;
-	//private AbilitiesManager abManager;
+
 	bool isSlowed;
 	float timer;
 	bool hasSpeedUpPassive;
 
 	void Start()
 	{
-		//TryGetComponent<AbilitiesManager>(out abManager);
+
 		photonView = GetComponent<PhotonView>();
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.useGravity = false;
@@ -38,9 +38,6 @@ public class PlayerMovement : MonoBehaviour
 			SlowdownTimer();
 		}
 
-		// TODO: PC debugging only, remove for gold release
-		//if (Input.GetKeyDown(KeyCode.E))
-			//abManager.ActivateAbility();
 	}
 
 	void BasicMovement()

@@ -66,19 +66,19 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         print("failed to join random room");
-        PhotonRoom.photonRoom.CreateRoom();
+        PhotonRoom.instance.CreateRoom();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        PhotonRoom.photonRoom.CreateRoom();
+        PhotonRoom.instance.CreateRoom();
     }
 
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         print("Failed to create a new room");
-        PhotonRoom.photonRoom.CreateRoom();
+        PhotonRoom.instance.CreateRoom();
     }
 
     public void OnCancelButtonClicked()
