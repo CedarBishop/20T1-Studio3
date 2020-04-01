@@ -529,6 +529,7 @@ MonoBehaviour:
   stealthMaterial: {fileID: 2100000, guid: ba06da8ab9ee3c84e9bac6faa492cdaf, type: 2}
   stealthActiveMaterial: {fileID: 0}
   shieldEffect: {fileID: 1651260806888081699}
+  healthBarImage: {fileID: 5395470379465073144}
 --- !u!114 &1558605098635257056
 MonoBehaviour:
   m_ObjectHideFlags: 0

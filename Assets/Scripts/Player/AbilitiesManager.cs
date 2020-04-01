@@ -53,6 +53,7 @@ public class AbilitiesManager : MonoBehaviour
 	private PlayerCombat playerCombat;
 	private PlayerRewind playerRewind;
 	private TriShield triShield;
+	public Image healthBarImage;
 
 	private void OnEnable()
 	{
@@ -71,18 +72,6 @@ public class AbilitiesManager : MonoBehaviour
 
 		shieldEffect.SetActive(false);
 
-		// Carry on with passive ability choice IF list is populated
-		//if (passiveAbilities.Length > 0)
-		//{
-		//	// Go through list and pick random ability
-		//	//currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
-		//	// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
-
-			
-		//}
-
-		// TODO: Hard coded temporarily (TEMPSHIELD)
-		//currentActive = activeAbilities[4];
 	}
 
 	public void AssignPassiveSkill (PassiveSkills passive)
@@ -225,10 +214,13 @@ public class AbilitiesManager : MonoBehaviour
 	{
 		if (PV.IsMine)
 		{
+
+			// This player turned invisible so change material to let you know that you are using stealth
+
 			if (currentMaterial != stealthActiveMaterial)
 			{
 				currentMaterial = stealthActiveMaterial;
-				
+
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
 			}
 			else
@@ -239,18 +231,23 @@ public class AbilitiesManager : MonoBehaviour
 		}
 		else
 		{
-			if (currentMaterial != stealthMaterial)
+			//make  this character invisible on the instnance that does not own this
+
+			if (currentMaterial != stealthMaterial) // Activation
 			{
 				currentMaterial = stealthMaterial;
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				healthBarImage.color = new Color(1.0f,1.0f,1.0f,0.0f);
 			}
-			else
+			else // Deactivation
 			{
 				currentMaterial = revertMaterial;
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = true; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				healthBarImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 
 			originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().materials[0] = currentMaterial;
+
 		}
 	}
 
