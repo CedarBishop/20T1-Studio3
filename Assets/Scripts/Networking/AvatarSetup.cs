@@ -19,7 +19,7 @@ public class AvatarSetup : MonoBehaviour
         {
             print("Room number parsed " + roomNumber);
         }
-
+        transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
@@ -30,10 +30,10 @@ public class AvatarSetup : MonoBehaviour
 
     [PunRPC]
     void RPC_AddCharacter(int characterNum)
-    {
+    {        
         GameManager.instance.ClearWinText();
-        characterValue = characterNum;
-        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterValue], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
+        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
+        print(transform.position);
         character.name = character.name + " Model";
     }
 
