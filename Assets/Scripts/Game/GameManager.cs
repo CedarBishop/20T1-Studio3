@@ -159,7 +159,12 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
+					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
+				}
+				else
+				{
+					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				//Start Intermission between rounds
@@ -192,7 +197,12 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
+					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
+				}
+				else
+				{
+					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				Intermission();
@@ -247,6 +257,7 @@ public class GameManager : MonoBehaviour
 				if (isDoubleDamage == false)
 				{
 					isDoubleDamage = true;
+					SoundManager.instance.PlaySFX("CrowdCheering");
 				}
 			}
 			if (roundTimer <= 0)
@@ -290,7 +301,16 @@ public class GameManager : MonoBehaviour
 
 	public void StartRoundTimer()
 	{
-		SoundManager.instance.PlayMusic(false);
+		// Both player are at match point
+		if (playerStats[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1 && playerStats[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1)
+		{
+			SoundManager.instance.PlayMusic(false, true);
+		}
+		else // Not final round
+		{
+			SoundManager.instance.PlayMusic(false);
+		}
+		
 		roundTimer = LevelManager.instance.roundTime;
 		roundTimerText.text = roundTimer.ToString("F1");
 		roundIsUnderway = true;
@@ -307,7 +327,7 @@ public class GameManager : MonoBehaviour
 		{
 			DestroySkillButtons();
 		}
-
+		
 		AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
 		for (int i = 0; i < avatarSetups.Length; i++)
 		{

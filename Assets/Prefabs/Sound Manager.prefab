@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenuMusic: {fileID: 8300000, guid: de83680f0705cb54faca1eeba74c4859, type: 3}
   gameMusic: {fileID: 8300000, guid: ad92b0fb50e978d44a6cdf10293ad767, type: 3}
+  finalRoundMusic: {fileID: 8300000, guid: 1b3e4694da0ac4a49ba9abf0c3737398, type: 3}
   sounds:
   - name: Rewind
     clip: {fileID: 8300000, guid: 185aad54fb8aec54998375b17a89bfb8, type: 3}
@@ -64,7 +65,19 @@ MonoBehaviour:
     source: {fileID: 0}
     pitch: 1
   - name: Button
-    clip: {fileID: 8300000, guid: 8b12720f200ffab46805c99c2e25d8f7, type: 3}
+    clip: {fileID: 8300000, guid: d5f5c9e436fb478408f7c05b6896bc92, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: WinGame
+    clip: {fileID: 8300000, guid: f89daadf540b2d147b833a181020cea7, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: LoseGame
+    clip: {fileID: 8300000, guid: 126f9a5f2d9d60f429ff31de58bc9a92, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: CrowdCheering
+    clip: {fileID: 8300000, guid: b5efeea78f9e3ba4994d9a2096e27b08, type: 3}
     source: {fileID: 0}
     pitch: 1
 --- !u!82 &5107528165328888384
