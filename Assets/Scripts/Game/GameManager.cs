@@ -257,6 +257,7 @@ public class GameManager : MonoBehaviour
 				if (isDoubleDamage == false)
 				{
 					isDoubleDamage = true;
+					LevelManager.instance.OnDoubleDamageDrop();
 					SoundManager.instance.PlaySFX("CrowdCheering");
 				}
 			}
@@ -310,7 +311,8 @@ public class GameManager : MonoBehaviour
 		{
 			SoundManager.instance.PlayMusic(false);
 		}
-		
+
+		LevelManager.instance.OnBeginingOfRound();
 		roundTimer = LevelManager.instance.roundTime;
 		roundTimerText.text = roundTimer.ToString("F1");
 		roundIsUnderway = true;

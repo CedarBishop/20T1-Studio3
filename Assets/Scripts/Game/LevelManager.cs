@@ -35,27 +35,6 @@ public class LevelManager : MonoBehaviour
 	private void Start()
 	{
 		photonView = GetComponent<PhotonView>();
-
-		// Activate all small health pickups and set their index number so they can be respawned
-		if (smallHealthPickups != null)
-		{
-			for (int i = 0; i < smallHealthPickups.Length; i++)
-			{
-				smallHealthPickups[i].gameObject.SetActive(true);
-				smallHealthPickups[i].pickupIndex = i;
-			}
-		}
-
-		// Deactivate all large pickups on start and start timer for when they should be activated
-		if (largeHealthPickups != null)
-		{
-			for (int i = 0; i < largeHealthPickups.Length; i++)
-			{
-				largeHealthPickups[i].gameObject.SetActive(true);
-			}
-
-			StartCoroutine("SpawnLargeHealthPickups");
-		}
 	}
 
 	// public function to call rpc function to tell all clients that the health pickup should be deactivated on pickup
@@ -77,10 +56,32 @@ public class LevelManager : MonoBehaviour
 		smallHealthPickups[pickupIndex].gameObject.SetActive(true);
 	}
 
-	private IEnumerator SpawnLargeHealthPickups()
-	{
-		yield return new WaitForSeconds(timeBeforeLargePickupsSpawn);
 
+	public void OnBeginingOfRound ()
+	{
+		// Activate all small health pickups and set their index number so they can be respawned
+		if (smallHealthPickups != null)
+		{
+			for (int i = 0; i < smallHealthPickups.Length; i++)
+			{
+				smallHealthPickups[i].gameObject.SetActive(true);
+				smallHealthPickups[i].pickupIndex = i;
+			}
+		}
+
+		// Deactivate all large pickups on start and start timer for when they should be activated
+		if (largeHealthPickups != null)
+		{
+			for (int i = 0; i < largeHealthPickups.Length; i++)
+			{
+				largeHealthPickups[i].gameObject.SetActive(true);
+			}
+
+		}
+	}
+
+	public void OnDoubleDamageDrop()
+	{
 		if (largeHealthPickups != null)
 		{
 			for (int i = 0; i < largeHealthPickups.Length; i++)
