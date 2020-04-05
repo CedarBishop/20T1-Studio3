@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
 		if (int.TryParse(PhotonNetwork.NickName, out int num))
 		{
 			string str = PhotonRoom.instance.nickName;
-			
+			roomNumber = num;
 			photonView.RPC("RPC_SetPlayerName",RpcTarget.All , num, str);
 		}
 
@@ -443,7 +443,7 @@ public class GameManager : MonoBehaviour
 	{
 		// assign skill to player and set icon on ui
 		AssignSkill(isPassive,skillNumber);
-		SoundManager.instance.PlaySFX("SkillSelectY");
+		SoundManager.instance.PlaySFX("SkillSelect");
 		if (isPassive)
 		{
 			SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);
@@ -580,4 +580,49 @@ public class GameManager : MonoBehaviour
 			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
 		}
 	}
+
+	public void ActionSkillCooldownDisplay (float cooldownTime)
+	{
+		photonView.RPC("RPC_ActionSkillCooldownDisplay", RpcTarget.All, roomNumber, cooldownTime);
+	}
+
+	[PunRPC]
+	void RPC_ActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		StartCoroutine(CoActionSkillCooldownDisplay(playerNumber,cooldown));
+	}
+
+	IEnumerator CoActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		float rate = 1;
+		if (cooldown != 0)
+		{
+			rate = (1 / cooldown);
+		}
+
+		if (playerNumber == 1)
+		{
+			playerOneActionSkillImage.fillAmount = 0;
+
+			while (playerOneActionSkillImage.fillAmount < 1.0f)
+			{
+				playerOneActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+		else if (playerNumber == 2)
+		{
+			playerTwoActionSkillImage.fillAmount = 0;
+
+			while (playerTwoActionSkillImage.fillAmount < 1.0f)
+			{
+				playerTwoActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+
+		
+		
+	}
 }
+

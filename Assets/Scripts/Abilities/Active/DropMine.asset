@@ -19,7 +19,7 @@ MonoBehaviour:
   amount: 0
   maximum: 0
   duration: 0
-  cooldownTime: 0
+  cooldownTime: 10
   spawnSound: {fileID: 0}
   onHitSound: {fileID: 0}
   spawnFx: {fileID: 0}
