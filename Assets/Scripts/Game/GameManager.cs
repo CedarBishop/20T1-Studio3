@@ -443,7 +443,7 @@ public class GameManager : MonoBehaviour
 	{
 		// assign skill to player and set icon on ui
 		AssignSkill(isPassive,skillNumber);
-
+		SoundManager.instance.PlaySFX("SkillSelectY");
 		if (isPassive)
 		{
 			SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);

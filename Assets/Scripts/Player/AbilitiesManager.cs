@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerMovement)), DisallowMultipleComponent]
+[RequireComponent(typeof(AudioSource))]
 public class AbilitiesManager : MonoBehaviour
 {
 	private GameObject abilityButton;
@@ -54,6 +55,8 @@ public class AbilitiesManager : MonoBehaviour
 	private PlayerRewind playerRewind;
 	private TriShield triShield;
 	public Image healthBarImage;
+
+
 
 	private void OnEnable()
 	{
@@ -162,6 +165,7 @@ public class AbilitiesManager : MonoBehaviour
 					methodToCall = playerRewind.Rewind;
 					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Rewind");
 
 					break;
 				case ActiveSkills.Shotgun:
@@ -169,12 +173,14 @@ public class AbilitiesManager : MonoBehaviour
 					methodToCall = playerCombat.ShotgunShoot;
 					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Shotgun");
 					break;
 				case ActiveSkills.Stealth:
 					currentActive = activeAbilities[3];
 					methodToCall = Stealth;
 					StartCoroutine(AbilityDuration(currentActive, methodToCall));
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Stealth");
 					break;
 				case ActiveSkills.TempShield:
 					currentActive = activeAbilities[4];

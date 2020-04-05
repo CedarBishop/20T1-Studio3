@@ -40,6 +40,7 @@ public class DropMine : MonoBehaviour
     {
         if (explosionParticle != null)
         {
+            SoundManager.instance.PlaySFX("MineExplosion");
             ParticleSystem particle = Instantiate(explosionParticle, transform.position,Quaternion.identity);
             particle.Play();
             Destroy(particle, 1);

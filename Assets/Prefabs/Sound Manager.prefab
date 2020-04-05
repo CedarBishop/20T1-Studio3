@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509ff6c8cfc272d479f1f17fb3d0e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuMusic: {fileID: 8300000, guid: de83680f0705cb54faca1eeba74c4859, type: 3}
-  gameMusic: {fileID: 8300000, guid: ad92b0fb50e978d44a6cdf10293ad767, type: 3}
-  finalRoundMusic: {fileID: 8300000, guid: 1b3e4694da0ac4a49ba9abf0c3737398, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: 2f93efc3046787e4ebcd5ddadb9a5cae, type: 3}
+  gameMusic: {fileID: 8300000, guid: a9af8e24a6b231d499846e3579f9125c, type: 3}
+  finalRoundMusic: {fileID: 8300000, guid: 5172f0140a3573b4bbe1b63f92c83680, type: 3}
   sounds:
   - name: Rewind
     clip: {fileID: 8300000, guid: 185aad54fb8aec54998375b17a89bfb8, type: 3}
@@ -57,7 +57,7 @@ MonoBehaviour:
     source: {fileID: 0}
     pitch: 1
   - name: Shoot
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 131653d1f0717b34fb3908d98aa00d7d, type: 3}
     source: {fileID: 0}
     pitch: 1
   - name: TakeDamage
@@ -78,6 +78,26 @@ MonoBehaviour:
     pitch: 1
   - name: CrowdCheering
     clip: {fileID: 8300000, guid: b5efeea78f9e3ba4994d9a2096e27b08, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Shotgun
+    clip: {fileID: 8300000, guid: b5d65b99eb3850b43acc2fcf61e85c9a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Shop
+    clip: {fileID: 8300000, guid: b5d65b99eb3850b43acc2fcf61e85c9a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: SkillSelect
+    clip: {fileID: 8300000, guid: 6c94bb25417e38642a71a29bb4585062, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: MineExplosion
+    clip: {fileID: 8300000, guid: cca870072af8d9e4abb295ac1d89539a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Stealth
+    clip: {fileID: 8300000, guid: c70c0ecda5f16ed45aeb390d2f7b2c93, type: 3}
     source: {fileID: 0}
     pitch: 1
 --- !u!82 &5107528165328888384
