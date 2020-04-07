@@ -9,10 +9,16 @@ public class DropMine : MonoBehaviour
     public ParticleSystem explosionParticle;
     public int damage;
     public int roomNumber;
-
+    PhotonView photonView;
 
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
+
+        object[] data = photonView.InstantiationData;
+
+        roomNumber = (int)data[0];
+
         StartCoroutine("CoExplode"); // start timer before this mine explodes
     }
 

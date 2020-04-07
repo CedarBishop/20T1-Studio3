@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
 		{
 			for (int i = 0; i < largeHealthPickups.Length; i++)
 			{
-				largeHealthPickups[i].gameObject.SetActive(true);
+				largeHealthPickups[i].gameObject.SetActive(false);
 			}
 
 		}

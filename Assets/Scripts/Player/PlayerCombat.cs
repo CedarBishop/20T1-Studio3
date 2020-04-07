@@ -207,13 +207,13 @@ public class PlayerCombat : MonoBehaviour
 
 	public void PlaceDropMine()
 	{
-		GameObject g = PhotonNetwork.Instantiate(("PhotonPrefabs/DropMine"),
+		object[] instanceData = {roomNumber};
+		PhotonNetwork.Instantiate(("PhotonPrefabs/DropMine"),
 			new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				transform.rotation,
-				0
+				0,
+				instanceData
 				);
-		DropMine mine = g.GetComponent<DropMine>();
-		mine.roomNumber = roomNumber;
 	}
 
 

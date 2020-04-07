@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
 	private bool hasSelectedPassive;
 	private bool hasSelectedAction;
+	private bool isAbleToSelectSkill;
 
 	private void Awake()
 	{
@@ -317,11 +318,21 @@ public class GameManager : MonoBehaviour
 		roundTimerText.text = roundTimer.ToString("F1");
 		roundIsUnderway = true;
 		isRoundIntermission = false;
+		isAbleToSelectSkill = false;
 	}
 
 	[PunRPC]
 	private void RPC_StartNewRound()
 	{
+		
+		
+		if (isAbleToSelectSkill)
+		{
+			AssignRandomSkill();
+			isAbleToSelectSkill = false;
+		}
+
+
 		StartRoundTimer();
 		ClearWinText();
 
@@ -329,6 +340,8 @@ public class GameManager : MonoBehaviour
 		{
 			DestroySkillButtons();
 		}
+
+		
 		
 		AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
 		for (int i = 0; i < avatarSetups.Length; i++)
@@ -465,6 +478,7 @@ public class GameManager : MonoBehaviour
 	private void SpawnSkillSelectionButtons()
 	{
 		skillSelectionParent.SetActive(true);
+		isAbleToSelectSkill = true;
 		if (hasSelectedPassive == false)
 		{
 			PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -489,8 +503,9 @@ public class GameManager : MonoBehaviour
 
 	private void AssignSkill(bool isPassive, int skillNumber)
 	{
-		AbilitiesManager[] abilitiesManager = FindObjectsOfType<AbilitiesManager>();
 
+		isAbleToSelectSkill = false;
+		AbilitiesManager[] abilitiesManager = FindObjectsOfType<AbilitiesManager>();
 		if (isPassive)
 		{
 			PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -535,6 +550,46 @@ public class GameManager : MonoBehaviour
 		}
 
 		if (BeginRoundEvent != null) BeginRoundEvent(); // Send data to analytics (Which skills are chosen)
+	}
+
+	void AssignRandomSkill ()
+	{
+		PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
+		ActiveSkills[] actives = SkillSelectionHolder.instance.GetActiveSkills();
+		if (hasSelectedPassive == false && hasSelectedAction == false)
+		{
+
+		 	int randBool = UnityEngine.Random.Range(0,2);
+			if (randBool == 1)
+			{
+				int randNum = UnityEngine.Random.Range(0, passives.Length);
+				AssignSkill(true,randNum);
+				SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+				hasSelectedPassive = true;
+			}
+			else
+			{
+				int randNum = UnityEngine.Random.Range(0, actives.Length);
+				AssignSkill(false, randNum);
+				SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+				hasSelectedAction = true;
+			}
+
+		}
+		else if (hasSelectedPassive == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, passives.Length);
+			AssignSkill(true, randNum);
+			SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+			hasSelectedPassive = true;
+		}
+		else if (hasSelectedAction == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, actives.Length);
+			AssignSkill(false, randNum);
+			SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+			hasSelectedAction = true;
+		}
 	}
 
 	[PunRPC]
@@ -621,8 +676,6 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		
-		
 	}
 }
 
