@@ -27,10 +27,14 @@ public class DropMine : MonoBehaviour
     {
         if (other.GetComponentInParent<PlayerCombat>())             // Check if colliders has player combat component
         {
-            if (other.GetComponentInParent<PlayerCombat>().roomNumber != roomNumber) // check if that room number of that player does not equal the number of the player who placed this mine
+            PlayerCombat player = other.GetComponentInParent<PlayerCombat>();
+            if (player.roomNumber != roomNumber) // check if that room number of that player does not equal the number of the player who placed this mine
             {
-                other.GetComponentInParent<PlayerCombat>().TakeDamage(damage, false); // if so, the damage that player and play explosion particle
-                ExplosionParticle();
+                if (player.GetComponent<PhotonView>().IsMine)
+                {
+                    player.TakeDamage(damage, false); // if so, the damage that player and play explosion particle
+                    photonView.RPC("RPC_Explosion", RpcTarget.All); ;
+                }
             }
         }
     }
@@ -39,10 +43,16 @@ public class DropMine : MonoBehaviour
     {
         yield return new WaitForSeconds(timeBeforeExplode);
 
-        ExplosionParticle();
+        Explosion();
     }
 
-    void ExplosionParticle ()
+    [PunRPC]
+    void RPC_Explosion()
+    {
+        Explosion();
+    }
+
+    void Explosion ()
     {
         if (explosionParticle != null)
         {
