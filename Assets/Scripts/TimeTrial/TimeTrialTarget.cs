@@ -4,25 +4,36 @@ using UnityEngine;
 
 public class TimeTrialTarget : MonoBehaviour
 {
-    public GameObject indicator;
+    public MeshRenderer indicator;
+    public MeshRenderer targetMesh;
+
+    public Material targetActivatedMaterial;
+    public Material targetDeactivatedMaterial;
     
     private Material indicatorActiveMat;
     private Material indicatorDeactivatedMat;
     private bool isActive;
 
+
     public void Activate ()
     {
         isActive = true;
+        indicator.material = indicatorActiveMat;
+        targetMesh.material = targetActivatedMaterial;
     }
 
     public void Activate(Material activeMat, Material deactivatedMat)
     {
-        isActive = true;
+        targetActivatedMaterial = activeMat;
+        targetDeactivatedMaterial = deactivatedMat;
+        Activate();
     }
 
     public void Deactivate ()
     {
         isActive = false;
+        indicator.material = indicatorDeactivatedMat;
+        targetMesh.material = targetDeactivatedMaterial;
         TimeTrialManager.instance.TargetHit();
     }
 
