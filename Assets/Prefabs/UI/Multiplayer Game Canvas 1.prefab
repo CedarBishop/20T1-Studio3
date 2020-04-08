@@ -124,11 +124,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00a829a83617f4b4d84cd9a8e613550b, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -290,11 +290,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 00a829a83617f4b4d84cd9a8e613550b, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -694,23 +694,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statsPrefab: {fileID: 8088039769243880143, guid: 795895b1b47402043b71312aca025af8,
     type: 3}
-  layoutGroup: {fileID: 6223093683232866063}
+  playerOnePassiveSkillImage: {fileID: 1912867345600433103}
+  playerOneActionSkillImage: {fileID: 4789334208050687232}
+  playerTwoPassiveSkillImage: {fileID: 4742905795270859884}
+  playerTwoActionSkillImage: {fileID: 7617105096213964621}
+  roundStartDelay: 0.24
+  isDoubleDamage: 0
   winText: {fileID: 6223093683460623581}
+  roundTimerText: {fileID: 3352427702413237987}
+  layoutGroup: {fileID: 6223093683232866063}
   leftJoystick: {fileID: 30568687592780489}
   rightJoystick: {fileID: 6648561049468274320}
   abilityButton: {fileID: 143102192088904255}
-  roundTimerText: {fileID: 3352427702413237987}
   skillSelectionParent: {fileID: 7941717872379553906}
   passiveSkillLayout: {fileID: 6093878332693596661}
   activeSkillLayout: {fileID: 168715781285854845}
   skillButtonPrefab: {fileID: 5555787759589460773, guid: 773b3586075c24f4183214c456de1fa7,
     type: 3}
-  roundStartDelay: 0.24
-  isDoubleDamage: 0
-  playerOnePassiveSkillImage: {fileID: 1912867345600433103}
-  playerOneActionSkillImage: {fileID: 4789334208050687232}
-  playerTwoPassiveSkillImage: {fileID: 4742905795270859884}
-  playerTwoActionSkillImage: {fileID: 7617105096213964621}
 --- !u!114 &7705947448173104093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +723,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c898378995a22954c883bba423a324c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentActive: 0
+  currentPassive: 0
 --- !u!114 &7804132430919226554
 MonoBehaviour:
   m_ObjectHideFlags: 0

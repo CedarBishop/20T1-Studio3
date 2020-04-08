@@ -10,6 +10,7 @@ public class AvatarSetup : MonoBehaviour
     public int characterValue;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
+    private AbilitiesManager abilitiesManager;
     public int roomNumber;
 
     void Start()
@@ -26,6 +27,7 @@ public class AvatarSetup : MonoBehaviour
         }
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
+        abilitiesManager = GetComponent<AbilitiesManager>();
     }
 
     [PunRPC]
@@ -35,6 +37,7 @@ public class AvatarSetup : MonoBehaviour
         character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
         print(transform.position);
         character.name = character.name + " Model";
+        //abilitiesManager.InitCharacterMaterials(character);
     }
 
     public void Die()

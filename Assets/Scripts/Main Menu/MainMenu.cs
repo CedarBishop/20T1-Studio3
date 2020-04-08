@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
         characterNumber = 0;
         ActivateCharacterDisplay();
         currentCharacterIsUnlocked = true;
+
     }
 
     public void Quit  ()

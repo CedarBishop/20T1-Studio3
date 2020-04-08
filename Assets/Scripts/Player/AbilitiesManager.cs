@@ -55,6 +55,8 @@ public class AbilitiesManager : MonoBehaviour
 	private TriShield triShield;
 	public Image healthBarImage;
 
+
+
 	private void OnEnable()
 	{
 		PV = GetComponent<PhotonView>();
@@ -67,11 +69,16 @@ public class AbilitiesManager : MonoBehaviour
 		// Add method as delegate to ability UI button
 		AbilityInitiate.OnAbilityClick += ActivateAbility;
 
-		// revertMaterial = originalMaterial.GetComponent<Material>();
-		//revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
+		
 
 		shieldEffect.SetActive(false);
 
+	}
+
+	public void InitCharacterMaterials (GameObject character)
+	{
+		currentMaterial = character.GetComponent<Renderer>().material;
+		revertMaterial = currentMaterial;
 	}
 
 	public void AssignPassiveSkill (PassiveSkills passive)
@@ -106,20 +113,25 @@ public class AbilitiesManager : MonoBehaviour
 				case PassiveSkills.None:
 					break;
 				case PassiveSkills.BouncyBullet:
-					playerCombat.AssignedBulletBounce(maxBulletBounces);	
-					//BouncyBullet(maxBulletBounces);
-					break;
+					playerCombat.AssignedBulletBounce(maxBulletBounces);
+				currentPassive = passiveAbilities[0];
+				//BouncyBullet(maxBulletBounces);
+				break;
 				case PassiveSkills.HelperBullet:
+				currentPassive = passiveAbilities[1];
 					playerCombat.AssignedHelperBullet();
-					break;
+				break;
 				case PassiveSkills.SlowdownBullet:
+				currentPassive = passiveAbilities[2];
 					playerCombat.AssignedSlowdownBullet();
-					break;
+				break;
 				case PassiveSkills.SpeedUp:
+				currentPassive = passiveAbilities[3];
 					playerMovement.AssignSpeedUp();
-					break;
+				break;
 				case PassiveSkills.TriShield:
-					triShield.Initialise();	
+				currentPassive = passiveAbilities[4]; 
+				triShield.Initialise();	
 					break;
 				default:
 					break;
@@ -162,6 +174,7 @@ public class AbilitiesManager : MonoBehaviour
 					methodToCall = playerRewind.Rewind;
 					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Rewind");
 
 					break;
 				case ActiveSkills.Shotgun:
@@ -169,12 +182,14 @@ public class AbilitiesManager : MonoBehaviour
 					methodToCall = playerCombat.ShotgunShoot;
 					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Shotgun");
 					break;
 				case ActiveSkills.Stealth:
 					currentActive = activeAbilities[3];
 					methodToCall = Stealth;
 					StartCoroutine(AbilityDuration(currentActive, methodToCall));
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Stealth");
 					break;
 				case ActiveSkills.TempShield:
 					currentActive = activeAbilities[4];
@@ -200,6 +215,7 @@ public class AbilitiesManager : MonoBehaviour
 	private IEnumerator AbilityCooldown(Ability currentActive, AbilityDelegate methodToCall)
 	{
 		cooldownComplete = false; // Deactivate button
+		GameManager.instance.ActionSkillCooldownDisplay(currentActive.cooldownTime);
 		yield return new WaitForSeconds(currentActive.cooldownTime);
 		cooldownComplete = true; // Reactivate button
 	}

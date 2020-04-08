@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
 	private bool hasSelectedPassive;
 	private bool hasSelectedAction;
+	private bool isAbleToSelectSkill;
 
 	private void Awake()
 	{
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
 		if (int.TryParse(PhotonNetwork.NickName, out int num))
 		{
 			string str = PhotonRoom.instance.nickName;
-			
+			roomNumber = num;
 			photonView.RPC("RPC_SetPlayerName",RpcTarget.All , num, str);
 		}
 
@@ -317,11 +318,21 @@ public class GameManager : MonoBehaviour
 		roundTimerText.text = roundTimer.ToString("F1");
 		roundIsUnderway = true;
 		isRoundIntermission = false;
+		isAbleToSelectSkill = false;
 	}
 
 	[PunRPC]
 	private void RPC_StartNewRound()
 	{
+		
+		
+		if (isAbleToSelectSkill)
+		{
+			AssignRandomSkill();
+			isAbleToSelectSkill = false;
+		}
+
+
 		StartRoundTimer();
 		ClearWinText();
 
@@ -329,6 +340,8 @@ public class GameManager : MonoBehaviour
 		{
 			DestroySkillButtons();
 		}
+
+		
 		
 		AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
 		for (int i = 0; i < avatarSetups.Length; i++)
@@ -443,7 +456,7 @@ public class GameManager : MonoBehaviour
 	{
 		// assign skill to player and set icon on ui
 		AssignSkill(isPassive,skillNumber);
-
+		SoundManager.instance.PlaySFX("SkillSelect");
 		if (isPassive)
 		{
 			SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);
@@ -465,6 +478,7 @@ public class GameManager : MonoBehaviour
 	private void SpawnSkillSelectionButtons()
 	{
 		skillSelectionParent.SetActive(true);
+		isAbleToSelectSkill = true;
 		if (hasSelectedPassive == false)
 		{
 			PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -489,8 +503,9 @@ public class GameManager : MonoBehaviour
 
 	private void AssignSkill(bool isPassive, int skillNumber)
 	{
-		AbilitiesManager[] abilitiesManager = FindObjectsOfType<AbilitiesManager>();
 
+		isAbleToSelectSkill = false;
+		AbilitiesManager[] abilitiesManager = FindObjectsOfType<AbilitiesManager>();
 		if (isPassive)
 		{
 			PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -537,6 +552,46 @@ public class GameManager : MonoBehaviour
 		if (BeginRoundEvent != null) BeginRoundEvent(); // Send data to analytics (Which skills are chosen)
 	}
 
+	void AssignRandomSkill ()
+	{
+		PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
+		ActiveSkills[] actives = SkillSelectionHolder.instance.GetActiveSkills();
+		if (hasSelectedPassive == false && hasSelectedAction == false)
+		{
+
+		 	int randBool = UnityEngine.Random.Range(0,2);
+			if (randBool == 1)
+			{
+				int randNum = UnityEngine.Random.Range(0, passives.Length);
+				AssignSkill(true,randNum);
+				SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+				hasSelectedPassive = true;
+			}
+			else
+			{
+				int randNum = UnityEngine.Random.Range(0, actives.Length);
+				AssignSkill(false, randNum);
+				SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+				hasSelectedAction = true;
+			}
+
+		}
+		else if (hasSelectedPassive == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, passives.Length);
+			AssignSkill(true, randNum);
+			SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+			hasSelectedPassive = true;
+		}
+		else if (hasSelectedAction == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, actives.Length);
+			AssignSkill(false, randNum);
+			SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+			hasSelectedAction = true;
+		}
+	}
+
 	[PunRPC]
 	private void RPC_AssignSkillIcon (int playerNum, bool isPassive, int num)
 	{
@@ -580,4 +635,47 @@ public class GameManager : MonoBehaviour
 			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
 		}
 	}
+
+	public void ActionSkillCooldownDisplay (float cooldownTime)
+	{
+		photonView.RPC("RPC_ActionSkillCooldownDisplay", RpcTarget.All, roomNumber, cooldownTime);
+	}
+
+	[PunRPC]
+	void RPC_ActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		StartCoroutine(CoActionSkillCooldownDisplay(playerNumber,cooldown));
+	}
+
+	IEnumerator CoActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		float rate = 1;
+		if (cooldown != 0)
+		{
+			rate = (1 / cooldown);
+		}
+
+		if (playerNumber == 1)
+		{
+			playerOneActionSkillImage.fillAmount = 0;
+
+			while (playerOneActionSkillImage.fillAmount < 1.0f)
+			{
+				playerOneActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+		else if (playerNumber == 2)
+		{
+			playerTwoActionSkillImage.fillAmount = 0;
+
+			while (playerTwoActionSkillImage.fillAmount < 1.0f)
+			{
+				playerTwoActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+
+	}
 }
+

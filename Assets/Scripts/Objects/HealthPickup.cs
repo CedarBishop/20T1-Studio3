@@ -23,7 +23,11 @@ public class HealthPickup : MonoBehaviour
             if (respawns)
             {
                 LevelManager.instance.OnHealthPickup(pickupIndex);
-            }                                 
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

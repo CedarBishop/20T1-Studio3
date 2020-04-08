@@ -29,6 +29,7 @@ public class Shop : MonoBehaviour
             {
                 PlayerPrefs.SetInt(shopItems[itemNumber].itemKey, 1);
                 shopItems[itemNumber].itemButton.interactable = false;
+                SoundManager.instance.PlaySFX("Shop");
             }
         }
         else
@@ -38,7 +39,7 @@ public class Shop : MonoBehaviour
             {
                 PlayerPrefs.SetInt(shopItems[itemNumber].itemKey, 1);
                 shopItems[itemNumber].itemButton.interactable = false;
-
+                SoundManager.instance.PlaySFX("Shop");
             }
         }
     }

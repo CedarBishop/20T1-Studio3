@@ -147,9 +147,7 @@ public class Sound
         if (clip == null || source == null)
         {
             return;
-        }
-            
-            source.Play();
-        
+        }            
+        source.Play();        
     }
 }
