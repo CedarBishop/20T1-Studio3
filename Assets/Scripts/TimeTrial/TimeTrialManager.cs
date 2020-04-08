@@ -6,8 +6,10 @@ public class TimeTrialManager : MonoBehaviour
 {
     public static TimeTrialManager instance = null;
 
+    public TrialUI trialUI;
+
     public float initialTime = 10.0f;
-    public int score;
+    [HideInInspector] public int score;
     public int passionPerScore;
     public int goldPerScore;
 
@@ -19,11 +21,12 @@ public class TimeTrialManager : MonoBehaviour
 
     private float timer;
     private int currentRoundNumber;
-    bool trialIsRunning;
+    private bool trialIsRunning;
+
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -43,7 +46,16 @@ public class TimeTrialManager : MonoBehaviour
     {
         if (trialIsRunning)
         {
-            timer -= Time.fixedDeltaTime;
+            if (timer <= 0)
+            {
+                EndTrial(false);
+            }
+            else
+            {
+                timer -= Time.fixedDeltaTime;
+            }
+            
+            trialUI.SetTimerText(timer);
         }
     }
 
@@ -77,7 +89,7 @@ public class TimeTrialManager : MonoBehaviour
     {
         if (currentRoundNumber >= rounds.Length)
         {
-            EndTrial();
+            EndTrial(true);
         }
         else
         {
@@ -86,15 +98,18 @@ public class TimeTrialManager : MonoBehaviour
         }
     }
 
-    void EndTrial()
+    void EndTrial(bool won)
     {
         trialIsRunning = false;
+        trialUI.SetWinLoseText(won);
     }
 
     public void TargetHit ()
     {
         timer += rounds[currentRoundNumber - 1].addedTimePerTarget;
         score += rounds[currentRoundNumber - 1].scorePerTarget;
+
+        trialUI.SetScoreText(score);
 
         foreach (TimeTrialTarget target in rounds[currentRoundNumber - 1].targets)
         {

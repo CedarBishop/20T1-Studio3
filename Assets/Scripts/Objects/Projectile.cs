@@ -22,12 +22,18 @@ public class Projectile : MonoBehaviour
 
 	void Start()
 	{
-		SoundManager.instance.PlaySFX("Shoot");
+		if (SoundManager.instance != null)
+		{
+			SoundManager.instance.PlaySFX("Shoot");
+		}
 		photonView = GetComponent<PhotonView>();
 		rigidbody = GetComponent<Rigidbody>();
 		rigidbody.AddForce(force * transform.forward);
 		StartCoroutine("DelayedDestroy");
-		isDoubleDamage = GameManager.instance.isDoubleDamage;
+		if (GameManager.instance != null)
+		{
+			isDoubleDamage = GameManager.instance.isDoubleDamage;
+		}
 	}
 
 	IEnumerator DelayedDestroy()

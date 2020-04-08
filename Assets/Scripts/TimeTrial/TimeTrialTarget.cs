@@ -14,24 +14,29 @@ public class TimeTrialTarget : MonoBehaviour
     private Material indicatorDeactivatedMat;
     private bool isActive;
 
+    private BoxCollider collider;
+
 
     public void Activate ()
     {
         isActive = true;
+        collider.enabled = isActive;
         indicator.material = indicatorActiveMat;
         targetMesh.material = targetActivatedMaterial;
     }
 
     public void Activate(Material activeMat, Material deactivatedMat)
     {
-        targetActivatedMaterial = activeMat;
-        targetDeactivatedMaterial = deactivatedMat;
+        collider = GetComponent<BoxCollider>();
+        indicatorActiveMat = activeMat;
+        indicatorDeactivatedMat = deactivatedMat;
         Activate();
     }
 
     public void Deactivate ()
     {
         isActive = false;
+        collider.enabled = isActive;
         indicator.material = indicatorDeactivatedMat;
         targetMesh.material = targetDeactivatedMaterial;
         TimeTrialManager.instance.TargetHit();
