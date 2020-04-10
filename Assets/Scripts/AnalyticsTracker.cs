@@ -8,14 +8,17 @@ public class AnalyticsTracker : MonoBehaviour
 {
 	// Singleton initialization
 	public static AnalyticsTracker instance = null;
+	public Dictionary<string, object> areaTime = new Dictionary<string, object>();
 
 	public ActiveSkills currentActive;
 	public PassiveSkills currentPassive;
 
 	private float roundDelayTime;
 
+
 	private void Awake()
 	{
+		// Makes script a singleton
 		if (instance == null)
 			instance = this;
 		else if (instance != null)
@@ -37,7 +40,7 @@ public class AnalyticsTracker : MonoBehaviour
 		// End of round collection of stats
 		Analytics.CustomEvent(
 			"abilities_used",
-			new Dictionary<string, object>
+			 new Dictionary<string, object>
 			{
 				{ "active_ability", currentActive.ToString() },
 				{ "passive_ability", currentPassive.ToString() }
@@ -53,6 +56,7 @@ public class AnalyticsTracker : MonoBehaviour
 
 		// Add to the total amount of games played
 		Analytics.CustomEvent("round_played");
+
 		// End of round collection of stats
 		Analytics.CustomEvent(
 			"end_of_round",
@@ -61,6 +65,19 @@ public class AnalyticsTracker : MonoBehaviour
 				{ "time_elapsed", totalRoundTime }
 			}
 		);
+
+		// Areas occupied this round
+		if (areaTime.Count > 0)
+		{
+			Analytics.CustomEvent(
+				"areas_occupied_this_round",
+				areaTime
+			);
+		}
+		else
+		{
+			throw new NotImplementedException("ANALYTICS: Area tracking volumes not implemented.");
+		}
 	}
 
 	private void OnDisable()
