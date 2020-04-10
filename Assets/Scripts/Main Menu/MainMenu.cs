@@ -40,8 +40,8 @@ public class MainMenu : MonoBehaviour
 
     public void Quit  ()
     {
+        EasyProfile.EasyProfileManager.Instance.LogOut();
         SoundManager.instance.PlaySFX("Button");
-        Application.Quit();
     }
 
     public void SetMenuType(int menuType)
