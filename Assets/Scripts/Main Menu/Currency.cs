@@ -20,18 +20,18 @@ public class Currency : MonoBehaviour
     {
         mainMenu = GetComponent<MainMenu>();
 
-        // initialising runtime variables with values that were previously saved if any
-        //if (PlayerPrefs.HasKey(passionKey))
-        //{
-        //    passion = PlayerPrefs.GetInt(passionKey, 0);
-        //}
-        //if (PlayerPrefs.HasKey(goldKey))
-        //{
-        //    gold = PlayerPrefs.GetInt(goldKey, 0);
-        //}
+        //initialising runtime variables with values that were previously saved if any
+        if (PlayerPrefs.HasKey(passionKey))
+            {
+                passion = PlayerPrefs.GetInt(passionKey, 0);
+            }
+        if (PlayerPrefs.HasKey(goldKey))
+        {
+            gold = PlayerPrefs.GetInt(goldKey, 0);
+        }
 
-        EasyProfileManager.Instance.GetCustomValue(passionKey, OnGetPassionComplete);
-        EasyProfileManager.Instance.GetCustomValue(goldKey, OnGetGoldComplete);
+        //EasyProfileManager.Instance.GetCustomValue(passionKey, OnGetPassionComplete);
+        //EasyProfileManager.Instance.GetCustomValue(goldKey, OnGetGoldComplete);
 
 
 
@@ -51,8 +51,8 @@ public class Currency : MonoBehaviour
     {
         // add to runtime passion and save it locally 
         passion += value;
-        EasyProfileManager.Instance.SetCustomValue( passionKey, passion, OnSetPassionComplete);
-        //PlayerPrefs.SetInt(passionKey,passion);
+        //EasyProfileManager.Instance.SetCustomValue( passionKey, passion, OnSetPassionComplete);
+        PlayerPrefs.SetInt(passionKey,passion);
         mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
@@ -68,9 +68,9 @@ public class Currency : MonoBehaviour
         {
             passion -= value; // spend passion
 
-            EasyProfileManager.Instance.SetCustomValue(passionKey, passion, OnSetPassionComplete);
+            //EasyProfileManager.Instance.SetCustomValue(passionKey, passion, OnSetPassionComplete);
 
-            //PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
+            PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
             mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }
@@ -87,9 +87,9 @@ public class Currency : MonoBehaviour
         // add to runtime gold and save it locally 
         gold += value;
 
-        EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
+        //EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
 
-        //PlayerPrefs.SetInt(goldKey, gold);
+        PlayerPrefs.SetInt(goldKey, gold);
         mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
@@ -107,8 +107,8 @@ public class Currency : MonoBehaviour
 
             EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
 
-            //PlayerPrefs.SetInt(goldKey, gold); // save new gold value locally
-            mainMenu.UpdateCurrencyUI(); // update main menu UI
+            PlayerPrefs.SetInt(goldKey, gold); // save new gold value locally
+            //mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }
         else // cant afford item
