@@ -14,9 +14,9 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     PhotonView photonView;
 
     public bool isGameLoaded;
-    public int currentScene;
-    public int lobbyScene = 1;
-    public int gameScene;
+    private int currentScene;
+    private int lobbyScene = 2;
+    private int gameScene;
 
     Player[] photonPlayers;
     public int playersInRoom;
@@ -55,7 +55,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene != 0)
+        if (currentScene != 0 && currentScene != 1)
         {
             CreatePlayer();
             SoundManager.instance.PlayMusic(false);
@@ -70,7 +70,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
-        gameScene = Random.Range(2, 4);
+        gameScene = Random.Range(3, 5);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
