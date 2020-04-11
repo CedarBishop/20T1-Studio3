@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1847637339}
   - component: {fileID: 1847637338}
   - component: {fileID: 1847637337}
-  - component: {fileID: 1847637336}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1355,20 +1354,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &1847637336
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847637335}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
 --- !u!1 &3819893029228289608
 GameObject:
   m_ObjectHideFlags: 0
