@@ -5,7 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance = null;
-    AudioSource musicAudioSource;
+    [HideInInspector] public AudioSource musicAudioSource;
     List<AudioSource> sfx = new List<AudioSource>();
 
     [SerializeField] private AudioClip mainMenuMusic;
@@ -58,6 +58,20 @@ public class SoundManager : MonoBehaviour
             if (sounds[i].name == soundName)
             {
                 sounds[i].Play();
+                return;
+            }
+        }
+    }
+
+    public void SetSFXParams (string soundName, float pitch, float reverb)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == soundName)
+            {
+                sounds[i].pitch = pitch;
+                sounds[i].reverbZone = reverb;
+                sounds[i].UpdateParams();
                 return;
             }
         }
@@ -129,6 +143,7 @@ public class Sound
     public AudioClip clip;
     [HideInInspector]public AudioSource source;
     [Range(-3.0f, 3.0f)] public float pitch = 1;
+    [Range(0.0f, 1.1f)] public float reverbZone;
     float volume = 1;
 
 
@@ -138,6 +153,12 @@ public class Sound
         source.clip = clip;
         source.pitch = pitch;
 
+    }
+
+    public void UpdateParams ()
+    {
+        source.pitch = pitch;
+        source.reverbZoneMix = reverbZone;
     }
 
 
