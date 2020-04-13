@@ -17,23 +17,4 @@ public class DocumentReaderWriter : MonoBehaviour
 		Debug.Log(reader.ReadToEnd());
 		reader.Close();
 	}
-
-	[MenuItem("Tools/Write file")]
-	public static void WriteString()
-	{
-		StreamWriter saveFile = new StreamWriter(path, false);
-		try
-		{
-			saveFile.WriteLine("Text that is wring over\n");
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e);
-			throw;
-		}
-		finally
-		{
-			saveFile.Close();
-		}
-	}
 }
