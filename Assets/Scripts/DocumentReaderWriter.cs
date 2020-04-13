@@ -7,7 +7,7 @@ using System.IO;
 
 public class DocumentReaderWriter : MonoBehaviour
 {
-	private static string path = "Assets/Documents/SampleDocument.txt";
+	private static string path = "Assets/Documents/OfficialEULA.txt";
 
 	private void Start()
 	{
