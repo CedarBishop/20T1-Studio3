@@ -7,16 +7,10 @@ using System.IO;
 
 public class DocumentReaderWriter : MonoBehaviour
 {
-	private static string path = "Assets/Documents/OfficialEULA.txt";
-
-	private void Start()
-	{
-		ReadString();
-		WriteString();
-	}
+	public static string path = "Assets/Documents/OfficialEULA.txt";
 
 	[MenuItem("Tools/Read file")]
-	static private void ReadString()
+	public static void ReadString()
 	{
 		// Read the text directly from the .txt file
 		StreamReader reader = new StreamReader(path);
@@ -25,7 +19,7 @@ public class DocumentReaderWriter : MonoBehaviour
 	}
 
 	[MenuItem("Tools/Write file")]
-	static private void WriteString()
+	public static void WriteString()
 	{
 		StreamWriter saveFile = new StreamWriter(path, false);
 		try
