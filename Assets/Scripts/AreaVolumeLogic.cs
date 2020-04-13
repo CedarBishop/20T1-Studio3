@@ -34,7 +34,6 @@ public class AreaVolumeLogic : MonoBehaviour
 
 			object value = null;
 			if (panelTimeContainer.TryGetValue(panelName, out value))
-				// if (panelTimeContainer.ContainsKey(panelName))
 			{
 				// Change value for time spent
 				panelTimeContainer[gameObject.name.ToString()] = timeSpent;
@@ -44,8 +43,6 @@ public class AreaVolumeLogic : MonoBehaviour
 				// Create entry with value if one doesn't exist
 				panelTimeContainer.Add(gameObject.name.ToString(), timeSpent);
 			}
-
-			Debug.Log(timeSpent);
 		}
 	}
 }
