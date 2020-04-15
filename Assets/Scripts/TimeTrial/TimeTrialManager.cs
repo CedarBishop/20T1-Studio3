@@ -10,8 +10,7 @@ public class TimeTrialManager : MonoBehaviour
 
     public float initialTime = 10.0f;
     [HideInInspector] public int score;
-    public int passionPerScore;
-    public int goldPerScore;
+    public float passionPerScore;
 
     public Rounds[] rounds;
 
@@ -22,7 +21,8 @@ public class TimeTrialManager : MonoBehaviour
     private float timer;
     private int currentRoundNumber;
     private bool trialIsRunning;
-
+    private float overallTime;
+    private float totalPassion;
 
     private void Awake()
     {
@@ -53,6 +53,7 @@ public class TimeTrialManager : MonoBehaviour
             else
             {
                 timer -= Time.fixedDeltaTime;
+                overallTime += Time.fixedDeltaTime;
             }
             
             trialUI.SetTimerText(timer);
@@ -102,12 +103,15 @@ public class TimeTrialManager : MonoBehaviour
     {
         trialIsRunning = false;
         trialUI.SetWinLoseText(won);
+
+        int totalPassionInt = Mathf.FloorToInt(totalPassion);
     }
 
     public void TargetHit ()
     {
         timer += rounds[currentRoundNumber - 1].addedTimePerTarget;
         score += rounds[currentRoundNumber - 1].scorePerTarget;
+        totalPassion += passionPerScore;
 
         trialUI.SetScoreText(score);
 
