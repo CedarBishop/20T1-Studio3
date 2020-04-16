@@ -65,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
 			if (timer <= 0.0f)
 			{
 				isSlowed = false;
+				SoundManager.instance.PlaySFX("SpeedUp");
 			}
 			else
 			{

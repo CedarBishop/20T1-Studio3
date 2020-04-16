@@ -419,11 +419,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+
 	private void Intermission()
 	{
 		SoundManager.instance.StopMusic();
-		SoundManager.instance.PlaySFX("Rewind");
-		StartCoroutine("PlayFastForwardAfterTime");
+		SoundManager.instance.PlaySFX("Transistion");
 		roundTimer = LevelManager.instance.intermissionTime;
 		isRoundIntermission = true;
 		roundIsUnderway = false;
@@ -446,11 +446,6 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	private IEnumerator PlayFastForwardAfterTime()
-	{
-		yield return new WaitForSeconds(3);
-		SoundManager.instance.PlaySFX("FastForward");
-	}
 
 	public void SkillSelectButton(bool isPassive, int skillNumber)
 	{
@@ -521,6 +516,7 @@ public class GameManager : MonoBehaviour
 						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
 							abilitiesManager[i].AssignPassiveSkill( SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber]);
+							SoundManager.instance.PlaySFX("SkillSelect");
 							AnalyticsTracker.instance.currentPassive = abilitiesManager[i].passiveSkills;
 						}
 					}

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeTrialManager : MonoBehaviour
 {
@@ -105,6 +106,7 @@ public class TimeTrialManager : MonoBehaviour
         trialUI.SetWinLoseText(won);
 
         int totalPassionInt = Mathf.FloorToInt(totalPassion);
+        PlayerInfo.playerInfo.passionEarnedThisMatch = totalPassionInt;
     }
 
     public void TargetHit ()

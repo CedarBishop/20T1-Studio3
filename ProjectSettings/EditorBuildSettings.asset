@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiplayerBattle2.unity
     guid: 4e44fb7f477ecd04ab5d75ad7e08b54b
+  - enabled: 1
+    path: Assets/Scenes/TimeTrial.unity
+    guid: b6bee86ae79ed224795c9bd8df93a404
+  - enabled: 1
+    path: Assets/Scenes/TimeTrialResults.unity
+    guid: 2357b70cec2a5ef4eb59cc049ba62aed
   m_configObjects: {}
