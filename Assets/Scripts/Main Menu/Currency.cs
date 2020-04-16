@@ -36,12 +36,14 @@ public class Currency : MonoBehaviour
 
 
 
-        if (PlayerInfo.playerInfo.passionEarnedThisMatch > 0)
+        if (PlayerInfo.instance.passionEarnedThisMatch > 0)
         {
-            EarnPassion(PlayerInfo.playerInfo.passionEarnedThisMatch);
-            PlayerInfo.playerInfo.passionEarnedThisMatch = 0;
+            EarnPassion(PlayerInfo.instance.passionEarnedThisMatch);
             mainMenu.UpdateCurrencyUI();
         }
+
+
+        PlayerInfo.instance.ResetStats();
     }
 
 

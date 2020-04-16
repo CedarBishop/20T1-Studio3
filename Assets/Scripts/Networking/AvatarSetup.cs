@@ -23,7 +23,7 @@ public class AvatarSetup : MonoBehaviour
         transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         if (photonView.IsMine)
         {
-            photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
+            photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.instance.selectedCharacter);
         }
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
@@ -34,7 +34,7 @@ public class AvatarSetup : MonoBehaviour
     void RPC_AddCharacter(int characterNum)
     {        
         GameManager.instance.ClearWinText();
-        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
+        character = Instantiate(PlayerInfo.instance.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
         print(transform.position);
         character.name = character.name + " Model";
         //abilitiesManager.InitCharacterMaterials(character);
@@ -105,7 +105,7 @@ public class AvatarSetup : MonoBehaviour
             photonView.RPC("RPC_ResetStats", RpcTarget.All);
             if (character == null)
             {
-                photonView.RPC("RPC_AddCharacter", RpcTarget.All, PlayerInfo.playerInfo.selectedCharacter);
+                photonView.RPC("RPC_AddCharacter", RpcTarget.All, PlayerInfo.instance.selectedCharacter);
             }
         }
     }

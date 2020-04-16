@@ -140,10 +140,10 @@ public class MainMenu : MonoBehaviour
             }
         }
 
-        if (PlayerInfo.playerInfo != null)
+        if (PlayerInfo.instance != null)
         {
-            PlayerInfo.playerInfo.selectedCharacter = characterNumber;
-            PlayerPrefs.SetInt(PlayerInfo.playerInfo.selectedCharacterKey, characterNumber);
+            PlayerInfo.instance.selectedCharacter = characterNumber;
+            PlayerPrefs.SetInt(PlayerInfo.instance.selectedCharacterKey, characterNumber);
 
         }
     }
@@ -218,4 +218,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+
+    public void LoadTimeTrial ()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("TimeTrial");
+    }
 }

@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     public static PhotonRoom instance;
+
     PhotonView photonView;
 
     public bool isGameLoaded;
@@ -55,7 +56,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene != 1 /* && currentScene != 1*/)
+        if (currentScene != 0  && currentScene != 1 && currentScene != 5 && currentScene != 6)
         {
             CreatePlayer();
             SoundManager.instance.PlayMusic(false);
@@ -70,7 +71,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
-        gameScene = Random.Range(2, 4);
+        gameScene = Random.Range(3, 5);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
@@ -156,7 +157,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameSetup.instance.DisconnectPlayer();
+            StartCoroutine("DisconnectAndLoad");
         }
     }
 
@@ -168,7 +169,17 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_EndMatch()
     {
-        GameSetup.instance.DisconnectPlayer();
+        StartCoroutine("DisconnectAndLoad");
+    }
+
+    IEnumerator DisconnectAndLoad()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+        {
+            yield return null;
+        }
+        SceneManager.LoadScene("MainMenu");
     }
 
     void InitNickname()

@@ -624,11 +624,11 @@ public class GameManager : MonoBehaviour
 	{
 		if (wonMatch)
 		{
-			PlayerInfo.playerInfo.passionEarnedThisMatch = 10;
+			PlayerInfo.instance.passionEarnedThisMatch = 10;
 		}
 		else
 		{
-			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
+			PlayerInfo.instance.passionEarnedThisMatch = 5;
 		}
 	}
 

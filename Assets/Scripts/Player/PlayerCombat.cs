@@ -122,6 +122,8 @@ public class PlayerCombat : MonoBehaviour
 			bullet.isSlowDownBullet = hasSlowdownBullet;
 
 			Destroy(bullet, 3);
+
+			PlayerInfo.instance.totalBulletsFired++;
 		}
 
 		StartCoroutine("DelayShoot");

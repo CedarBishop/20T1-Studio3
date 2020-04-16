@@ -106,7 +106,13 @@ public class TimeTrialManager : MonoBehaviour
         trialUI.SetWinLoseText(won);
 
         int totalPassionInt = Mathf.FloorToInt(totalPassion);
-        PlayerInfo.playerInfo.passionEarnedThisMatch = totalPassionInt;
+
+        PlayerInfo.instance.passionEarnedThisMatch = totalPassionInt;
+        PlayerInfo.instance.timeTrialRound = currentRoundNumber;
+        PlayerInfo.instance.timeTrialScore = score;
+        PlayerInfo.instance.totalTimeTrialTime = overallTime;
+
+        SceneManager.LoadScene("TimeTrialResults");
     }
 
     public void TargetHit ()
@@ -114,6 +120,7 @@ public class TimeTrialManager : MonoBehaviour
         timer += rounds[currentRoundNumber - 1].addedTimePerTarget;
         score += rounds[currentRoundNumber - 1].scorePerTarget;
         totalPassion += passionPerScore;
+        PlayerInfo.instance.totalBulletsLanded += 1;
 
         trialUI.SetScoreText(score);
 
