@@ -19,7 +19,6 @@ public class Projectile : MonoBehaviour
 
 	[SerializeField]
 	private ParticleSystem sparks; // For when bouncing off walls
-
 	void Start()
 	{
 		if (SoundManager.instance != null)
@@ -52,24 +51,6 @@ public class Projectile : MonoBehaviour
 				{
 					return;
 				}
-			}
-
-
-			if (collision.gameObject.CompareTag("Shield"))
-			{
-				if (collision.gameObject.GetComponent<MiniShield>())
-				{
-					if (collision.gameObject.GetComponent<MiniShield>().BlockedProjectile())
-					{
-
-					}
-					else
-					{
-						return;
-					}
-					
-				}
-				Destroy(gameObject);
 			}
 		
 

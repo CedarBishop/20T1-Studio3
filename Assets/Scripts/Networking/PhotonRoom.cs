@@ -139,14 +139,16 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             int randomNum = UnityEngine.Random.Range(0, 10000);
             randomRoomName = randomNum.ToString();
+            RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 2 };
+            PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
         }
         else
         {
-            randomRoomName = roomNumberString;
+            RoomOptions roomOptions = new RoomOptions() { IsVisible = false, IsOpen = true, MaxPlayers = 2 };
+            PhotonNetwork.CreateRoom(roomNumberString, roomOptions);
         }
 
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 2};
-        PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
+
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -161,7 +163,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StartCoroutine("DisconnectAndLoad");
+            StartCoroutine("Forfeit");
         }
     }
 
@@ -184,6 +186,16 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             yield return null;
         }
         SceneManager.LoadScene("MatchResults");
+    }
+
+    IEnumerator Forfeit()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+        {
+            yield return null;
+        }
+        SceneManager.LoadScene("MainMenu");
     }
 
     void InitNickname()

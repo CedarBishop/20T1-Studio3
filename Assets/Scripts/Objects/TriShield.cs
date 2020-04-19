@@ -16,6 +16,7 @@ public class TriShield : MonoBehaviour
 
     private void Start()
     {
+        photonView = GetComponent<PhotonView>();
         if (hasTriShieldAbiliity == false)
         {
             if (miniShields != null)

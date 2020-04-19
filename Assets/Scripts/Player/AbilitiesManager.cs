@@ -103,10 +103,11 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void PassiveAbilityProcess(PassiveSkills passive)
 	{
-		
-		
-			// Assign enum by current random enum value
-			currentPassive = passiveAbilities[(int)passive];
+
+
+		// Assign enum by current random enum value
+		int passiveNum = (int)passive;
+			currentPassive = passiveAbilities[passiveNum];
 
 			switch (passiveSkills)
 			{
