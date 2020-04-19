@@ -56,14 +56,21 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene != 0 && currentScene != 4 && currentScene != 5)
+        if (currentScene == 1 || currentScene == 2 || currentScene == 3)
         {
             CreatePlayer();
-            SoundManager.instance.PlayMusic(false);
+            SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
+            print("loaded lobby or battle");
         }
-        else
+        else if (currentScene == 4)
         {
-            SoundManager.instance.PlayMusic(true);
+            SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
+            print("loaded time trial");
+        }
+        else if (currentScene == 0)
+        {
+            SoundManager.instance.PlayMusic(MusicTracks.MainMenu);
+            print("loaded main menu");
         }
 
     }
@@ -121,10 +128,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             return;
         }
 
-
         PhotonNetwork.LoadLevel(lobbyScene);
-
-
     }
 
     public void CreateRoom()
@@ -179,7 +183,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             yield return null;
         }
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MatchResults");
     }
 
     void InitNickname()

@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class TimeTrialResults : MonoBehaviour
+public class MatchResults : MonoBehaviour
 {
-    public Text scoreText;
+    public Text roundsWonText;
+    public Text roundsLossedText;
     public Text totalTimeText;
-    public Text roundText;
     public Text passionEarnedText;
     public Text bulletsFiredText;
     public Text bulletsLandedText;
@@ -17,16 +17,24 @@ public class TimeTrialResults : MonoBehaviour
 
     void Start()
     {
-        scoreText.text = "Total Score: " + PlayerInfo.instance.timeTrialScore.ToString();
+        roundsWonText.text = "Rounds Won: " + PlayerInfo.instance.roundsWon.ToString();
+        roundsLossedText.text = "Rounds Lossed: " + PlayerInfo.instance.roundsLossed.ToString();
         totalTimeText.text = "Total Time: " + PlayerInfo.instance.totalTime.ToString("F1");
-        roundText.text = "Highest Round Reached: " + PlayerInfo.instance.timeTrialRound.ToString();
         passionEarnedText.text = "Passion Earned: " + PlayerInfo.instance.passionEarnedThisMatch.ToString();
         bulletsFiredText.text = "Total Bullets Fired: " + PlayerInfo.instance.totalBulletsFired.ToString();
         bulletsLandedText.text = "Total Bullets Landed: " + PlayerInfo.instance.totalBulletsLanded.ToString();
-        SoundManager.instance.PlayMusic(MusicTracks.Win);
+        if (PlayerInfo.instance.roundsWon > PlayerInfo.instance.roundsLossed)
+        {
+            SoundManager.instance.PlayMusic(MusicTracks.Win);
+        }
+        else
+        {
+            SoundManager.instance.PlayMusic(MusicTracks.Win);
+        }
+
     }
 
-    public void ReturnToMainMenu ()
+    public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }

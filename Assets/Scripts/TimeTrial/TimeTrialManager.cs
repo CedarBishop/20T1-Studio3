@@ -110,7 +110,7 @@ public class TimeTrialManager : MonoBehaviour
         PlayerInfo.instance.passionEarnedThisMatch = totalPassionInt;
         PlayerInfo.instance.timeTrialRound = currentRoundNumber;
         PlayerInfo.instance.timeTrialScore = score;
-        PlayerInfo.instance.totalTimeTrialTime = overallTime;
+        PlayerInfo.instance.totalTime = overallTime;
 
         SceneManager.LoadScene("TimeTrialResults");
     }

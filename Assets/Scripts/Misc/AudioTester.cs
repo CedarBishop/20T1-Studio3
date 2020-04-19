@@ -54,15 +54,23 @@ public class AudioTester : MonoBehaviour
         {
             if (soundName == "Menu Music")
             {
-                SoundManager.instance.PlayMusic(true);
+                SoundManager.instance.PlayMusic(MusicTracks.MainMenu);
             }
             else if (soundName == "Game Music")
             {
-                SoundManager.instance.PlayMusic(false);
+                SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
             }
             else if (soundName == "Final Round")
             {
-                SoundManager.instance.PlayMusic(false, true);
+                SoundManager.instance.PlayMusic(MusicTracks.FinalRound);
+            }
+            else if (soundName == "Win Music")
+            {
+                SoundManager.instance.PlayMusic(MusicTracks.Win);
+            }
+            else if (soundName == "Loss Music")
+            {
+                SoundManager.instance.PlayMusic(MusicTracks.Loss);
             }
             OnParamEdit();
         }

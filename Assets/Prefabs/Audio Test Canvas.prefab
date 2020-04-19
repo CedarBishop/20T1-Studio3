@@ -3436,7 +3436,7 @@ PrefabInstance:
     - target: {fileID: 8870532324054759138, guid: ed98337a0b959d04e9e1ee846793298f,
         type: 3}
       propertyPath: isSFX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8870532324161029817, guid: ed98337a0b959d04e9e1ee846793298f,
         type: 3}
@@ -5506,7 +5506,7 @@ PrefabInstance:
     - target: {fileID: 8870532324054759138, guid: ed98337a0b959d04e9e1ee846793298f,
         type: 3}
       propertyPath: isSFX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8870532324161029817, guid: ed98337a0b959d04e9e1ee846793298f,
         type: 3}

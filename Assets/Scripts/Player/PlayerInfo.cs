@@ -11,9 +11,11 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 	[HideInInspector] public int passionEarnedThisMatch;
 	[HideInInspector] public int totalBulletsFired;
 	[HideInInspector] public int totalBulletsLanded;
-	[HideInInspector] public float totalTimeTrialTime;
+	[HideInInspector] public float totalTime;
 	[HideInInspector] public int timeTrialScore;
 	[HideInInspector] public int timeTrialRound;
+	[HideInInspector] public int roundsWon;
+	[HideInInspector] public int roundsLossed;
 
 	[HideInInspector] public string selectedCharacterKey = "SelectedCharacter";
 
@@ -23,7 +25,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 		passionEarnedThisMatch = 0;
 		totalBulletsFired = 0;
 		totalBulletsLanded = 0;
-		totalTimeTrialTime = 0;
+		totalTime = 0;
 		timeTrialScore = 0;
 		timeTrialRound = 0;
 	}

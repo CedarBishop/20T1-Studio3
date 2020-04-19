@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
 	public void PlayerDied(int dyingPlayerNumber, int sendingPlayerNumber)
 	{
 		roomNumber = sendingPlayerNumber;
+
 		string displayText = "";
 		//player two dies
 		if (dyingPlayerNumber == 2)
@@ -160,12 +161,7 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
-					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
-				}
-				else
-				{
-					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				//Start Intermission between rounds
@@ -198,12 +194,7 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
-					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
-				}
-				else
-				{
-					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				Intermission();
@@ -306,11 +297,11 @@ public class GameManager : MonoBehaviour
 		// Both player are at match point
 		if (playerStats[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1 && playerStats[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1)
 		{
-			SoundManager.instance.PlayMusic(false, true);
+			SoundManager.instance.PlayMusic(MusicTracks.FinalRound);
 		}
 		else // Not final round
 		{
-			SoundManager.instance.PlayMusic(false);
+			SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
 		}
 
 		LevelManager.instance.OnBeginingOfRound();
@@ -629,6 +620,17 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			PlayerInfo.instance.passionEarnedThisMatch = 5;
+		}
+
+		if (roomNumber == 1)
+		{
+			PlayerInfo.instance.roundsWon = playerStats[0].roundWins;
+			PlayerInfo.instance.roundsLossed = playerStats[1].roundWins;
+		}
+		else
+		{
+			PlayerInfo.instance.roundsWon = playerStats[1].roundWins;
+			PlayerInfo.instance.roundsLossed = playerStats[0].roundWins;
 		}
 	}
 

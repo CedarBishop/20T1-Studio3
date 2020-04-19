@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MusicTracks { MainMenu, GameMusic, FinalRound, Win, Loss}
+
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance = null;
@@ -11,6 +13,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip gameMusic;
     [SerializeField] private AudioClip finalRoundMusic;
+    [SerializeField] private AudioClip winMusic;
+    [SerializeField] private AudioClip lossMusic;
 
     [SerializeField]
     Sound[] sounds;
@@ -48,7 +52,7 @@ public class SoundManager : MonoBehaviour
             SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
         }
         
-        PlayMusic(true);
+        PlayMusic(MusicTracks.MainMenu);
     }
 
     public void PlaySFX(string soundName)
@@ -92,38 +96,52 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayMusic (bool isMainMenu, bool isFinalRound = false)
+    public void PlayMusic (MusicTracks musicTracks)
     {
-        if (isMainMenu)
+        switch (musicTracks)
         {
-            if (mainMenuMusic != null)
-            {
-                musicAudioSource.loop = true;
-                musicAudioSource.clip = mainMenuMusic;
-                musicAudioSource.Play();
-            }
-        }
-        else
-        {
-            if (isFinalRound)
-            {
-                if (finalRoundMusic != null)
+            case MusicTracks.MainMenu:
+                if (mainMenuMusic != null)
                 {
-                    musicAudioSource.loop = false;
-                    musicAudioSource.clip = finalRoundMusic;
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = mainMenuMusic;
                     musicAudioSource.Play();
                 }
-            }
-            else
-            {
+                break;
+            case MusicTracks.GameMusic:
                 if (gameMusic != null)
                 {
                     musicAudioSource.loop = false;
                     musicAudioSource.clip = gameMusic;
                     musicAudioSource.Play();
                 }
-            }
-            
+                break;
+            case MusicTracks.FinalRound:
+                if (finalRoundMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = finalRoundMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Win:
+                if (winMusic != null)
+                {
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = winMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Loss:
+                if (lossMusic != null)
+                {
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = lossMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            default:
+                break;
         }
     }
 

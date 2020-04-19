@@ -58,5 +58,6 @@ MonoBehaviour:
   - RPC_SetPlayerName
   - RPC_ActionSkillCooldownDisplay
   - RPC_Explosion
+  - RPC_DealtDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 1

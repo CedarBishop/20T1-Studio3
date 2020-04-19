@@ -448,12 +448,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 745263279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c8c4a04f0691442af6e26a9cbf6b58, type: 3}
+  m_Script: {fileID: 11500000, guid: af9a6431cca5d1c489d4db5b3f12ba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 1025481807}
-  totalTimeText: {fileID: 1965200910}
-  roundText: {fileID: 2038896303}
+  roundsWonText: {fileID: 1025481807}
+  roundsLossedText: {fileID: 1965200910}
+  totalTimeText: {fileID: 2038896303}
   passionEarnedText: {fileID: 1954136511}
   bulletsFiredText: {fileID: 2129968843}
   bulletsLandedText: {fileID: 1569105496}

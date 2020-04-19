@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TimeTrialResults.unity
     guid: 2357b70cec2a5ef4eb59cc049ba62aed
+  - enabled: 1
+    path: Assets/Scenes/MatchResults.unity
+    guid: 35503cb823e80574ab2ee00228279df2
   m_configObjects: {}
