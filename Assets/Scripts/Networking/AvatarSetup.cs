@@ -8,6 +8,7 @@ public class AvatarSetup : MonoBehaviour
     PhotonView photonView;
     public GameObject character;
     public int characterValue;
+    public TriShield triShield;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private AbilitiesManager abilitiesManager;
@@ -100,6 +101,7 @@ public class AvatarSetup : MonoBehaviour
     {
         playerCombat.enabled = true;
         playerMovement.enabled = true;
+        triShield.Initialise();
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_ResetStats", RpcTarget.All);

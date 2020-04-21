@@ -57,71 +57,85 @@ MonoBehaviour:
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Speed up
     clip: {fileID: 8300000, guid: 625c3111d175d954e8b25907c8328853, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Shoot
     clip: {fileID: 8300000, guid: 131653d1f0717b34fb3908d98aa00d7d, type: 3}
     source: {fileID: 0}
-    pitch: 1
+    pitch: 0.8
     reverbZone: 1
+    volumeScaler: 0.15
   - name: TakeDamage
     clip: {fileID: 8300000, guid: 037c3384ed108ab4b89abd772b7333f3, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Button
     clip: {fileID: 8300000, guid: d5f5c9e436fb478408f7c05b6896bc92, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: WinGame
     clip: {fileID: 8300000, guid: bb734b9753e1cf744ac01c565607a62f, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: LoseGame
     clip: {fileID: 8300000, guid: 2d5b94367a867c14b8e1bc58121a038a, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: CrowdCheering
     clip: {fileID: 8300000, guid: b5efeea78f9e3ba4994d9a2096e27b08, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Shotgun
     clip: {fileID: 8300000, guid: b5d65b99eb3850b43acc2fcf61e85c9a, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Shop
     clip: {fileID: 8300000, guid: 83744f3ff912cbd4b85bc94d8b0959e4, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: SkillSelect
     clip: {fileID: 8300000, guid: 28473bc8709b9e14eb19b91f53c6d054, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: MineExplosion
     clip: {fileID: 8300000, guid: 76d1901ade1749c4f89302f82ee6702c, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Stealth
     clip: {fileID: 8300000, guid: dc2326acac2c6534d8aab95a3ed5d047, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
   - name: Transistion
     clip: {fileID: 8300000, guid: 4f7843b0b77271440a3038232a5965dc, type: 3}
     source: {fileID: 0}
     pitch: 1
     reverbZone: 1
+    volumeScaler: 1
 --- !u!82 &5107528165328888384
 AudioSource:
   m_ObjectHideFlags: 0

@@ -52,8 +52,8 @@ public class AbilitiesManager : MonoBehaviour
 	private PlayerMovement playerMovement;
 	private PlayerCombat playerCombat;
 	private PlayerRewind playerRewind;
-	private TriShield triShield;
 	public Image healthBarImage;
+	public TriShield triShield;
 
 
 
@@ -64,7 +64,6 @@ public class AbilitiesManager : MonoBehaviour
 		movementSpeed = playerMovement.movementSpeed;
 		playerCombat = GetComponent<PlayerCombat>();
 		playerRewind = GetComponent<PlayerRewind>();
-		triShield = GetComponentInChildren<TriShield>();
 
 		// Add method as delegate to ability UI button
 		AbilityInitiate.OnAbilityClick += ActivateAbility;
@@ -72,7 +71,6 @@ public class AbilitiesManager : MonoBehaviour
 		
 
 		shieldEffect.SetActive(false);
-
 	}
 
 	public void InitCharacterMaterials (GameObject character)
@@ -131,8 +129,8 @@ public class AbilitiesManager : MonoBehaviour
 					playerMovement.AssignSpeedUp();
 				break;
 				case PassiveSkills.TriShield:
-				currentPassive = passiveAbilities[4]; 
-				triShield.Initialise();	
+				currentPassive = passiveAbilities[4];
+				triShield.SetAbility();
 					break;
 				default:
 					break;

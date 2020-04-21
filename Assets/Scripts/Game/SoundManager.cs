@@ -91,9 +91,9 @@ public class SoundManager : MonoBehaviour
     public void SetSFXVolume(float value)
     {
         PlayerPrefs.SetFloat("SFXVolume", value);
-        foreach (AudioSource source in sfx)
+        foreach (Sound sound in sounds)
         {
-            source.volume = value;
+            sound.source.volume = value * sound.volumeScaler;
         }
     }
 
@@ -171,7 +171,7 @@ public class Sound
     [HideInInspector]public AudioSource source;
     [Range(-3.0f, 3.0f)] public float pitch = 1;
     [Range(0.0f, 1.1f)] public float reverbZone;
-    float volume = 1;
+    [Range(0.0f, 1.0f)] public float volumeScaler = 1.0f;
 
 
     public void SetSource(AudioSource _source)
@@ -179,7 +179,7 @@ public class Sound
         source = _source;
         source.clip = clip;
         source.pitch = pitch;
-
+        source.volume = volumeScaler;
     }
 
     public void UpdateParams ()

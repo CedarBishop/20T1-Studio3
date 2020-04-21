@@ -9,29 +9,46 @@ public class TriShield : MonoBehaviour
     public MiniShield[] miniShields;
     public float rotationSpeeds;
     public float shieldRespawnTime;
-    
-    private AbilitiesManager abilitiesManager;
-    bool hasTriShieldAbiliity;
+    public PhotonView playerPhotonView;
 
+    private Transform playerTransform;
 
-    private void Start()
+    private bool hasTriShieldAbility;
+
+    private void Awake()
     {
         photonView = GetComponent<PhotonView>();
-        if (hasTriShieldAbiliity == false)
+        if (miniShields != null)
         {
-            if (miniShields != null)
+            for (int i = 0; i < miniShields.Length; i++)
             {
-                for (int i = 0; i < miniShields.Length; i++)
-                {
-                    miniShields[i].gameObject.SetActive(false);
-                }
+                miniShields[i].gameObject.SetActive(false);
             }
         }
+
+    }
+
+
+    private void Update()
+    {
+        if (playerTransform != null)
+        {
+            transform.position = playerTransform.position;
+        }
+    }
+
+
+    public void SetAbility ()
+    {
+        hasTriShieldAbility = true;
     }
 
     public void Initialise()
     {
-        hasTriShieldAbiliity = true;
+        if (hasTriShieldAbility == false)
+        {
+            return;
+        }
         if (miniShields != null)
         {
             for (int i = 0; i < miniShields.Length; i++)
@@ -39,12 +56,12 @@ public class TriShield : MonoBehaviour
                 miniShields[i].isMine = true;
             }
         }
-        photonView.RPC("RPC_ActivateAll", RpcTarget.All,hasTriShieldAbiliity);
+        photonView.RPC("RPC_ActivateAll", RpcTarget.All);
     }
 
 
     [PunRPC]
-    void RPC_ActivateAll (bool active)
+    void RPC_ActivateAll ()
     {
         if (miniShields != null)
         {
@@ -52,9 +69,12 @@ public class TriShield : MonoBehaviour
             {
                 miniShields[i].triShield = this;
                 miniShields[i].index = i;
-                miniShields[i].gameObject.SetActive(active);
+                miniShields[i].gameObject.SetActive(true);
+                miniShields[i].parentsPV = playerPhotonView;
             }
-        }                                                                                                                                                                                                    
+        }
+        playerTransform = transform.parent;
+        transform.parent = null;
     }
 
     [PunRPC]

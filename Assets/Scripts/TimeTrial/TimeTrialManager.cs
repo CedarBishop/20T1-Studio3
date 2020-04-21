@@ -18,12 +18,12 @@ public class TimeTrialManager : MonoBehaviour
     public Material activeIndicatorMaterial;
     public Material deactivatedIndicatorMaterial;
 
-
     private float timer;
     private int currentRoundNumber;
     private bool trialIsRunning;
     private float overallTime;
     private float totalPassion;
+
 
     private void Awake()
     {
