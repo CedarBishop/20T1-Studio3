@@ -50,6 +50,7 @@ MonoBehaviour:
   finalRoundMusic: {fileID: 8300000, guid: 5172f0140a3573b4bbe1b63f92c83680, type: 3}
   winMusic: {fileID: 8300000, guid: bb734b9753e1cf744ac01c565607a62f, type: 3}
   lossMusic: {fileID: 8300000, guid: 2d5b94367a867c14b8e1bc58121a038a, type: 3}
+  transistionMusic: {fileID: 8300000, guid: 4f7843b0b77271440a3038232a5965dc, type: 3}
   sounds:
   - name: Rewind
     clip: {fileID: 8300000, guid: 0553253b58ad67a478779a3de4ca4d81, type: 3}

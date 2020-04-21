@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MusicTracks { MainMenu, GameMusic, FinalRound, Win, Loss}
+public enum MusicTracks { MainMenu, GameMusic, FinalRound, Win, Loss, Transistion}
 
 public class SoundManager : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip finalRoundMusic;
     [SerializeField] private AudioClip winMusic;
     [SerializeField] private AudioClip lossMusic;
+    [SerializeField] private AudioClip transistionMusic;
 
     [SerializeField]
     Sound[] sounds;
@@ -137,6 +138,14 @@ public class SoundManager : MonoBehaviour
                 {
                     musicAudioSource.loop = true;
                     musicAudioSource.clip = lossMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Transistion:
+                if (transistionMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = transistionMusic;
                     musicAudioSource.Play();
                 }
                 break;

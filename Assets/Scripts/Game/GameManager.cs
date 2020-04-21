@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 	private bool roundIsUnderway;
 	private bool isRoundIntermission;
 
+	private float totalTime;
+
 	[Header("UI Arrangement")]
 	public LayoutGroup layoutGroup;
 	public FixedJoystick leftJoystick;
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(roundStartDelay);
 		players = PhotonNetwork.PlayerList;
 		roundNumber = 1;
+		totalTime = 0;
 
 		// Instantiate the UI Group for each player and initialize with room number
 		for (int i = 0; i < players.Length; i++)
@@ -268,6 +271,7 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
+				totalTime += Time.fixedDeltaTime;
 				roundTimer -= Time.fixedDeltaTime;
 				roundTimerText.text = roundTimer.ToString("F1");
 			}
@@ -414,7 +418,7 @@ public class GameManager : MonoBehaviour
 	private void Intermission()
 	{
 		SoundManager.instance.StopMusic();
-		SoundManager.instance.PlaySFX("Transistion");
+		SoundManager.instance.PlayMusic(MusicTracks.Transistion);
 		roundTimer = LevelManager.instance.intermissionTime;
 		isRoundIntermission = true;
 		roundIsUnderway = false;
@@ -632,6 +636,8 @@ public class GameManager : MonoBehaviour
 			PlayerInfo.instance.roundsWon = playerStats[1].roundWins;
 			PlayerInfo.instance.roundsLossed = playerStats[0].roundWins;
 		}
+
+		PlayerInfo.instance.totalTime = totalTime;
 	}
 
 	public void ActionSkillCooldownDisplay (float cooldownTime)
