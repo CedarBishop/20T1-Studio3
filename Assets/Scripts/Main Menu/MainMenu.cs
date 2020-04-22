@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject mainParent;
     public GameObject settingsParent;
     public GameObject shopParent;
+    public GameObject skillParent;
 
     public Text passionCountText;
     public Text goldCountText;
@@ -52,18 +53,28 @@ public class MainMenu : MonoBehaviour
                 mainParent.SetActive(true);
                 settingsParent.SetActive(false);
                 shopParent.SetActive(false);
+                skillParent.SetActive(false);
                 ActivateCharacterDisplay();
                 break;
             case 2:
                 mainParent.SetActive(false);
                 settingsParent.SetActive(true);
                 shopParent.SetActive(false);
+                skillParent.SetActive(false);
                 DeactivateCharacterDisplay();
                 break;
             case 3:
                 mainParent.SetActive(false);
                 settingsParent.SetActive(false);
                 shopParent.SetActive(true);
+                skillParent.SetActive(false);
+                DeactivateCharacterDisplay();
+                break;
+            case 4:
+                mainParent.SetActive(false);
+                settingsParent.SetActive(false);
+                shopParent.SetActive(false);
+                skillParent.SetActive(true);
                 DeactivateCharacterDisplay();
                 break;
             default:

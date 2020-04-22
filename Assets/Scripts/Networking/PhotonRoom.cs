@@ -16,7 +16,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public bool isGameLoaded;
     private int currentScene;
-    private int lobbyScene = 1;
+    private int lobbyScene = 2;
     private int gameScene;
 
     Player[] photonPlayers;
@@ -56,18 +56,18 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene == 1 || currentScene == 2 || currentScene == 3)
+        if (currentScene == 2 || currentScene == 3 || currentScene == 4)
         {
             CreatePlayer();
             SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
             print("loaded lobby or battle");
         }
-        else if (currentScene == 4)
+        else if (currentScene == 5)
         {
             SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
             print("loaded time trial");
         }
-        else if (currentScene == 0)
+        else if (currentScene == 1)
         {
             SoundManager.instance.PlayMusic(MusicTracks.MainMenu);
             print("loaded main menu");
@@ -78,7 +78,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
-        gameScene = Random.Range(2, 4);
+        gameScene = Random.Range(3, 5);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
