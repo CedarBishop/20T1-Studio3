@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     public Text passionCountText;
     public Text goldCountText;
 
+    public Shop shop;
     private Currency currency;
 
     public Slider musicSlider;
@@ -114,7 +115,7 @@ public class MainMenu : MonoBehaviour
         {
             PlayerPrefs.SetInt(cosmeticKeyNames[i],0);
         }
-        GetComponent<Shop>().InitShop();
+        shop.InitShop();
     }
 
     void InitText()
@@ -145,7 +146,7 @@ public class MainMenu : MonoBehaviour
 
         if (characterNumber > 0)
         {
-            if (PlayerPrefs.GetInt(cosmeticKeyNames[characterNumber - 1], 0) == 0)
+            if (shop.shopItems[characterNumber - 1].owned == false)
             {
                 return;
             }
@@ -171,13 +172,13 @@ public class MainMenu : MonoBehaviour
         for (int i = 0; i < currentCharacterDisplayObjects.Length; i++)
         {
             currentCharacterDisplayObjects[i].SetActive(false);     
-            lockedCharacterDisplay.SetActive(false);
 
         }
+        lockedCharacterDisplay.SetActive(false);
 
         if (characterNumber > 0)
         {
-            if (PlayerPrefs.GetInt(cosmeticKeyNames[characterNumber - 1], 0) == 1)
+            if (shop.shopItems[characterNumber - 1].owned)
             {
                 currentCharacterDisplayObjects[characterNumber].SetActive(true);
             }

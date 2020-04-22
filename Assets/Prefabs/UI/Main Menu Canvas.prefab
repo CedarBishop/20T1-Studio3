@@ -3096,10 +3096,10 @@ MonoBehaviour:
   - {fileID: 0}
   lockedCharacterDisplay: {fileID: 0}
   cosmeticKeyNames:
-  - Green Skin
-  - Pink Skin
-  - Yellow Skin
-  - Rainbow Skin
+  - Green DJ
+  - Pink DJ
+  - Yellow DJ
+  - Rainbow DJ
 --- !u!114 &6128273738142285369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3126,22 +3126,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopItems:
   - itemButton: {fileID: 5222143279661101395}
-    itemKey: Green Skin
+    itemKey: Green DJ
     itemPrice: 10
     requiresPassion: 1
     itemText: {fileID: 8788140963524550115}
   - itemButton: {fileID: 83247144632448197}
-    itemKey: Pink Skin
+    itemKey: Pink DJ
     itemPrice: 20
     requiresPassion: 1
     itemText: {fileID: 8788140964319242480}
   - itemButton: {fileID: 13435657787526966}
-    itemKey: Yellow Skin
+    itemKey: Yellow DJ
     itemPrice: 50
     requiresPassion: 1
     itemText: {fileID: 8788140964959540197}
   - itemButton: {fileID: 7446879264581173631}
-    itemKey: Rainbow Skin
+    itemKey: Rainbow DJ
     itemPrice: 10
     requiresPassion: 0
     itemText: {fileID: 8788140964721061189}
