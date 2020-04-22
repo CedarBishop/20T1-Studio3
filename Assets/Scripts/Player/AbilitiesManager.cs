@@ -105,8 +105,8 @@ public class AbilitiesManager : MonoBehaviour
 
 		// Assign enum by current random enum value
 		int passiveNum = (int)passive;
-			currentPassive = passiveAbilities[passiveNum];
-
+		currentPassive = passiveAbilities[passiveNum];
+		triShield.SetAbility(false);
 			switch (passiveSkills)
 			{
 				case PassiveSkills.None:
@@ -130,7 +130,7 @@ public class AbilitiesManager : MonoBehaviour
 				break;
 				case PassiveSkills.TriShield:
 				currentPassive = passiveAbilities[4];
-				triShield.SetAbility();
+				triShield.SetAbility(true);
 					break;
 				default:
 					break;

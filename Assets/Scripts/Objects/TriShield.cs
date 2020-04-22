@@ -9,11 +9,10 @@ public class TriShield : MonoBehaviour
     public MiniShield[] miniShields;
     public float rotationSpeeds;
     public float shieldRespawnTime;
-    public PhotonView playerPhotonView;
 
-    private Transform playerTransform;
+    public Transform playerTransform;
 
-    private bool hasTriShieldAbility;
+    private bool hasTriShieldAbility = false;
 
     private void Awake()
     {
@@ -25,7 +24,6 @@ public class TriShield : MonoBehaviour
                 miniShields[i].gameObject.SetActive(false);
             }
         }
-
     }
 
 
@@ -38,15 +36,22 @@ public class TriShield : MonoBehaviour
     }
 
 
-    public void SetAbility ()
+    public void SetAbility (bool value)
     {
-        hasTriShieldAbility = true;
+        hasTriShieldAbility = value;
     }
 
     public void Initialise()
     {
         if (hasTriShieldAbility == false)
         {
+            if (miniShields != null)
+            {
+                for (int i = 0; i < miniShields.Length; i++)
+                {
+                    miniShields[i].gameObject.SetActive(false);
+                }
+            }
             return;
         }
         if (miniShields != null)
@@ -70,10 +75,9 @@ public class TriShield : MonoBehaviour
                 miniShields[i].triShield = this;
                 miniShields[i].index = i;
                 miniShields[i].gameObject.SetActive(true);
-                miniShields[i].parentsPV = playerPhotonView;
             }
         }
-        playerTransform = transform.parent;
+        print("is getting called" + transform.parent);
         transform.parent = null;
     }
 
