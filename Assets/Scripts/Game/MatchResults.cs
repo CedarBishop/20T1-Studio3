@@ -29,7 +29,7 @@ public class MatchResults : MonoBehaviour
         }
         else
         {
-            SoundManager.instance.PlayMusic(MusicTracks.Win);
+            SoundManager.instance.PlayMusic(MusicTracks.Loss);
         }
 
     }
