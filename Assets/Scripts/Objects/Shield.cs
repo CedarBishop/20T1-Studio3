@@ -11,6 +11,13 @@ public class Shield : MonoBehaviour
     {
         if (parentsPV.IsMine == false)
         {
+            if (other.TryGetComponent<Projectile>(out Projectile proj))
+            {
+                if (proj.isMyProjectile)
+                {
+                    Destroy(proj.gameObject);
+                }
+            }
             return;
         }
 
