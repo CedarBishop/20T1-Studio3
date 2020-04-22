@@ -71289,7 +71289,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[2].addedTimePerTarget
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71339,7 +71339,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[3].addedTimePerTarget
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71389,7 +71389,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[4].addedTimePerTarget
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71439,7 +71439,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[5].addedTimePerTarget
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71539,7 +71539,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[7].addedTimePerTarget
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71589,7 +71589,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[8].addedTimePerTarget
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71639,7 +71639,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: rounds.Array.data[9].addedTimePerTarget
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
@@ -71689,7 +71689,7 @@ PrefabInstance:
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
       propertyPath: passionPerScore
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4297170862837443577, guid: 36a553756b9b58d4f940dc1662faca2b,
         type: 3}
