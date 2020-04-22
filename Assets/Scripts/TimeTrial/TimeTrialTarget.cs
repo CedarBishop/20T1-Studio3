@@ -9,7 +9,9 @@ public class TimeTrialTarget : MonoBehaviour
 
     public Material targetActivatedMaterial;
     public Material targetDeactivatedMaterial;
-    
+
+    public GameObject minimapIndicator;
+
     private Material indicatorActiveMat;
     private Material indicatorDeactivatedMat;
     private bool isActive;
@@ -23,6 +25,7 @@ public class TimeTrialTarget : MonoBehaviour
         collider.enabled = isActive;
         indicator.material = indicatorActiveMat;
         targetMesh.material = targetActivatedMaterial;
+        minimapIndicator.layer = 10;
     }
 
     public void Activate(Material activeMat, Material deactivatedMat)
@@ -40,6 +43,7 @@ public class TimeTrialTarget : MonoBehaviour
         indicator.material = indicatorDeactivatedMat;
         targetMesh.material = targetDeactivatedMaterial;
         TimeTrialManager.instance.TargetHit();
+        minimapIndicator.layer = 11;
     }
 
     public bool CheckIfActive ()

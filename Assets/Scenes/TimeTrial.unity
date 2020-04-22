@@ -7562,7 +7562,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25072
+  m_Name: pb_Mesh20684
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10438,6 +10438,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 235327277}
 --- !u!65 &215658523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10550,6 +10551,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 623234544}
 --- !u!65 &226867242
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16267,6 +16269,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 265833203}
 --- !u!65 &415682802
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20512,6 +20515,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1205067204}
 --- !u!65 &529852136
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24866,7 +24870,7 @@ GameObject:
   - component: {fileID: 666298746}
   - component: {fileID: 666298745}
   m_Layer: 10
-  m_Name: Target ind 4
+  m_Name: Target ind 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26228,6 +26232,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 465467464}
 --- !u!65 &666356749
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26757,6 +26762,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1915932509}
 --- !u!65 &694143339
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28697,6 +28703,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 666298743}
 --- !u!65 &733227289
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28809,6 +28816,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 594482069}
 --- !u!65 &762301807
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34187,7 +34195,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-25014
+  m_Name: pb_Mesh21216
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -34616,6 +34624,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 532262068}
 --- !u!65 &1112579056
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36004,6 +36013,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1131047485}
 --- !u!65 &1140508386
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36279,6 +36289,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1966490154}
 --- !u!65 &1167524944
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36605,6 +36616,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 792831950}
 --- !u!65 &1179880621
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70256,6 +70268,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1421796506}
 --- !u!65 &1332269508
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -91019,6 +91032,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 2013855751}
 --- !u!65 &1754300489
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -97924,6 +97938,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1193508487}
 --- !u!65 &1981322248
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -103453,7 +103468,7 @@ GameObject:
   - component: {fileID: 2013855754}
   - component: {fileID: 2013855753}
   m_Layer: 10
-  m_Name: Target ind 3
+  m_Name: Target ind 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106234,6 +106249,7 @@ MonoBehaviour:
     type: 2}
   targetDeactivatedMaterial: {fileID: 2100000, guid: 86a86567793887c45b5303a0529b0889,
     type: 2}
+  minimapIndicator: {fileID: 1538000870}
 --- !u!65 &2096709208
 BoxCollider:
   m_ObjectHideFlags: 0
