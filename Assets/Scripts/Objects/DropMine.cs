@@ -18,8 +18,6 @@ public class DropMine : MonoBehaviour
         object[] data = photonView.InstantiationData;
 
         roomNumber = (int)data[0];
-
-        StartCoroutine("CoExplode"); // start timer before this mine explodes
     }
 
 
@@ -39,12 +37,6 @@ public class DropMine : MonoBehaviour
         }
     }
 
-    IEnumerator CoExplode ()
-    {
-        yield return new WaitForSeconds(timeBeforeExplode);
-
-        Explosion();
-    }
 
     [PunRPC]
     void RPC_Explosion()

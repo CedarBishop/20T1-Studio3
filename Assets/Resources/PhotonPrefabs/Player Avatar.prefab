@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca094d539b67ef45884008a10176fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passiveSkills: 5
+  passiveSkills: 0
   activeSkills: 0
   passiveAbilities:
   - {fileID: 11400000, guid: 813cb504835c80f4caa1334ebc79614c, type: 2}
@@ -552,9 +552,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2443462578831995618, guid: 9329b4b4db63aa84c94741de573c85d2,
+        type: 3}
+      propertyPath: parentsPV
+      value: 
+      objectReference: {fileID: 4357997688448584928}
     - target: {fileID: 4266019755835561181, guid: 9329b4b4db63aa84c94741de573c85d2,
         type: 3}
       propertyPath: playerPhotonView
+      value: 
+      objectReference: {fileID: 4357997688448584928}
+    - target: {fileID: 4266019755835561181, guid: 9329b4b4db63aa84c94741de573c85d2,
+        type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 4357997688448584957}
+    - target: {fileID: 6208109316980014041, guid: 9329b4b4db63aa84c94741de573c85d2,
+        type: 3}
+      propertyPath: parentsPV
       value: 
       objectReference: {fileID: 4357997688448584928}
     - target: {fileID: 6948675370573392308, guid: 9329b4b4db63aa84c94741de573c85d2,
@@ -562,6 +577,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriShield Parent
       objectReference: {fileID: 0}
+    - target: {fileID: 7589592625751408660, guid: 9329b4b4db63aa84c94741de573c85d2,
+        type: 3}
+      propertyPath: parentsPV
+      value: 
+      objectReference: {fileID: 4357997688448584928}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9329b4b4db63aa84c94741de573c85d2, type: 3}
 --- !u!4 &5929922540731513461 stripped

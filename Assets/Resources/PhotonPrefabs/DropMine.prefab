@@ -130,6 +130,7 @@ MonoBehaviour:
   explosionParticle: {fileID: 6860743083421844295, guid: 17b709c685cf9e04c8985804874c5a9a,
     type: 3}
   damage: 20
+  roomNumber: 0
 --- !u!114 &805918676577685111
 MonoBehaviour:
   m_ObjectHideFlags: 0
