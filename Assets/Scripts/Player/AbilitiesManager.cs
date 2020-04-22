@@ -102,10 +102,6 @@ public class AbilitiesManager : MonoBehaviour
 	private void PassiveAbilityProcess(PassiveSkills passive)
 	{
 
-
-		// Assign enum by current random enum value
-		int passiveNum = (int)passive;
-		currentPassive = passiveAbilities[passiveNum];
 		triShield.SetAbility(false);
 			switch (passiveSkills)
 			{
