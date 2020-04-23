@@ -8,6 +8,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 	public int selectedCharacter;
 	public GameObject[] allCharacters;
 
+
 	[HideInInspector] public int passionEarnedThisMatch;
 	[HideInInspector] public int totalBulletsFired;
 	[HideInInspector] public int totalBulletsLanded;
@@ -56,6 +57,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 			selectedCharacter = 0;
 			PlayerPrefs.SetInt(selectedCharacterKey, selectedCharacter);
 		}
+
+
+		print(allCharacters[0].GetComponentInChildren<SkinnedMeshRenderer>().name);
 	}
 
 	public override void OnDisconnected(DisconnectCause cause)

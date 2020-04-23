@@ -17,6 +17,10 @@ public class AvatarSetup : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerCombat = GetComponent<PlayerCombat>();
+        abilitiesManager = GetComponent<AbilitiesManager>();
+        
         if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
         {
             print("Room number parsed " + roomNumber);
@@ -26,9 +30,9 @@ public class AvatarSetup : MonoBehaviour
         {
             photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.instance.selectedCharacter);
         }
-        playerMovement = GetComponent<PlayerMovement>();
-        playerCombat = GetComponent<PlayerCombat>();
-        abilitiesManager = GetComponent<AbilitiesManager>();
+
+
+
     }
 
     [PunRPC]
@@ -38,7 +42,7 @@ public class AvatarSetup : MonoBehaviour
         character = Instantiate(PlayerInfo.instance.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
         print(transform.position);
         character.name = character.name + " Model";
-        //abilitiesManager.InitCharacterMaterials(character);
+        abilitiesManager.InitCharacterMaterials(character);
     }
 
     public void Die()

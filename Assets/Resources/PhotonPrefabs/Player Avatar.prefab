@@ -312,7 +312,7 @@ MonoBehaviour:
   maxMovementSpeed: 800
   maxBulletBounces: 2
   stealthMaterial: {fileID: 2100000, guid: ba06da8ab9ee3c84e9bac6faa492cdaf, type: 2}
-  stealthActiveMaterial: {fileID: 2100000, guid: ba06da8ab9ee3c84e9bac6faa492cdaf,
+  stealthActiveMaterial: {fileID: 2100000, guid: 1d6c3679644245644bee0be1282a0d60,
     type: 2}
   shieldEffect: {fileID: 1651260806888081699}
   healthBarImage: {fileID: 5395470379465073144}
@@ -411,6 +411,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4357997688448584957}
     m_Modifications:
+    - target: {fileID: 19169142445779249, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: da5eb65189a34d848952041dc3956628, type: 2}
     - target: {fileID: 19169142445779251, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
         type: 3}
       propertyPath: m_LocalPosition.x
