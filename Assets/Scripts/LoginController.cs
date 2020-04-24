@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoginController : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class LoginController : MonoBehaviour
     }
     IEnumerator CoSkipToMainMenu ()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Quit ()

@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveSkills: 0
-  activeSkills: 4
+  activeSkills: 0
   passiveAbilities:
   - {fileID: 11400000, guid: 813cb504835c80f4caa1334ebc79614c, type: 2}
   - {fileID: 11400000, guid: 9ee82e0980cb7284b8668f0da7996c31, type: 2}

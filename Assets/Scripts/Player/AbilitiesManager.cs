@@ -66,12 +66,19 @@ public class AbilitiesManager : MonoBehaviour
 		playerCombat = GetComponent<PlayerCombat>();
 		playerRewind = GetComponent<PlayerRewind>();
 
+		shieldEffect.SetActive(false);
+	}
+
+	private void Start()
+	{
 		// Add method as delegate to ability UI button
 		AbilityInitiate.OnAbilityClick += ActivateAbility;
+	}
 
-		
-
-		shieldEffect.SetActive(false);
+	private void OnDestroy()
+	{
+		// Remove method as delegate to ability UI button
+		AbilityInitiate.OnAbilityClick -= ActivateAbility;
 	}
 
 	public void InitCharacterMaterials (GameObject character)
@@ -94,7 +101,7 @@ public class AbilitiesManager : MonoBehaviour
 	private void Update()
 	{
 		// For testing on PC
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1))
 		{
 			ActivateAbility();
 		}

@@ -19,6 +19,10 @@ public class AbilityInitiate : MonoBehaviour
 
     public void OnButtonClick()
     {
-        OnAbilityClick();
+        if (OnAbilityClick != null)
+        {
+            OnAbilityClick();
+        }
+
     }
 }

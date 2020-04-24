@@ -13,6 +13,9 @@ namespace EasyProfile
         /// </summary>
         private void Start()
         {
+#if UNITY_ANDROID || UNITY_IOS
+            return;
+#endif
             if (!EasyProfileManager.Instance.PROFILE_SETTING.UseApiOnly)
             {
                 Init();
@@ -24,7 +27,10 @@ namespace EasyProfile
         /// OnDestroy method. Remove listeners   
         /// </summary>
         private void OnDestroy()
-        { 
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            return;
+#endif
             if (EasyProfileManager.Instance != null)
             {
                 EasyProfileManager.Instance.RemoveOnLogOutAction(OnLogOut);

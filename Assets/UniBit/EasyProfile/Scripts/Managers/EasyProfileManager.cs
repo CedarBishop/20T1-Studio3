@@ -114,6 +114,9 @@ namespace EasyProfile
         /// </summary>
         private void Awake()
         {
+#if UNITY_ANDROID || UNITY_IOS
+            return;
+#endif
             Init();
         }
 

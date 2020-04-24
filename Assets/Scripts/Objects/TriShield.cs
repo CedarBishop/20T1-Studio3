@@ -77,7 +77,6 @@ public class TriShield : MonoBehaviour
                 miniShields[i].gameObject.SetActive(true);
             }
         }
-        print("is getting called" + transform.parent);
         transform.parent = null;
     }
 
