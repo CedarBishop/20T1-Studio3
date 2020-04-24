@@ -746,10 +746,17 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
+<<<<<<< Updated upstream
   cloudProjectId: 546855d4-70bb-41c8-91d6-3b1f27855a1b
   framebufferDepthMemorylessMode: 0
   projectName: LuminousStandoff (1)
   organizationId: unity_1011346
+=======
+  cloudProjectId: 172c7327-2549-4766-9ce2-db213180b93e
+  framebufferDepthMemorylessMode: 0
+  projectName: LuminousStandoff
+  organizationId: unity_1013316
+>>>>>>> Stashed changes
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
