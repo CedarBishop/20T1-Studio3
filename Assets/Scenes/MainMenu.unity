@@ -6627,50 +6627,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 136692131, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Mine - Drop a mine that explodes when an enemy is hit
-      objectReference: {fileID: 0}
-    - target: {fileID: 148396889, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Bouncy bullet - Bullets can bounce on walls
-      objectReference: {fileID: 0}
-    - target: {fileID: 448676421, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Rewind - Go back a few seconds in time
-      objectReference: {fileID: 0}
-    - target: {fileID: 601813811, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: 'Action Skills
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 643570907, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Stealth - become invisible for a few seconds
-      objectReference: {fileID: 0}
-    - target: {fileID: 648265769, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Helper bullet - Every third bullet is deals double damage
-      objectReference: {fileID: 0}
-    - target: {fileID: 732496020, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Temporary shield- A shield that blocks bullets
-      objectReference: {fileID: 0}
-    - target: {fileID: 1290388193, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: Shotgun - shoots multiple bullets at once
-      objectReference: {fileID: 0}
-    - target: {fileID: 1385147129, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_Text
-      value: 'Passive Skills
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 1940053654, guid: 3b3e49480ac683b48979afae0447a897, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 916986377181606947, guid: 3b3e49480ac683b48979afae0447a897,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -6771,11 +6727,6 @@ PrefabInstance:
       propertyPath: lockedCharacterDisplay
       value: 
       objectReference: {fileID: 818210554}
-    - target: {fileID: 6128273738142285370, guid: 3b3e49480ac683b48979afae0447a897,
-        type: 3}
-      propertyPath: shop
-      value: 
-      objectReference: {fileID: 6128273738085159466}
     - target: {fileID: 6128273738142285372, guid: 3b3e49480ac683b48979afae0447a897,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6920,15 +6871,3 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6128273738085159463}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6128273738085159466 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6128273738142285368, guid: 3b3e49480ac683b48979afae0447a897,
-    type: 3}
-  m_PrefabInstance: {fileID: 6128273738085159463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69ce35c2867327a48a358badf96ff3d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

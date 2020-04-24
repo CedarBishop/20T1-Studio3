@@ -16,12 +16,13 @@ public class Currency : MonoBehaviour
 
     private MainMenu mainMenu;
 
-    private void Start()
+    private IEnumerator Start()
     {
         mainMenu = GetComponent<MainMenu>();
 
         //initialising runtime variables with values that were previously saved if any
 
+        yield return new WaitForSeconds(0.1f);
 #if UNITY_IPHONE || UNITY_ANDROID
         
         if (PlayerPrefs.HasKey(passionKey))

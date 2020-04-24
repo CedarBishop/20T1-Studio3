@@ -106,6 +106,10 @@ public class Shop : MonoBehaviour
 
     public void InitShopOnline ()
     {
+        if (shopItems == null)
+        {
+            return;
+        }
         for (int i = 0; i < shopItems.Length; i++)
         {
             EasyProfileManager.Instance.GetCustomValue(shopItems[i].itemKey, OnGetShopItemComplete);

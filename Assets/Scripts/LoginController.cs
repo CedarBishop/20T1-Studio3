@@ -19,4 +19,9 @@ public class LoginController : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
     }
+
+    public void Quit ()
+    {
+        Application.Quit();
+    }    
 }

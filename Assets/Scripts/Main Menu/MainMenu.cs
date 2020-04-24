@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour
     public GameObject shopParent;
     public GameObject skillParent;
 
+    public Button logoutButton;
+
     public Text passionCountText;
     public Text goldCountText;
 
@@ -38,12 +40,21 @@ public class MainMenu : MonoBehaviour
         ActivateCharacterDisplay();
         currentCharacterIsUnlocked = true;
 
+#if UNITY_ANDROID || UNITY_IOS
+
+        logoutButton.gameObject.SetActive(false);
+#else
+        logoutButton.gameObject.SetActive(true);
+
+#endif
+
     }
 
-    public void Quit  ()
+    public void Logout  ()
     {
         EasyProfile.EasyProfileManager.Instance.LogOut();
         SoundManager.instance.PlaySFX("Button");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
     }
 
     public void SetMenuType(int menuType)

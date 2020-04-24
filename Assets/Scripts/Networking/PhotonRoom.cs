@@ -163,7 +163,11 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StartCoroutine("Forfeit");
+            if (SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                StartCoroutine("Forfeit");
+            }
+
         }
     }
 
