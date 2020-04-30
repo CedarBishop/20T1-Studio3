@@ -13,7 +13,6 @@ public class SkillSelectionHolder : MonoBehaviour
     private List<PassiveSkills> allPassiveSkills = new List<PassiveSkills>() { PassiveSkills.BouncyBullet, PassiveSkills.HelperBullet, PassiveSkills.SlowdownBullet, PassiveSkills.SpeedUp, PassiveSkills.TriShield};
     private List<ActiveSkills> allActiveAbilities = new List<ActiveSkills>() {ActiveSkills.DropMine,ActiveSkills.Rewind,ActiveSkills.Shotgun,ActiveSkills.Stealth,ActiveSkills.TempShield };
 
-
     private List<PassiveSkills> thisMatchPassiveSkills = new List<PassiveSkills>();
     private List<ActiveSkills> thisMatchActiveSkills = new List<ActiveSkills>();
 
@@ -31,7 +30,6 @@ public class SkillSelectionHolder : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 
     private void Start()
     {
@@ -65,7 +63,7 @@ public class SkillSelectionHolder : MonoBehaviour
 
             photonView.RPC("RPC_InitRandomSkills", RpcTarget.OthersBuffered, passiveSkillNums,activeSkillNums);
         }
-       
+
     }
 
     [PunRPC]
@@ -80,7 +78,7 @@ public class SkillSelectionHolder : MonoBehaviour
             thisMatchActiveSkills.Add((ActiveSkills)activeSkillNums[i]);
 
         }
-       
+
       //  PrintRemainingSkills();
     }
 

@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509ff6c8cfc272d479f1f17fb3d0e3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuMusic: {fileID: 0}
-  gameMusic: {fileID: 8300000, guid: 644899edae295044c81988a0fdd64aeb, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: 2f93efc3046787e4ebcd5ddadb9a5cae, type: 3}
+  gameMusic: {fileID: 8300000, guid: de1c00a382ab5344791799679479aff7, type: 3}
+  finalRoundMusic: {fileID: 8300000, guid: 5172f0140a3573b4bbe1b63f92c83680, type: 3}
   sounds:
   - name: Rewind
     clip: {fileID: 8300000, guid: 185aad54fb8aec54998375b17a89bfb8, type: 3}
@@ -56,7 +57,7 @@ MonoBehaviour:
     source: {fileID: 0}
     pitch: 1
   - name: Shoot
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 131653d1f0717b34fb3908d98aa00d7d, type: 3}
     source: {fileID: 0}
     pitch: 1
   - name: TakeDamage
@@ -64,7 +65,39 @@ MonoBehaviour:
     source: {fileID: 0}
     pitch: 1
   - name: Button
-    clip: {fileID: 8300000, guid: a1fd2e826ddf9bf4a83a5b7f641b0919, type: 3}
+    clip: {fileID: 8300000, guid: d5f5c9e436fb478408f7c05b6896bc92, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: WinGame
+    clip: {fileID: 8300000, guid: bb734b9753e1cf744ac01c565607a62f, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: LoseGame
+    clip: {fileID: 8300000, guid: 2d5b94367a867c14b8e1bc58121a038a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: CrowdCheering
+    clip: {fileID: 8300000, guid: b5efeea78f9e3ba4994d9a2096e27b08, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Shotgun
+    clip: {fileID: 8300000, guid: b5d65b99eb3850b43acc2fcf61e85c9a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Shop
+    clip: {fileID: 8300000, guid: b5d65b99eb3850b43acc2fcf61e85c9a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: SkillSelect
+    clip: {fileID: 8300000, guid: 6c94bb25417e38642a71a29bb4585062, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: MineExplosion
+    clip: {fileID: 8300000, guid: cca870072af8d9e4abb295ac1d89539a, type: 3}
+    source: {fileID: 0}
+    pitch: 1
+  - name: Stealth
+    clip: {fileID: 8300000, guid: c70c0ecda5f16ed45aeb390d2f7b2c93, type: 3}
     source: {fileID: 0}
     pitch: 1
 --- !u!82 &5107528165328888384

@@ -5,51 +5,48 @@ using UnityEngine.UI;
 
 public class SkillButton : MonoBehaviour
 {
+	private Image image;
+	private int skillNumber;
+	private bool isPassive;
 
-    Image image;
-    int skillNumber;
-    bool isPassive;
+	public void InitialiseButton(bool IsPassive, int SkillNumber)
+	{
+		isPassive = IsPassive;
+		skillNumber = SkillNumber;
 
-   
-    public void InitialiseButton (bool IsPassive, int SkillNumber)
-    {
-        isPassive = IsPassive;
-        skillNumber = SkillNumber;
-        if (isPassive)
-        {
-            PassiveSkills[] passive = SkillSelectionHolder.instance.GetPassiveSkills();
-            int num = SkillSelectionHolder.instance.GetChosenPassiveSkillSprite(passive[skillNumber]);
-            image = GetComponent<Image>();
-            image.sprite = SkillSelectionHolder.instance.passiveSprites[num];
+		if (isPassive)
+		{
+			PassiveSkills[] passive = SkillSelectionHolder.instance.GetPassiveSkills();
+			int num = SkillSelectionHolder.instance.GetChosenPassiveSkillSprite(passive[skillNumber]);
+			image = GetComponent<Image>();
+			image.sprite = SkillSelectionHolder.instance.passiveSprites[num];
+		}
+		else
+		{
+			ActiveSkills[] active = SkillSelectionHolder.instance.GetActiveSkills();
+			int num = SkillSelectionHolder.instance.GetChosenActiveSkillSprite(active[skillNumber]);
+			image = GetComponent<Image>();
+			image.sprite = SkillSelectionHolder.instance.activeSprites[num];
+		}
+	}
 
-        }
-        else
-        {
-            ActiveSkills[] active = SkillSelectionHolder.instance.GetActiveSkills();
-            int num = SkillSelectionHolder.instance.GetChosenActiveSkillSprite(active[skillNumber]);
-            image = GetComponent<Image>();
-            image.sprite = SkillSelectionHolder.instance.activeSprites[num];
-        }
-    }
+	private void Start()
+	{
+		GameManager.DestroySkillButtons += DestroySelf;
+	}
 
-    void Start()
-    {
-        GameManager.DestroySkillButtons += DestroySelf;
-    }
+	private void OnDestroy()
+	{
+		GameManager.DestroySkillButtons -= DestroySelf;
+	}
 
-    private void OnDestroy()
-    {
-        GameManager.DestroySkillButtons -= DestroySelf;
+	public void ChooseSkill()
+	{
+		GameManager.instance.SkillSelectButton(isPassive, skillNumber);
+	}
 
-    }
-
-    public void ChooseSkill ()
-    {
-        GameManager.instance.SkillSelectButton(isPassive,skillNumber);
-    }
-
-    void DestroySelf()
-    {
-        Destroy(gameObject);
-    }    
+	private void DestroySelf()
+	{
+		Destroy(gameObject);
+	}
 }

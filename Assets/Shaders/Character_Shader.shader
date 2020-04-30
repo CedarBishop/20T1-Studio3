@@ -4,29 +4,26 @@
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_Intensity("_Intensity", Float) = 10
-		_EdgeColor("_EdgeColor", Color) = (1,0,0.7064714,0)
+		_EdgeColor("_EdgeColor", Color) = (1,0,0.7064714,1)
 		_FresnelPower("_FresnelPower", Float) = 5
-		_FresnelColor("_FresnelColor", Color) = (1,1,1,0)
+		_FresnelColor("_FresnelColor", Color) = (1,1,1,1)
 
 		/* Dissolve effect Properties */
 		_DissolveTex ("Dissolve Texture", 2D) = "white" {}
-		_DissolveBorderColour1 ("Edge colour 1", Color) = (1,1,1,1)
-		_DissolveBorderColour2 ("Edge colour 2", Color) = (1,1,1,1)
-		_DissolveAmount ("Dissolution level", Range (0, 1)) = 0.1
-		_DissolveTexWidth ("Edge width", Range (0.0, 1.0)) = 0.025
+		_DissolveBorderColour1 ("Dissolve Colour 1", Color) = (1,1,1,1)
+		_DissolveBorderColour2 ("Dissolve Colour 2", Color) = (1,1,1,1)
+		_DissolveAmount ("Dissolve Amount", Range (0, 1)) = 0
+		_DissolveTexWidth ("Dissolve Width", Range (0.0, 1.0)) = 0.025
 	}
 	SubShader
 	{
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+		Tags { "RenderType"="Transparent" }
 		LOD 100
 
 		Pass
 		{
-			Blend SrcAlpha OneMinusSrcAlpha
 			Cull Off // Make double sided
         	Lighting Off
-        	ZWrite Off
-        	Fog { Mode Off }
 
 			CGPROGRAM
 			#pragma vertex vert
@@ -93,4 +90,6 @@
 			ENDCG
 		}
 	}
+
+	Fallback "Diffuse"
 }

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 448661770474963411}
   - component: {fileID: 7702464432090095466}
   - component: {fileID: 2518882403159718731}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,9 +233,9 @@ GameObject:
   - component: {fileID: 7061676979869129744}
   - component: {fileID: 2929451371017709985}
   - component: {fileID: 6141661945684456048}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield (2)
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -398,7 +398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 400
-  slowedMovementSpeed: 0
+  slowedMovementSpeedMultiplier: 0.75
+  speedUpMovementSpeedMultiplier: 1.5
   timeSlowedFor: 3
 --- !u!114 &4357997688448584929
 MonoBehaviour:
@@ -522,12 +523,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bb041288c6e2e24d9fbb714b9247c4b, type: 2}
   cooldownComplete: 1
   originalMaterial: {fileID: 0}
-  speedIncreasePercentage: 0
-  maxMovementSpeed: 0
-  maxBulletBounces: 0
+  speedIncreasePercentage: 2
+  maxMovementSpeed: 800
+  maxBulletBounces: 2
   stealthMaterial: {fileID: 2100000, guid: ba06da8ab9ee3c84e9bac6faa492cdaf, type: 2}
   stealthActiveMaterial: {fileID: 0}
   shieldEffect: {fileID: 1651260806888081699}
+  healthBarImage: {fileID: 5395470379465073144}
 --- !u!114 &1558605098635257056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,9 +632,9 @@ GameObject:
   - component: {fileID: 3386014239513148413}
   - component: {fileID: 7923075367421875282}
   - component: {fileID: 7660504493003033021}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mini Shield (1)
-  m_TagString: Untagged
+  m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -809,7 +811,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 39d34eb2752764640ad344a4aa47696b, type: 2}
     - target: {fileID: 19169142445779251, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -889,6 +891,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19169142445779263, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 19169142445779263, guid: 0d6e1c4fc59a40645a52cf5a86bbd215,
+        type: 3}
+      propertyPath: m_TagString
+      value: Shield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d6e1c4fc59a40645a52cf5a86bbd215, type: 3}

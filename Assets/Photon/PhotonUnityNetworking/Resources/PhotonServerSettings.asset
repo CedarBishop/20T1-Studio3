@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: AU
     Server: 
     Port: 0
     Protocol: 0
@@ -53,5 +53,10 @@ MonoBehaviour:
   - RPC_Activate
   - RPC_ActivateAll
   - RPC_ActivateOne
+  - RPC_TempShield
+  - RPC_SetOtherPlayerName
+  - RPC_SetPlayerName
+  - RPC_ActionSkillCooldownDisplay
+  - RPC_Explosion
   DisableAutoOpenWizard: 1
   ShowSettings: 1

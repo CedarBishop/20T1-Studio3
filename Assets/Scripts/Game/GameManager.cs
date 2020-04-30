@@ -1,36 +1,50 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
-using System;
-
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager instance = null;
 
-	public static event Action roundDrawEvent;
+	// Skill buttons actions
+	public static event Action DestroySkillButtons;
+	// Analytics actions
+	public static event Action BeginRoundEvent;
+	public static event Action EndRoundEvent;
 
 	private PhotonView photonView;
-
 	private int roomNumber;
 
+	[Header("Player Info")]
 	public PlayerStats statsPrefab;
-	public LayoutGroup layoutGroup;
+	public Image playerOnePassiveSkillImage;
+	public Image playerOneActionSkillImage;
+	public Image playerTwoPassiveSkillImage;
+	public Image playerTwoActionSkillImage;
 	private Player[] players;
 	private List<PlayerStats> playerStats = new List<PlayerStats>();
+
+	[Header("Round Stats")]
+	public float roundStartDelay = 0.24f;
+	[HideInInspector] public bool isDoubleDamage;
 	public Text winText;
 	private int roundNumber = 1;
-	public FixedJoystick leftJoystick;
-	public FixedJoystick rightJoystick;
-	public Button abilityButton;
 	public Text roundTimerText;
 	private float roundTimer;
 	private bool roundIsUnderway;
 	private bool isRoundIntermission;
 
+	[Header("UI Arrangement")]
+	public LayoutGroup layoutGroup;
+	public FixedJoystick leftJoystick;
+	public FixedJoystick rightJoystick;
+	public Button abilityButton;
+
+	[Header("Skills Area")]
 	public GameObject skillSelectionParent;
 	public GameObject passiveSkillLayout;
 	public GameObject activeSkillLayout;
@@ -38,19 +52,11 @@ public class GameManager : MonoBehaviour
 
 	private bool hasSelectedPassive;
 	private bool hasSelectedAction;
+	private bool isAbleToSelectSkill;
 
-	public static event Action DestroySkillButtons;
-
-	[HideInInspector] public bool isDoubleDamage;
-
-	public Image playerOnePassiveSkillImage;
-	public Image playerOneActionSkillImage;
-	public Image playerTwoPassiveSkillImage;
-	public Image playerTwoActionSkillImage;
-
-	// Make Script Singleton
 	private void Awake()
 	{
+		// Make Script Singleton
 		if (instance == null)
 		{
 			instance = this;
@@ -60,20 +66,21 @@ public class GameManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 
+		// Show/hide mobile joysticks
 #if UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBGL
 		leftJoystick.gameObject.SetActive(true);
-        rightJoystick.gameObject.SetActive(true);
-		abilityButton.gameObject.SetActive(false);
+		rightJoystick.gameObject.SetActive(true);
+		abilityButton.gameObject.SetActive(true);
 #elif UNITY_EDITOR || UNITY_STANDALONE
-	
-		 leftJoystick.gameObject.SetActive(false);
-		 rightJoystick.gameObject.SetActive(false);
-		 abilityButton.gameObject.SetActive(false);
+		leftJoystick.gameObject.SetActive(false);
+		rightJoystick.gameObject.SetActive(false);
+		abilityButton.gameObject.SetActive(false);
 #endif
 	}
 
 	private IEnumerator Start()
 	{
+		AnalyticsTracker.instance.Init();
 		playerOnePassiveSkillImage.gameObject.SetActive(false);
 		playerOneActionSkillImage.gameObject.SetActive(false);
 		playerTwoPassiveSkillImage.gameObject.SetActive(false);
@@ -81,7 +88,7 @@ public class GameManager : MonoBehaviour
 
 		skillSelectionParent.SetActive(false);
 		winText.text = "";
-		yield return new WaitForSeconds(0.24f);
+		yield return new WaitForSeconds(roundStartDelay);
 		players = PhotonNetwork.PlayerList;
 		roundNumber = 1;
 
@@ -99,7 +106,27 @@ public class GameManager : MonoBehaviour
 		}
 
 		photonView = GetComponent<PhotonView>();
+		SetPlayerName();
 		StartRoundTimer();
+	}
+
+	void SetPlayerName ()
+	{
+		if (int.TryParse(PhotonNetwork.NickName, out int num))
+		{
+			string str = PhotonRoom.instance.nickName;
+			roomNumber = num;
+			photonView.RPC("RPC_SetPlayerName",RpcTarget.All , num, str);
+		}
+
+	}
+
+	[PunRPC]
+	void RPC_SetPlayerName (int playerNum, string name)
+	{
+		print(playerNum + name);
+		playerStats[playerNum - 1].SetPlayerName(name);
+
 	}
 
 	// Called when a player dies
@@ -133,7 +160,12 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
+					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
+				}
+				else
+				{
+					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				//Start Intermission between rounds
@@ -166,7 +198,12 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
+					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
+				}
+				else
+				{
+					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				Intermission();
@@ -184,10 +221,10 @@ public class GameManager : MonoBehaviour
 		winText.text = "";
 	}
 
-	IEnumerator CoEndMatch()
+	private IEnumerator CoEndMatch()
 	{
 		yield return new WaitForSeconds(3);
-		PhotonRoom.photonRoom.EndMatch();
+		PhotonRoom.instance.EndMatch();
 	}
 
 	public void PlayerForfeited(int playerNumber)
@@ -201,6 +238,7 @@ public class GameManager : MonoBehaviour
 		{
 			displayText = "Player Two Forfeited \nPlayer One Wins";
 		}
+		if (EndRoundEvent != null) EndRoundEvent(); // Send data to analytics (round time)
 		EarnPassion(true);
 		StartCoroutine("CoEndMatch");
 		winText.text = displayText;
@@ -220,10 +258,14 @@ public class GameManager : MonoBehaviour
 				if (isDoubleDamage == false)
 				{
 					isDoubleDamage = true;
+					LevelManager.instance.OnDoubleDamageDrop();
+					SoundManager.instance.PlaySFX("CrowdCheering");
 				}
 			}
 			if (roundTimer <= 0)
 			{
+				// Send data to analytics (complete round time)
+				if (EndRoundEvent != null) EndRoundEvent();
 
 				if (PhotonNetwork.IsMasterClient)
 				{
@@ -261,16 +303,36 @@ public class GameManager : MonoBehaviour
 
 	public void StartRoundTimer()
 	{
-		SoundManager.instance.PlayMusic(false);
+		// Both player are at match point
+		if (playerStats[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1 && playerStats[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1)
+		{
+			SoundManager.instance.PlayMusic(false, true);
+		}
+		else // Not final round
+		{
+			SoundManager.instance.PlayMusic(false);
+		}
+
+		LevelManager.instance.OnBeginingOfRound();
 		roundTimer = LevelManager.instance.roundTime;
 		roundTimerText.text = roundTimer.ToString("F1");
 		roundIsUnderway = true;
 		isRoundIntermission = false;
+		isAbleToSelectSkill = false;
 	}
 
 	[PunRPC]
-	void RPC_StartNewRound()
+	private void RPC_StartNewRound()
 	{
+		
+		
+		if (isAbleToSelectSkill)
+		{
+			AssignRandomSkill();
+			isAbleToSelectSkill = false;
+		}
+
+
 		StartRoundTimer();
 		ClearWinText();
 
@@ -279,7 +341,8 @@ public class GameManager : MonoBehaviour
 			DestroySkillButtons();
 		}
 
-
+		
+		
 		AvatarSetup[] avatarSetups = FindObjectsOfType<AvatarSetup>();
 		for (int i = 0; i < avatarSetups.Length; i++)
 		{
@@ -291,7 +354,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	[PunRPC]
-	void RPC_RoundDraw()
+	private void RPC_RoundDraw()
 	{
 		print("RPC_RoundDraw");
 		if (playerStats.Count >= 2)
@@ -321,6 +384,7 @@ public class GameManager : MonoBehaviour
 						EarnPassion(false);
 					}
 				}
+				if (EndRoundEvent != null) EndRoundEvent(); // Send data to analytics (end of round counter)
 				winText.text = "Player One Wins";
 				StartCoroutine("CoEndMatch");
 			}
@@ -338,6 +402,7 @@ public class GameManager : MonoBehaviour
 						EarnPassion(true);
 					}
 				}
+				if (EndRoundEvent != null) EndRoundEvent(); // Send data to analytics (end of round counter)
 				winText.text = "Player Two Wins";
 				StartCoroutine("CoEndMatch");
 			}
@@ -354,7 +419,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void Intermission()
+	private void Intermission()
 	{
 		SoundManager.instance.StopMusic();
 		SoundManager.instance.PlaySFX("Rewind");
@@ -378,23 +443,20 @@ public class GameManager : MonoBehaviour
 				avatarSetups[i].DisableControls();
 			}
 		}
-		
+
 	}
 
-	IEnumerator PlayFastForwardAfterTime()
+	private IEnumerator PlayFastForwardAfterTime()
 	{
 		yield return new WaitForSeconds(3);
 		SoundManager.instance.PlaySFX("FastForward");
 	}
 
-
 	public void SkillSelectButton(bool isPassive, int skillNumber)
 	{
-
-
-		//assign skill to player and set icon on ui
+		// assign skill to player and set icon on ui
 		AssignSkill(isPassive,skillNumber);
-
+		SoundManager.instance.PlaySFX("SkillSelect");
 		if (isPassive)
 		{
 			SkillSelectionHolder.instance.RemovePassiveSkill(skillNumber);
@@ -413,10 +475,10 @@ public class GameManager : MonoBehaviour
 		skillSelectionParent.SetActive(false);
 	}
 
-
-	void SpawnSkillSelectionButtons()
+	private void SpawnSkillSelectionButtons()
 	{
 		skillSelectionParent.SetActive(true);
+		isAbleToSelectSkill = true;
 		if (hasSelectedPassive == false)
 		{
 			PassiveSkills[] passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -439,8 +501,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void AssignSkill(bool isPassive, int skillNumber)
+	private void AssignSkill(bool isPassive, int skillNumber)
 	{
+
+		isAbleToSelectSkill = false;
+		AbilitiesManager[] abilitiesManager = FindObjectsOfType<AbilitiesManager>();
 		if (isPassive)
 		{
 			PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
@@ -449,14 +514,14 @@ public class GameManager : MonoBehaviour
 				int num = SkillSelectionHolder.instance.GetChosenPassiveSkillSprite(passives[skillNumber]);
 				photonView.RPC("RPC_AssignSkillIcon", RpcTarget.All, roomNumber, true, num);
 
-				AbilitiesManager[] abilitiesManagers = FindObjectsOfType<AbilitiesManager>();
-				if (abilitiesManagers != null)
+				if (abilitiesManager != null)
 				{
-					for (int i = 0; i < abilitiesManagers.Length; i++)
+					for (int i = 0; i < abilitiesManager.Length; i++)
 					{
-						if (abilitiesManagers[i].GetComponent<PhotonView>().IsMine)
+						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
-							abilitiesManagers[i].passiveSkills = SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber];
+							abilitiesManager[i].AssignPassiveSkill( SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber]);
+							AnalyticsTracker.instance.currentPassive = abilitiesManager[i].passiveSkills;
 						}
 					}
 				}
@@ -470,24 +535,65 @@ public class GameManager : MonoBehaviour
 				int num = SkillSelectionHolder.instance.GetChosenActiveSkillSprite(actives[skillNumber]);
 				photonView.RPC("RPC_AssignSkillIcon", RpcTarget.All, roomNumber, false, num);
 
-				AbilitiesManager[] abilitiesManagers = FindObjectsOfType<AbilitiesManager>();
-				if (abilitiesManagers != null)
+				if (abilitiesManager != null)
 				{
-					for (int i = 0; i < abilitiesManagers.Length; i++)
+					for (int i = 0; i < abilitiesManager.Length; i++)
 					{
-						if (abilitiesManagers[i].GetComponent<PhotonView>().IsMine)
+						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
-							abilitiesManagers[i].activeSkills = SkillSelectionHolder.instance.GetActiveSkills()[skillNumber];
+							abilitiesManager[i].AssignActiveSkill(SkillSelectionHolder.instance.GetActiveSkills()[skillNumber]);
+							AnalyticsTracker.instance.currentActive = abilitiesManager[i].activeSkills;
 						}
 					}
 				}
-			}	
+			}
+		}
+
+		if (BeginRoundEvent != null) BeginRoundEvent(); // Send data to analytics (Which skills are chosen)
+	}
+
+	void AssignRandomSkill ()
+	{
+		PassiveSkills[] passives = SkillSelectionHolder.instance.GetPassiveSkills();
+		ActiveSkills[] actives = SkillSelectionHolder.instance.GetActiveSkills();
+		if (hasSelectedPassive == false && hasSelectedAction == false)
+		{
+
+		 	int randBool = UnityEngine.Random.Range(0,2);
+			if (randBool == 1)
+			{
+				int randNum = UnityEngine.Random.Range(0, passives.Length);
+				AssignSkill(true,randNum);
+				SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+				hasSelectedPassive = true;
+			}
+			else
+			{
+				int randNum = UnityEngine.Random.Range(0, actives.Length);
+				AssignSkill(false, randNum);
+				SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+				hasSelectedAction = true;
+			}
+
+		}
+		else if (hasSelectedPassive == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, passives.Length);
+			AssignSkill(true, randNum);
+			SkillSelectionHolder.instance.RemovePassiveSkill(randNum);
+			hasSelectedPassive = true;
+		}
+		else if (hasSelectedAction == false)
+		{
+			int randNum = UnityEngine.Random.Range(0, actives.Length);
+			AssignSkill(false, randNum);
+			SkillSelectionHolder.instance.RemoveActiveSkill(randNum);
+			hasSelectedAction = true;
 		}
 	}
 
-
 	[PunRPC]
-	void RPC_AssignSkillIcon (int playerNum, bool isPassive, int num)
+	private void RPC_AssignSkillIcon (int playerNum, bool isPassive, int num)
 	{
 		print("RPC Skill was called");
 		if (playerNum == 1)
@@ -518,7 +624,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void EarnPassion (bool wonMatch)
+	private void EarnPassion(bool wonMatch)
 	{
 		if (wonMatch)
 		{
@@ -529,4 +635,47 @@ public class GameManager : MonoBehaviour
 			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
 		}
 	}
+
+	public void ActionSkillCooldownDisplay (float cooldownTime)
+	{
+		photonView.RPC("RPC_ActionSkillCooldownDisplay", RpcTarget.All, roomNumber, cooldownTime);
+	}
+
+	[PunRPC]
+	void RPC_ActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		StartCoroutine(CoActionSkillCooldownDisplay(playerNumber,cooldown));
+	}
+
+	IEnumerator CoActionSkillCooldownDisplay (int playerNumber, float cooldown)
+	{
+		float rate = 1;
+		if (cooldown != 0)
+		{
+			rate = (1 / cooldown);
+		}
+
+		if (playerNumber == 1)
+		{
+			playerOneActionSkillImage.fillAmount = 0;
+
+			while (playerOneActionSkillImage.fillAmount < 1.0f)
+			{
+				playerOneActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+		else if (playerNumber == 2)
+		{
+			playerTwoActionSkillImage.fillAmount = 0;
+
+			while (playerTwoActionSkillImage.fillAmount < 1.0f)
+			{
+				playerTwoActionSkillImage.fillAmount += rate * Time.deltaTime;
+				yield return null;
+			}
+		}
+
+	}
 }
+

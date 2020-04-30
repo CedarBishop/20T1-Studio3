@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip gameMusic;
+    [SerializeField] private AudioClip finalRoundMusic;
 
     [SerializeField]
     Sound[] sounds;
@@ -25,11 +26,11 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+        musicAudioSource = GetComponent<AudioSource>();
     }
 
     void Start()
     {
-        musicAudioSource = GetComponent<AudioSource>();
         if (PlayerPrefs.HasKey("MusicVolume"))
         {
             musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1.0f);
@@ -47,6 +48,7 @@ public class SoundManager : MonoBehaviour
             SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
         }
         
+        PlayMusic(true);
     }
 
     public void PlaySFX(string soundName)
@@ -76,7 +78,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayMusic (bool isMainMenu)
+    public void PlayMusic (bool isMainMenu, bool isFinalRound = false)
     {
         if (isMainMenu)
         {
@@ -89,12 +91,25 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            if (gameMusic != null)
+            if (isFinalRound)
             {
-                musicAudioSource.loop = false;
-                musicAudioSource.clip = gameMusic;
-                musicAudioSource.Play();
+                if (finalRoundMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = finalRoundMusic;
+                    musicAudioSource.Play();
+                }
             }
+            else
+            {
+                if (gameMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = gameMusic;
+                    musicAudioSource.Play();
+                }
+            }
+            
         }
     }
 
@@ -132,9 +147,7 @@ public class Sound
         if (clip == null || source == null)
         {
             return;
-        }
-            
-            source.Play();
-        
+        }            
+        source.Play();        
     }
 }

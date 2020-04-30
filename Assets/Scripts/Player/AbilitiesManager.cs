@@ -49,69 +49,93 @@ public class AbilitiesManager : MonoBehaviour
 	private bool shieldActive;
 	[SerializeField] private GameObject shieldEffect;
 
+	private PlayerMovement playerMovement;
 	private PlayerCombat playerCombat;
 	private PlayerRewind playerRewind;
+	private TriShield triShield;
+	public Image healthBarImage;
+
+
 
 	private void OnEnable()
 	{
 		PV = GetComponent<PhotonView>();
-		movementSpeed = GetComponent<PlayerMovement>().movementSpeed;
+		 playerMovement = GetComponent<PlayerMovement>();
+		movementSpeed = playerMovement.movementSpeed;
 		playerCombat = GetComponent<PlayerCombat>();
 		playerRewind = GetComponent<PlayerRewind>();
+		triShield = GetComponentInChildren<TriShield>();
 
 		// Add method as delegate to ability UI button
 		AbilityInitiate.OnAbilityClick += ActivateAbility;
 
-		// revertMaterial = originalMaterial.GetComponent<Material>();
-		//revertMaterial = originalMaterial.GetComponent<MeshRenderer>().materials[0]; // TODO: Remove! This is only for ghost example prefab
+		
 
 		shieldEffect.SetActive(false);
 
-		// Carry on with passive ability choice IF list is populated
-		if (passiveAbilities.Length > 0)
-		{
-			// Go through list and pick random ability
-			//currentPassive = passiveAbilities[UnityEngine.Random.Range(0, passiveAbilities.Length - 1)];
-			// currentPassive = passiveAbilities[3]; // TODO: Hard code - get rid of this
-
-			PassiveAbilityProcess(currentPassive);
-		}
-
-		// TODO: Hard coded temporarily (TEMPSHIELD)
-		//currentActive = activeAbilities[4];
 	}
 
-	private void PassiveAbilityProcess(Ability chosenPassive)
+	public void InitCharacterMaterials (GameObject character)
 	{
-		if (chosenPassive != null)
+		currentMaterial = character.GetComponent<Renderer>().material;
+		revertMaterial = currentMaterial;
+	}
+
+	public void AssignPassiveSkill (PassiveSkills passive)
+	{
+		passiveSkills = passive;
+		PassiveAbilityProcess(passiveSkills);
+	}
+
+	public void AssignActiveSkill (ActiveSkills active)
+	{
+		activeSkills = active;
+	}
+
+	private void Update()
+	{
+		// For testing on PC
+		if (Input.GetKeyDown(KeyCode.E))
 		{
+			ActivateAbility();
+		}
+	}
+
+	private void PassiveAbilityProcess(PassiveSkills passive)
+	{
+		
+		
 			// Assign enum by current random enum value
-			passiveSkills = chosenPassive.passiveSkillId;
+			currentPassive = passiveAbilities[(int)passive];
 
 			switch (passiveSkills)
 			{
 				case PassiveSkills.None:
 					break;
 				case PassiveSkills.BouncyBullet:
-					BouncyBullet(maxBulletBounces);
-					break;
+					playerCombat.AssignedBulletBounce(maxBulletBounces);
+				currentPassive = passiveAbilities[0];
+				//BouncyBullet(maxBulletBounces);
+				break;
 				case PassiveSkills.HelperBullet:
-					break;
+				currentPassive = passiveAbilities[1];
+					playerCombat.AssignedHelperBullet();
+				break;
 				case PassiveSkills.SlowdownBullet:
-					break;
+				currentPassive = passiveAbilities[2];
+					playerCombat.AssignedSlowdownBullet();
+				break;
 				case PassiveSkills.SpeedUp:
-					SpeedUp();
-					break;
+				currentPassive = passiveAbilities[3];
+					playerMovement.AssignSpeedUp();
+				break;
 				case PassiveSkills.TriShield:
+				currentPassive = passiveAbilities[4]; 
+				triShield.Initialise();	
 					break;
 				default:
 					break;
 			}
-		}
-		else
-		{
-			throw new NotImplementedException();
-		}
 	}
 
 	// Bullets that bounce off the environment XX amount of times but destroy on people
@@ -122,8 +146,7 @@ public class AbilitiesManager : MonoBehaviour
 	}
 
 	private void SpeedUp()
-	{
-		PlayerMovement playerMovement = GetComponent<PlayerMovement>();
+	{		
 		float moveSpeed = playerMovement.movementSpeed;
 		moveSpeed *= speedIncreasePercentage;
 		moveSpeed = Mathf.Clamp(moveSpeed, 0f, maxMovementSpeed);
@@ -143,27 +166,30 @@ public class AbilitiesManager : MonoBehaviour
 				case ActiveSkills.DropMine:
 					currentActive = activeAbilities[0];
 					methodToCall = playerCombat.PlaceDropMine;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
 					break;
 				case ActiveSkills.Rewind:
 					currentActive = activeAbilities[1];
 					methodToCall = playerRewind.Rewind;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Rewind");
 
 					break;
 				case ActiveSkills.Shotgun:
 					currentActive = activeAbilities[2];
 					methodToCall = playerCombat.ShotgunShoot;
-					StartCoroutine(AbilityDuration(currentActive, methodToCall));
+					methodToCall();
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Shotgun");
 					break;
 				case ActiveSkills.Stealth:
 					currentActive = activeAbilities[3];
 					methodToCall = Stealth;
 					StartCoroutine(AbilityDuration(currentActive, methodToCall));
 					StartCoroutine(AbilityCooldown(currentActive, methodToCall));
+					SoundManager.instance.PlaySFX("Stealth");
 					break;
 				case ActiveSkills.TempShield:
 					currentActive = activeAbilities[4];
@@ -189,6 +215,7 @@ public class AbilitiesManager : MonoBehaviour
 	private IEnumerator AbilityCooldown(Ability currentActive, AbilityDelegate methodToCall)
 	{
 		cooldownComplete = false; // Deactivate button
+		GameManager.instance.ActionSkillCooldownDisplay(currentActive.cooldownTime);
 		yield return new WaitForSeconds(currentActive.cooldownTime);
 		cooldownComplete = true; // Reactivate button
 	}
@@ -203,9 +230,13 @@ public class AbilitiesManager : MonoBehaviour
 	{
 		if (PV.IsMine)
 		{
+
+			// This player turned invisible so change material to let you know that you are using stealth
+
 			if (currentMaterial != stealthActiveMaterial)
 			{
 				currentMaterial = stealthActiveMaterial;
+
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
 			}
 			else
@@ -216,22 +247,33 @@ public class AbilitiesManager : MonoBehaviour
 		}
 		else
 		{
-			if (currentMaterial != stealthMaterial)
+			//make  this character invisible on the instnance that does not own this
+
+			if (currentMaterial != stealthMaterial) // Activation
 			{
 				currentMaterial = stealthMaterial;
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				healthBarImage.color = new Color(1.0f,1.0f,1.0f,0.0f);
 			}
-			else
+			else // Deactivation
 			{
 				currentMaterial = revertMaterial;
 				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = true; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				healthBarImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 
 			originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().materials[0] = currentMaterial;
+
 		}
 	}
 
-	private void TempShield()
+	void TempShield ()
+	{
+		PV.RPC("RPC_TempShield", RpcTarget.All);
+	}
+
+	[PunRPC]
+	private void RPC_TempShield()
 	{
 		shieldActive = !shieldActive;
 		Vector3 shieldFullSize = new Vector3(3, 3, 3); // TODO: For use with interpolating between sizes

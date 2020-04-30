@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     //public Text healthText;
-    public Text playerNumberText;
+    public Text playerNameText;
     public Image roundWinImage;
     //public int health;
     public int playerNumber;
@@ -22,10 +22,15 @@ public class PlayerStats : MonoBehaviour
     public void SetPlayerNumber (int num)
     {         
         playerNumber = num;
-       // playerNumberText.text = "P" + playerNumber.ToString();
+
       //  playerNumberText.color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f), 1.0f);
         roundWinImage.fillAmount = 0.0f;
 
+    }
+
+    public void SetPlayerName(string str)
+    {
+        playerNameText.text = str;
     }
 
     public bool IncrementRoundWins()

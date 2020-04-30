@@ -32,7 +32,7 @@ public class GameSetup : MonoBehaviour
         {
             yield return null;
         }
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MultiplayerLobby");
     }
 
     //public void RoundEnd ()

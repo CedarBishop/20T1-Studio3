@@ -12,19 +12,19 @@ public class PlayerCombat : MonoBehaviour
 	public Projectile helperBulletPrefab;
 	public DropMine landMinePrefab;
 	public Image healthBar;
-	
+
 	[SerializeField] private float bulletSpawnOffset;
 	[HideInInspector] public int roomNumber;
 
 	private PhotonView photonView;
 	private FixedJoystick fixedJoystick;
-	private AbilitiesManager abilitiesManager;
 	private PlayerMovement playerMovement;
 	private Vector3 joystickDirection;
 	private bool canShoot;
 	private uint bulletCount;
 	private bool hasHelperBullet;
-	
+	private bool hasSlowdownBullet;
+	private int bulletBounces;
 
 	void Start()
 	{
@@ -33,7 +33,6 @@ public class PlayerCombat : MonoBehaviour
 #endif
 
 		photonView = GetComponent<PhotonView>();
-		
 		playerMovement = GetComponent<PlayerMovement>();
 
 		if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
@@ -48,17 +47,9 @@ public class PlayerCombat : MonoBehaviour
 		healthBar.fillAmount = 1.0f;
 	}
 
-	private void OnEnable()
-	{
-		abilitiesManager = GetComponent<AbilitiesManager>();
-		hasHelperBullet = (abilitiesManager.passiveSkills == PassiveSkills.HelperBullet);
-	}
-
-
 #if UNITY_ANDROID || UNITY_IPHONE || UNITY_WEBGL
 	void Update()
 	{
-
 		joystickDirection = new Vector3(fixedJoystick.Horizontal, 0, fixedJoystick.Vertical);
 
 		if (Mathf.Abs(joystickDirection.x) > 0.25f || Mathf.Abs(joystickDirection.z) > 0.25f)
@@ -71,9 +62,6 @@ public class PlayerCombat : MonoBehaviour
 			}
 		}
 	}
-
-
-
 
 #elif UNITY_EDITOR || UNITY_STANDALONE
 	void Update()
@@ -96,16 +84,8 @@ public class PlayerCombat : MonoBehaviour
 				Shoot();
 			}
 		}
-
-		// TODO: Debuging shot gun ability delete after confirming this works
-		if (Input.GetButtonDown("Fire2"))
-		{
-
-			PlaceDropMine();
-		}
 	}
 #endif
-
 
 	void Shoot()
 	{
@@ -120,15 +100,14 @@ public class PlayerCombat : MonoBehaviour
 					helperBullet = true;
 				}
 			}
-			int bulletBounces = (abilitiesManager.passiveSkills == PassiveSkills.BouncyBullet) ? 2 : 0;
-			bool slowDownBullet = (abilitiesManager.passiveSkills == PassiveSkills.SlowdownBullet) ? true : false;
+
 			photonView.RPC(
 				"RPC_SpawnAndInitProjectile",
 				RpcTarget.Others,
 				new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				transform.rotation,
 				bulletBounces,
-				slowDownBullet,
+				hasSlowdownBullet,
 				helperBullet
 			);
 
@@ -140,7 +119,7 @@ public class PlayerCombat : MonoBehaviour
 			bullet.ChangeToAllyMaterial();
 			bullet.isMyProjectile = true;
 			bullet.bounces = bulletBounces;
-			bullet.isSlowDownBullet = slowDownBullet;
+			bullet.isSlowDownBullet = hasSlowdownBullet;
 
 			Destroy(bullet, 3);
 		}
@@ -174,8 +153,6 @@ public class PlayerCombat : MonoBehaviour
 					}
 				}
 
-				int bulletBounces = (abilitiesManager.passiveSkills == PassiveSkills.BouncyBullet) ? 2 : 0;
-				bool slowDownBullet = (abilitiesManager.passiveSkills == PassiveSkills.SlowdownBullet) ? true : false;
 
 				photonView.RPC(
 				"RPC_SpawnAndInitProjectile",
@@ -183,8 +160,8 @@ public class PlayerCombat : MonoBehaviour
 				new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				shotGunRotations[i],
 				bulletBounces,
-				slowDownBullet,
-				helperBullet
+				hasSlowdownBullet,
+				hasHelperBullet
 				);
 
 				Projectile bullet = Instantiate(
@@ -195,7 +172,7 @@ public class PlayerCombat : MonoBehaviour
 				bullet.ChangeToAllyMaterial();
 				bullet.isMyProjectile = true;
 				bullet.bounces = bulletBounces;
-				bullet.isSlowDownBullet = slowDownBullet;
+				bullet.isSlowDownBullet = hasSlowdownBullet;
 
 				Destroy(bullet, 3);
 			}
@@ -220,7 +197,7 @@ public class PlayerCombat : MonoBehaviour
 		{
 			bullet = Instantiate(bulletPrefab, origin, quaternion);
 		}
-		
+
 		bullet.isMyProjectile = false;
 		bullet.bounces = bounces;
 		bullet.isSlowDownBullet = isSlowDownBullet;
@@ -230,14 +207,14 @@ public class PlayerCombat : MonoBehaviour
 
 	public void PlaceDropMine()
 	{
-		GameObject g = PhotonNetwork.Instantiate(("PhotonPrefabs/DropMine"),
+		object[] instanceData = {roomNumber};
+		PhotonNetwork.Instantiate(("PhotonPrefabs/DropMine"),
 			new Vector3(transform.position.x + (transform.forward.x * bulletSpawnOffset), transform.position.y, transform.position.z + (transform.forward.z * bulletSpawnOffset)),
 				transform.rotation,
-				0
+				0,
+				instanceData
 				);
-		DropMine mine = g.GetComponent<DropMine>();
-		mine.roomNumber = roomNumber;
-	}	
+	}
 
 
 
@@ -293,5 +270,21 @@ public class PlayerCombat : MonoBehaviour
 	{
 		health = 100;
 		photonView.RPC("RPC_UpdateHealth", RpcTarget.All, health, roomNumber);
+	}
+
+
+	public void AssignedHelperBullet ()
+	{
+		hasHelperBullet = true;
+	}
+
+	public void AssignedSlowdownBullet ()
+	{
+		hasSlowdownBullet = true;
+	}
+
+	public void AssignedBulletBounce (int bounces)
+	{
+		bulletBounces = bounces;
 	}
 }

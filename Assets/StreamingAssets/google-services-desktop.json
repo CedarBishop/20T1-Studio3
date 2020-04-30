@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "610164006340",
+    "firebase_url": "https://luminousstandoff.firebaseio.com",
+    "project_id": "luminousstandoff",
+    "storage_bucket": "luminousstandoff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610164006340:android:b7dc8a314945c11fae9891",
+        "android_client_info": {
+          "package_name": "com.DiscoDevs.LuminousStandoff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610164006340-8unvc49pk866b88kpeiifeilu43ndmmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVs0fr-zERtgir6mzqTiacx3986Ewj56E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610164006340-8unvc49pk866b88kpeiifeilu43ndmmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

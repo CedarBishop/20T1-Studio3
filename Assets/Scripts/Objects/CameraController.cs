@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
 	private void Start()
 	{
 		avatarSetups = FindObjectsOfType<AvatarSetup>();
+
 		if (avatarSetups != null)
 		{
 			for (int i = 0; i < avatarSetups.Length; i++)
