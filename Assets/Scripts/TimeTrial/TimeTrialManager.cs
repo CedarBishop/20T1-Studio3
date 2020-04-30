@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeTrialManager : MonoBehaviour
 {
@@ -10,18 +11,18 @@ public class TimeTrialManager : MonoBehaviour
 
     public float initialTime = 10.0f;
     [HideInInspector] public int score;
-    public int passionPerScore;
-    public int goldPerScore;
+    public float passionPerScore;
 
     public Rounds[] rounds;
 
     public Material activeIndicatorMaterial;
     public Material deactivatedIndicatorMaterial;
 
-
     private float timer;
     private int currentRoundNumber;
     private bool trialIsRunning;
+    private float overallTime;
+    private float totalPassion;
 
 
     private void Awake()
@@ -53,6 +54,7 @@ public class TimeTrialManager : MonoBehaviour
             else
             {
                 timer -= Time.fixedDeltaTime;
+                overallTime += Time.fixedDeltaTime;
             }
             
             trialUI.SetTimerText(timer);
@@ -102,12 +104,23 @@ public class TimeTrialManager : MonoBehaviour
     {
         trialIsRunning = false;
         trialUI.SetWinLoseText(won);
+
+        int totalPassionInt = Mathf.FloorToInt(totalPassion);
+
+        PlayerInfo.instance.passionEarnedThisMatch = totalPassionInt;
+        PlayerInfo.instance.timeTrialRound = currentRoundNumber;
+        PlayerInfo.instance.timeTrialScore = score;
+        PlayerInfo.instance.totalTime = overallTime;
+
+        SceneManager.LoadScene("TimeTrialResults");
     }
 
     public void TargetHit ()
     {
         timer += rounds[currentRoundNumber - 1].addedTimePerTarget;
         score += rounds[currentRoundNumber - 1].scorePerTarget;
+        totalPassion += passionPerScore;
+        PlayerInfo.instance.totalBulletsLanded += 1;
 
         trialUI.SetScoreText(score);
 

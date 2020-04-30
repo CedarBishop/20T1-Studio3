@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     public static PhotonRoom instance;
+
     PhotonView photonView;
 
     public bool isGameLoaded;
@@ -55,14 +56,21 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene != 1 /* && currentScene != 1*/)
+        if (currentScene == 2 || currentScene == 3 || currentScene == 4)
         {
             CreatePlayer();
-            SoundManager.instance.PlayMusic(false);
+            SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
+            print("loaded lobby or battle");
         }
-        else
+        else if (currentScene == 5)
         {
-            SoundManager.instance.PlayMusic(true);
+            SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
+            print("loaded time trial");
+        }
+        else if (currentScene == 1)
+        {
+            SoundManager.instance.PlayMusic(MusicTracks.MainMenu);
+            print("loaded main menu");
         }
 
     }
@@ -70,7 +78,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_TellMasterToStartGame()
     {
-        gameScene = Random.Range(2, 4);
+        gameScene = Random.Range(3, 5);
         PhotonNetwork.LoadLevel(gameScene);
     }
 
@@ -120,10 +128,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             return;
         }
 
-
         PhotonNetwork.LoadLevel(lobbyScene);
-
-
     }
 
     public void CreateRoom()
@@ -134,14 +139,16 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             int randomNum = UnityEngine.Random.Range(0, 10000);
             randomRoomName = randomNum.ToString();
+            RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 2 };
+            PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
         }
         else
         {
-            randomRoomName = roomNumberString;
+            RoomOptions roomOptions = new RoomOptions() { IsVisible = false, IsOpen = true, MaxPlayers = 2 };
+            PhotonNetwork.CreateRoom(roomNumberString, roomOptions);
         }
 
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 2};
-        PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
+
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -156,7 +163,11 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameSetup.instance.DisconnectPlayer();
+            if (SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                StartCoroutine("Forfeit");
+            }
+
         }
     }
 
@@ -168,7 +179,27 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     [PunRPC]
     void RPC_EndMatch()
     {
-        GameSetup.instance.DisconnectPlayer();
+        StartCoroutine("DisconnectAndLoad");
+    }
+
+    IEnumerator DisconnectAndLoad()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+        {
+            yield return null;
+        }
+        SceneManager.LoadScene("MatchResults");
+    }
+
+    IEnumerator Forfeit()
+    {
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+        {
+            yield return null;
+        }
+        SceneManager.LoadScene("MainMenu");
     }
 
     void InitNickname()

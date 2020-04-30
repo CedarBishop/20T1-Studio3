@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 	private bool roundIsUnderway;
 	private bool isRoundIntermission;
 
+	private float totalTime;
+
 	[Header("UI Arrangement")]
 	public LayoutGroup layoutGroup;
 	public FixedJoystick leftJoystick;
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(roundStartDelay);
 		players = PhotonNetwork.PlayerList;
 		roundNumber = 1;
+		totalTime = 0;
 
 		// Instantiate the UI Group for each player and initialize with room number
 		for (int i = 0; i < players.Length; i++)
@@ -133,6 +136,7 @@ public class GameManager : MonoBehaviour
 	public void PlayerDied(int dyingPlayerNumber, int sendingPlayerNumber)
 	{
 		roomNumber = sendingPlayerNumber;
+
 		string displayText = "";
 		//player two dies
 		if (dyingPlayerNumber == 2)
@@ -160,12 +164,7 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
-					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
-				}
-				else
-				{
-					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				//Start Intermission between rounds
@@ -198,12 +197,7 @@ public class GameManager : MonoBehaviour
 			{
 				if (dyingPlayerNumber == sendingPlayerNumber)
 				{
-					SoundManager.instance.PlaySFX("LoseGame");
 					SpawnSkillSelectionButtons();
-				}
-				else
-				{
-					SoundManager.instance.PlaySFX("WinGame");
 				}
 
 				Intermission();
@@ -277,6 +271,7 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
+				totalTime += Time.fixedDeltaTime;
 				roundTimer -= Time.fixedDeltaTime;
 				roundTimerText.text = roundTimer.ToString("F1");
 			}
@@ -306,11 +301,11 @@ public class GameManager : MonoBehaviour
 		// Both player are at match point
 		if (playerStats[0].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1 && playerStats[1].roundWins >= LevelManager.instance.requiredRoundsToWinMatch - 1)
 		{
-			SoundManager.instance.PlayMusic(false, true);
+			SoundManager.instance.PlayMusic(MusicTracks.FinalRound);
 		}
 		else // Not final round
 		{
-			SoundManager.instance.PlayMusic(false);
+			SoundManager.instance.PlayMusic(MusicTracks.GameMusic);
 		}
 
 		LevelManager.instance.OnBeginingOfRound();
@@ -419,11 +414,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+
 	private void Intermission()
 	{
 		SoundManager.instance.StopMusic();
-		SoundManager.instance.PlaySFX("Rewind");
-		StartCoroutine("PlayFastForwardAfterTime");
+		SoundManager.instance.PlayMusic(MusicTracks.Transistion);
 		roundTimer = LevelManager.instance.intermissionTime;
 		isRoundIntermission = true;
 		roundIsUnderway = false;
@@ -446,11 +441,6 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	private IEnumerator PlayFastForwardAfterTime()
-	{
-		yield return new WaitForSeconds(3);
-		SoundManager.instance.PlaySFX("FastForward");
-	}
 
 	public void SkillSelectButton(bool isPassive, int skillNumber)
 	{
@@ -521,6 +511,7 @@ public class GameManager : MonoBehaviour
 						if (abilitiesManager[i].GetComponent<PhotonView>().IsMine)
 						{
 							abilitiesManager[i].AssignPassiveSkill( SkillSelectionHolder.instance.GetPassiveSkills()[skillNumber]);
+							SoundManager.instance.PlaySFX("SkillSelect");
 							AnalyticsTracker.instance.currentPassive = abilitiesManager[i].passiveSkills;
 						}
 					}
@@ -628,12 +619,25 @@ public class GameManager : MonoBehaviour
 	{
 		if (wonMatch)
 		{
-			PlayerInfo.playerInfo.passionEarnedThisMatch = 10;
+			PlayerInfo.instance.passionEarnedThisMatch = 10;
 		}
 		else
 		{
-			PlayerInfo.playerInfo.passionEarnedThisMatch = 5;
+			PlayerInfo.instance.passionEarnedThisMatch = 5;
 		}
+
+		if (roomNumber == 1)
+		{
+			PlayerInfo.instance.roundsWon = playerStats[0].roundWins;
+			PlayerInfo.instance.roundsLossed = playerStats[1].roundWins;
+		}
+		else
+		{
+			PlayerInfo.instance.roundsWon = playerStats[1].roundWins;
+			PlayerInfo.instance.roundsLossed = playerStats[0].roundWins;
+		}
+
+		PlayerInfo.instance.totalTime = totalTime;
 	}
 
 	public void ActionSkillCooldownDisplay (float cooldownTime)

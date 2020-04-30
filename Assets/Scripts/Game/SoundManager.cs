@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MusicTracks { MainMenu, GameMusic, FinalRound, Win, Loss, Transistion}
+
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance = null;
-    AudioSource musicAudioSource;
+    [HideInInspector] public AudioSource musicAudioSource;
     List<AudioSource> sfx = new List<AudioSource>();
 
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip gameMusic;
     [SerializeField] private AudioClip finalRoundMusic;
+    [SerializeField] private AudioClip winMusic;
+    [SerializeField] private AudioClip lossMusic;
+    [SerializeField] private AudioClip transistionMusic;
 
     [SerializeField]
     Sound[] sounds;
@@ -48,7 +53,7 @@ public class SoundManager : MonoBehaviour
             SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
         }
         
-        PlayMusic(true);
+        PlayMusic(MusicTracks.MainMenu);
     }
 
     public void PlaySFX(string soundName)
@@ -63,6 +68,20 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void SetSFXParams (string soundName, float pitch, float reverb)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == soundName)
+            {
+                sounds[i].pitch = pitch;
+                sounds[i].reverbZone = reverb;
+                sounds[i].UpdateParams();
+                return;
+            }
+        }
+    }
+
     public void SetMusicVolume(float value)
     {
         PlayerPrefs.SetFloat("MusicVolume", value);
@@ -72,44 +91,66 @@ public class SoundManager : MonoBehaviour
     public void SetSFXVolume(float value)
     {
         PlayerPrefs.SetFloat("SFXVolume", value);
-        foreach (AudioSource source in sfx)
+        foreach (Sound sound in sounds)
         {
-            source.volume = value;
+            sound.source.volume = value * sound.volumeScaler;
         }
     }
 
-    public void PlayMusic (bool isMainMenu, bool isFinalRound = false)
+    public void PlayMusic (MusicTracks musicTracks)
     {
-        if (isMainMenu)
+        switch (musicTracks)
         {
-            if (mainMenuMusic != null)
-            {
-                musicAudioSource.loop = true;
-                musicAudioSource.clip = mainMenuMusic;
-                musicAudioSource.Play();
-            }
-        }
-        else
-        {
-            if (isFinalRound)
-            {
-                if (finalRoundMusic != null)
+            case MusicTracks.MainMenu:
+                if (mainMenuMusic != null)
                 {
-                    musicAudioSource.loop = false;
-                    musicAudioSource.clip = finalRoundMusic;
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = mainMenuMusic;
                     musicAudioSource.Play();
                 }
-            }
-            else
-            {
+                break;
+            case MusicTracks.GameMusic:
                 if (gameMusic != null)
                 {
                     musicAudioSource.loop = false;
                     musicAudioSource.clip = gameMusic;
                     musicAudioSource.Play();
                 }
-            }
-            
+                break;
+            case MusicTracks.FinalRound:
+                if (finalRoundMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = finalRoundMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Win:
+                if (winMusic != null)
+                {
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = winMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Loss:
+                if (lossMusic != null)
+                {
+                    musicAudioSource.loop = true;
+                    musicAudioSource.clip = lossMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            case MusicTracks.Transistion:
+                if (transistionMusic != null)
+                {
+                    musicAudioSource.loop = false;
+                    musicAudioSource.clip = transistionMusic;
+                    musicAudioSource.Play();
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -129,7 +170,8 @@ public class Sound
     public AudioClip clip;
     [HideInInspector]public AudioSource source;
     [Range(-3.0f, 3.0f)] public float pitch = 1;
-    float volume = 1;
+    [Range(0.0f, 1.1f)] public float reverbZone;
+    [Range(0.0f, 1.0f)] public float volumeScaler = 1.0f;
 
 
     public void SetSource(AudioSource _source)
@@ -137,7 +179,13 @@ public class Sound
         source = _source;
         source.clip = clip;
         source.pitch = pitch;
+        source.volume = volumeScaler;
+    }
 
+    public void UpdateParams ()
+    {
+        source.pitch = pitch;
+        source.reverbZoneMix = reverbZone;
     }
 
 

@@ -41,7 +41,7 @@ public class AbilitiesManager : MonoBehaviour
 	[SerializeField] private float maxMovementSpeed;			// SPEED UP - Increases damage by a percentage
 	[SerializeField] private int maxBulletBounces; 				// BULLET BOUNCE - Increment how many times a projectable can bounce with trajectory before being destroyed
 	[Space]
-	private Material currentMaterial; 							// STEALTH - Where to store current material we want to change
+	private SkinnedMeshRenderer characterMeshRenderer;          // STEALTH - The Mesh renderer we apply the materials to 
 	private Material revertMaterial; 							// STEALTH - Where to store original material to go back to
 	[SerializeField] private Material stealthMaterial; 			// STEALTH - Assign invisibility shader for Stealth ability
 	[SerializeField] private Material stealthActiveMaterial;	// STEALTH - Assign invisibility shader for Stealth ability
@@ -52,8 +52,9 @@ public class AbilitiesManager : MonoBehaviour
 	private PlayerMovement playerMovement;
 	private PlayerCombat playerCombat;
 	private PlayerRewind playerRewind;
-	private TriShield triShield;
 	public Image healthBarImage;
+	public TriShield triShield;
+
 
 
 
@@ -64,21 +65,26 @@ public class AbilitiesManager : MonoBehaviour
 		movementSpeed = playerMovement.movementSpeed;
 		playerCombat = GetComponent<PlayerCombat>();
 		playerRewind = GetComponent<PlayerRewind>();
-		triShield = GetComponentInChildren<TriShield>();
-
-		// Add method as delegate to ability UI button
-		AbilityInitiate.OnAbilityClick += ActivateAbility;
-
-		
 
 		shieldEffect.SetActive(false);
+	}
 
+	private void Start()
+	{
+		// Add method as delegate to ability UI button
+		AbilityInitiate.OnAbilityClick += ActivateAbility;
+	}
+
+	private void OnDestroy()
+	{
+		// Remove method as delegate to ability UI button
+		AbilityInitiate.OnAbilityClick -= ActivateAbility;
 	}
 
 	public void InitCharacterMaterials (GameObject character)
 	{
-		currentMaterial = character.GetComponent<Renderer>().material;
-		revertMaterial = currentMaterial;
+		characterMeshRenderer = character.GetComponentInChildren<SkinnedMeshRenderer>();
+		revertMaterial = characterMeshRenderer.material;
 	}
 
 	public void AssignPassiveSkill (PassiveSkills passive)
@@ -95,7 +101,7 @@ public class AbilitiesManager : MonoBehaviour
 	private void Update()
 	{
 		// For testing on PC
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1))
 		{
 			ActivateAbility();
 		}
@@ -103,11 +109,8 @@ public class AbilitiesManager : MonoBehaviour
 
 	private void PassiveAbilityProcess(PassiveSkills passive)
 	{
-		
-		
-			// Assign enum by current random enum value
-			currentPassive = passiveAbilities[(int)passive];
 
+		triShield.SetAbility(false);
 			switch (passiveSkills)
 			{
 				case PassiveSkills.None:
@@ -130,8 +133,8 @@ public class AbilitiesManager : MonoBehaviour
 					playerMovement.AssignSpeedUp();
 				break;
 				case PassiveSkills.TriShield:
-				currentPassive = passiveAbilities[4]; 
-				triShield.Initialise();	
+				currentPassive = passiveAbilities[4];
+				triShield.SetAbility(true);
 					break;
 				default:
 					break;
@@ -233,37 +236,34 @@ public class AbilitiesManager : MonoBehaviour
 
 			// This player turned invisible so change material to let you know that you are using stealth
 
-			if (currentMaterial != stealthActiveMaterial)
+			if (characterMeshRenderer.material != stealthActiveMaterial)
 			{
-				currentMaterial = stealthActiveMaterial;
+				characterMeshRenderer.material = stealthActiveMaterial;
 
-				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				characterMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; 
 			}
 			else
 			{
-				currentMaterial = revertMaterial;
-				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = true; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				characterMeshRenderer.material = revertMaterial;
+				characterMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On; 
 			}
 		}
 		else
 		{
 			//make  this character invisible on the instnance that does not own this
 
-			if (currentMaterial != stealthMaterial) // Activation
+			if (characterMeshRenderer.material != stealthMaterial) // Activation
 			{
-				currentMaterial = stealthMaterial;
-				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = false; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				characterMeshRenderer.material = stealthMaterial;
+				characterMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 				healthBarImage.color = new Color(1.0f,1.0f,1.0f,0.0f);
 			}
 			else // Deactivation
 			{
-				currentMaterial = revertMaterial;
-				originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().castShadows = true; // TODO: Adapt to character accordingly (uses a SkinnedMeshRenderer instead of MeshRenderer)
+				characterMeshRenderer.material = revertMaterial;
+				characterMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 				healthBarImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			}
-
-			originalMaterial.GetComponentInChildren<SkinnedMeshRenderer>().materials[0] = currentMaterial;
-
 		}
 	}
 

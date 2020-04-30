@@ -8,6 +8,7 @@ public class AvatarSetup : MonoBehaviour
     PhotonView photonView;
     public GameObject character;
     public int characterValue;
+    public TriShield triShield;
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private AbilitiesManager abilitiesManager;
@@ -16,6 +17,10 @@ public class AvatarSetup : MonoBehaviour
     void Start()
     {
         photonView = GetComponent<PhotonView>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerCombat = GetComponent<PlayerCombat>();
+        abilitiesManager = GetComponent<AbilitiesManager>();
+        
         if (int.TryParse(PhotonNetwork.NickName, out roomNumber))
         {
             print("Room number parsed " + roomNumber);
@@ -23,21 +28,21 @@ public class AvatarSetup : MonoBehaviour
         transform.position = LevelManager.instance.spawnPoints[roomNumber - 1].position;
         if (photonView.IsMine)
         {
-            photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.playerInfo.selectedCharacter);
+            photonView.RPC("RPC_AddCharacter", RpcTarget.AllBuffered, PlayerInfo.instance.selectedCharacter);
         }
-        playerMovement = GetComponent<PlayerMovement>();
-        playerCombat = GetComponent<PlayerCombat>();
-        abilitiesManager = GetComponent<AbilitiesManager>();
+
+
+
     }
 
     [PunRPC]
     void RPC_AddCharacter(int characterNum)
     {        
         GameManager.instance.ClearWinText();
-        character = Instantiate(PlayerInfo.playerInfo.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
+        character = Instantiate(PlayerInfo.instance.allCharacters[characterNum], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
         print(transform.position);
         character.name = character.name + " Model";
-        //abilitiesManager.InitCharacterMaterials(character);
+        abilitiesManager.InitCharacterMaterials(character);
     }
 
     public void Die()
@@ -100,12 +105,13 @@ public class AvatarSetup : MonoBehaviour
     {
         playerCombat.enabled = true;
         playerMovement.enabled = true;
+        triShield.Initialise();
         if (photonView.IsMine)
         {
             photonView.RPC("RPC_ResetStats", RpcTarget.All);
             if (character == null)
             {
-                photonView.RPC("RPC_AddCharacter", RpcTarget.All, PlayerInfo.playerInfo.selectedCharacter);
+                photonView.RPC("RPC_AddCharacter", RpcTarget.All, PlayerInfo.instance.selectedCharacter);
             }
         }
     }

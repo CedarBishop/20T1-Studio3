@@ -64,3 +64,23 @@ MonoBehaviour:
     IntValue: 0
     StringValue: 
     FloatValue: 0
+  - ValueID: Green DJ
+    ValueType: 1
+    IntValue: 0
+    StringValue: 
+    FloatValue: 0
+  - ValueID: Pink DJ
+    ValueType: 1
+    IntValue: 0
+    StringValue: 
+    FloatValue: 0
+  - ValueID: Yellow DJ
+    ValueType: 1
+    IntValue: 0
+    StringValue: 
+    FloatValue: 0
+  - ValueID: Rainbow DJ
+    ValueType: 1
+    IntValue: 0
+    StringValue: 
+    FloatValue: 0

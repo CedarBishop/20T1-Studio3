@@ -9,7 +9,7 @@ public class TrialPlayerMovement : MonoBehaviour
 
 	void Start()
 	{
-		Instantiate(PlayerInfo.playerInfo.allCharacters[PlayerInfo.playerInfo.selectedCharacter], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
+		Instantiate(PlayerInfo.instance.allCharacters[PlayerInfo.instance.selectedCharacter], new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation, transform);
 
 
 		rigidbody = GetComponent<Rigidbody>();

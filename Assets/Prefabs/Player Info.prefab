@@ -50,5 +50,18 @@ MonoBehaviour:
   - {fileID: 1508125086591506764, guid: 65d333497faa0814aafec84d863168da, type: 3}
   - {fileID: 1508125086591506764, guid: 884774e9d98190b499863b6fad66aa50, type: 3}
   - {fileID: 1508125086591506764, guid: a4692bcf663ff4246a968ed2ccce21cd, type: 3}
+  allCharacterSkinnedMeshRenders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   passionEarnedThisMatch: 0
+  totalBulletsFired: 0
+  totalBulletsLanded: 0
+  totalTime: 0
+  timeTrialScore: 0
+  timeTrialRound: 0
+  roundsWon: 0
+  roundsLossed: 0
   selectedCharacterKey: SelectedCharacter

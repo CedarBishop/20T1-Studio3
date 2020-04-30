@@ -79,6 +79,7 @@ public class TrialPlayerCombat : MonoBehaviour
 		bullet.isMyProjectile = true;
 
 
+		PlayerInfo.instance.totalBulletsFired++;
 		Destroy(bullet, 5);
 
 

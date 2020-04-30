@@ -1,26 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Photon.Pun;
 using Photon.Realtime;
-using Photon.Pun;
+using UnityEngine;
 
 public class PlayerInfo : MonoBehaviourPunCallbacks
 {
-	public static PlayerInfo playerInfo = null;
+	public static PlayerInfo instance = null;
 	public int selectedCharacter;
 	public GameObject[] allCharacters;
 
+
 	[HideInInspector] public int passionEarnedThisMatch;
+	[HideInInspector] public int totalBulletsFired;
+	[HideInInspector] public int totalBulletsLanded;
+	[HideInInspector] public float totalTime;
+	[HideInInspector] public int timeTrialScore;
+	[HideInInspector] public int timeTrialRound;
+	[HideInInspector] public int roundsWon;
+	[HideInInspector] public int roundsLossed;
 
 	[HideInInspector] public string selectedCharacterKey = "SelectedCharacter";
 
+
+	public void ResetStats ()
+	{
+		passionEarnedThisMatch = 0;
+		totalBulletsFired = 0;
+		totalBulletsLanded = 0;
+		totalTime = 0;
+		timeTrialScore = 0;
+		timeTrialRound = 0;
+	}
+
 	private void Awake()
 	{
-		if (playerInfo == null)
+		if (instance == null)
 		{
-			playerInfo = this;
+			instance = this;
 		}
-		else if (playerInfo != this)
+		else if (instance != this)
 		{
 			Destroy(gameObject);
 		}
@@ -40,6 +57,9 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
 			selectedCharacter = 0;
 			PlayerPrefs.SetInt(selectedCharacterKey, selectedCharacter);
 		}
+
+
+		print(allCharacters[0].GetComponentInChildren<SkinnedMeshRenderer>().name);
 	}
 
 	public override void OnDisconnected(DisconnectCause cause)

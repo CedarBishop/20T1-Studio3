@@ -16,32 +16,42 @@ public class Currency : MonoBehaviour
 
     private MainMenu mainMenu;
 
-    private void Start()
+    private IEnumerator Start()
     {
         mainMenu = GetComponent<MainMenu>();
 
         //initialising runtime variables with values that were previously saved if any
+
+        yield return new WaitForSeconds(0.1f);
+#if UNITY_IPHONE || UNITY_ANDROID
+        
         if (PlayerPrefs.HasKey(passionKey))
-            {
-                passion = PlayerPrefs.GetInt(passionKey, 0);
-            }
+        {
+            passion = PlayerPrefs.GetInt(passionKey, 0);
+        }
+
         if (PlayerPrefs.HasKey(goldKey))
         {
             gold = PlayerPrefs.GetInt(goldKey, 0);
         }
-
-        //EasyProfileManager.Instance.GetCustomValue(passionKey, OnGetPassionComplete);
-        //EasyProfileManager.Instance.GetCustomValue(goldKey, OnGetGoldComplete);
+#else
 
 
+        EasyProfileManager.Instance.GetCustomValue(passionKey, OnGetPassionComplete);
+        EasyProfileManager.Instance.GetCustomValue(goldKey, OnGetGoldComplete);
 
 
-        if (PlayerInfo.playerInfo.passionEarnedThisMatch > 0)
+#endif
+
+
+        if (PlayerInfo.instance.passionEarnedThisMatch > 0)
         {
-            EarnPassion(PlayerInfo.playerInfo.passionEarnedThisMatch);
-            PlayerInfo.playerInfo.passionEarnedThisMatch = 0;
+            EarnPassion(PlayerInfo.instance.passionEarnedThisMatch);
             mainMenu.UpdateCurrencyUI();
         }
+
+
+        PlayerInfo.instance.ResetStats();
     }
 
 
@@ -51,8 +61,11 @@ public class Currency : MonoBehaviour
     {
         // add to runtime passion and save it locally 
         passion += value;
-        //EasyProfileManager.Instance.SetCustomValue( passionKey, passion, OnSetPassionComplete);
+#if UNITY_IPHONE || UNITY_ANDROID
         PlayerPrefs.SetInt(passionKey,passion);
+#else
+        EasyProfileManager.Instance.SetCustomValue( passionKey, passion, OnSetPassionComplete);
+#endif
         mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
@@ -67,10 +80,11 @@ public class Currency : MonoBehaviour
         if (passion >= value) // can afford item
         {
             passion -= value; // spend passion
-
-            //EasyProfileManager.Instance.SetCustomValue(passionKey, passion, OnSetPassionComplete);
-
+#if UNITY_IPHONE || UNITY_ANDROID
             PlayerPrefs.SetInt(passionKey, passion); // save new passion value locally
+#else
+            EasyProfileManager.Instance.SetCustomValue(passionKey, passion, OnSetPassionComplete);
+#endif
             mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }
@@ -86,10 +100,11 @@ public class Currency : MonoBehaviour
     {
         // add to runtime gold and save it locally 
         gold += value;
-
-        //EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
-
+#if UNITY_IPHONE || UNITY_ANDROID
         PlayerPrefs.SetInt(goldKey, gold);
+#else
+        EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
+#endif
         mainMenu.UpdateCurrencyUI(); // update main menu UI
     }
 
@@ -104,10 +119,11 @@ public class Currency : MonoBehaviour
         if (gold >= value) // can afford item
         {
             gold -= value; // spend gold
-
-            EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
-
+#if UNITY_IPHONE || UNITY_ANDROID
             PlayerPrefs.SetInt(goldKey, gold); // save new gold value locally
+#else
+            EasyProfileManager.Instance.SetCustomValue(goldKey, gold, OnSetGoldComplete);
+#endif
             //mainMenu.UpdateCurrencyUI(); // update main menu UI
             return true;
         }

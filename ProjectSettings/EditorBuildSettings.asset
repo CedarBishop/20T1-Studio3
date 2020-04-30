@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ShowEULA.unity
-    guid: 752be3831b5e8ec4b9f4d834f89528d1
+    path: Assets/Scenes/Login.unity
+    guid: 756a0120f08334b4e8c531430bfdf3fb
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: c998e1ed704bcd74fa33cbb157d64009
@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiplayerBattle2.unity
     guid: 4e44fb7f477ecd04ab5d75ad7e08b54b
+  - enabled: 1
+    path: Assets/Scenes/TimeTrial.unity
+    guid: b6bee86ae79ed224795c9bd8df93a404
+  - enabled: 1
+    path: Assets/Scenes/TimeTrialResults.unity
+    guid: 2357b70cec2a5ef4eb59cc049ba62aed
+  - enabled: 1
+    path: Assets/Scenes/MatchResults.unity
+    guid: 35503cb823e80574ab2ee00228279df2
   m_configObjects: {}

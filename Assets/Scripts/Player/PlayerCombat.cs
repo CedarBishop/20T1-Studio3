@@ -122,6 +122,8 @@ public class PlayerCombat : MonoBehaviour
 			bullet.isSlowDownBullet = hasSlowdownBullet;
 
 			Destroy(bullet, 3);
+
+			PlayerInfo.instance.totalBulletsFired++;
 		}
 
 		StartCoroutine("DelayShoot");
@@ -224,6 +226,7 @@ public class PlayerCombat : MonoBehaviour
 		{
 			health -= damage;
 			photonView.RPC("RPC_UpdateHealth", RpcTarget.All, health, roomNumber);
+			photonView.RPC("RPC_DealtDamage", RpcTarget.Others);
 			//print(roomNumber.ToString() + " is on " + health + " health");
 			if (health <= 0)
 			{
@@ -264,6 +267,12 @@ public class PlayerCombat : MonoBehaviour
 			GameManager.instance.PlayerDied(playerNumber,roomNumber);
 		}
 
+	}
+
+	[PunRPC]
+	void RPC_DealtDamage()
+	{
+		PlayerInfo.instance.totalBulletsLanded += 1;
 	}
 
 	public void ResetHealth()

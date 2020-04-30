@@ -8,10 +8,14 @@ public class MainMenu : MonoBehaviour
     public GameObject mainParent;
     public GameObject settingsParent;
     public GameObject shopParent;
+    public GameObject skillParent;
+
+    public Button logoutButton;
 
     public Text passionCountText;
     public Text goldCountText;
 
+    public Shop shop;
     private Currency currency;
 
     public Slider musicSlider;
@@ -36,12 +40,21 @@ public class MainMenu : MonoBehaviour
         ActivateCharacterDisplay();
         currentCharacterIsUnlocked = true;
 
+#if UNITY_ANDROID || UNITY_IOS
+
+        logoutButton.gameObject.SetActive(false);
+#else
+        logoutButton.gameObject.SetActive(true);
+
+#endif
+
     }
 
-    public void Quit  ()
+    public void Logout  ()
     {
         EasyProfile.EasyProfileManager.Instance.LogOut();
         SoundManager.instance.PlaySFX("Button");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
     }
 
     public void SetMenuType(int menuType)
@@ -52,18 +65,28 @@ public class MainMenu : MonoBehaviour
                 mainParent.SetActive(true);
                 settingsParent.SetActive(false);
                 shopParent.SetActive(false);
+                skillParent.SetActive(false);
                 ActivateCharacterDisplay();
                 break;
             case 2:
                 mainParent.SetActive(false);
                 settingsParent.SetActive(true);
                 shopParent.SetActive(false);
+                skillParent.SetActive(false);
                 DeactivateCharacterDisplay();
                 break;
             case 3:
                 mainParent.SetActive(false);
                 settingsParent.SetActive(false);
                 shopParent.SetActive(true);
+                skillParent.SetActive(false);
+                DeactivateCharacterDisplay();
+                break;
+            case 4:
+                mainParent.SetActive(false);
+                settingsParent.SetActive(false);
+                shopParent.SetActive(false);
+                skillParent.SetActive(true);
                 DeactivateCharacterDisplay();
                 break;
             default:
@@ -103,7 +126,7 @@ public class MainMenu : MonoBehaviour
         {
             PlayerPrefs.SetInt(cosmeticKeyNames[i],0);
         }
-        GetComponent<Shop>().InitShop();
+        shop.InitShop();
     }
 
     void InitText()
@@ -134,16 +157,16 @@ public class MainMenu : MonoBehaviour
 
         if (characterNumber > 0)
         {
-            if (PlayerPrefs.GetInt(cosmeticKeyNames[characterNumber - 1], 0) == 0)
+            if (shop.shopItems[characterNumber - 1].owned == false)
             {
                 return;
             }
         }
 
-        if (PlayerInfo.playerInfo != null)
+        if (PlayerInfo.instance != null)
         {
-            PlayerInfo.playerInfo.selectedCharacter = characterNumber;
-            PlayerPrefs.SetInt(PlayerInfo.playerInfo.selectedCharacterKey, characterNumber);
+            PlayerInfo.instance.selectedCharacter = characterNumber;
+            PlayerPrefs.SetInt(PlayerInfo.instance.selectedCharacterKey, characterNumber);
 
         }
     }
@@ -160,13 +183,13 @@ public class MainMenu : MonoBehaviour
         for (int i = 0; i < currentCharacterDisplayObjects.Length; i++)
         {
             currentCharacterDisplayObjects[i].SetActive(false);     
-            lockedCharacterDisplay.SetActive(false);
 
         }
+        lockedCharacterDisplay.SetActive(false);
 
         if (characterNumber > 0)
         {
-            if (PlayerPrefs.GetInt(cosmeticKeyNames[characterNumber - 1], 0) == 1)
+            if (shop.shopItems[characterNumber - 1].owned)
             {
                 currentCharacterDisplayObjects[characterNumber].SetActive(true);
             }
@@ -218,4 +241,9 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+
+    public void LoadTimeTrial ()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("TimeTrial");
+    }
 }
